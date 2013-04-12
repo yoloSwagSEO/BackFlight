@@ -1,4 +1,0 @@
-# LastFly
-http://last-fly.fr - not yet
-
-A simple game in a whole space.
