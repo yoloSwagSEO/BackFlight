@@ -7,15 +7,15 @@ A simple game in a whole space.
 This project is just beginning. One day it will be playable, another day for multiplayers.
 
 
-##Todo
+## Work
 ### Done
-- [x] Create the base for developpements.
+- Create the base for developpements.
 
 ### In progress
-- [ ] User connexion.
-- [ ] Basis overview.
+- User connexion.
+- Basis overview.
 
 ### Soon
-- [ ] Map overview.
-- [ ] Launch attack.
-- [ ] Earn ressources.
+- Map overview.
+- Launch attack.
+- Earn ressources.
