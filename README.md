@@ -1,7 +1,7 @@
-# LastFly
-http://last-fly.fr - not yet
+# BlackFlight
+http://back-flight.fr - not yet
 
-A simple game in a whole space.
+A simple game in a a complexe space.
 
 ##Notes
 This project is just beginning. One day it will be playable, another day for multiplayers.
@@ -10,9 +10,9 @@ This project is just beginning. One day it will be playable, another day for mul
 ## Work
 ### Done
 - Create the base for developpements.
+- User connexion.
 
 ### In progress
-- User connexion.
 - Basis overview.
 
 ### Soon
