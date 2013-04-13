@@ -8,6 +8,9 @@ if (isset($_GET['connexion'])) {
     } else {
         include_once 'modules/web/web_connexion.php';
     }
+} else if (isset($_GET['deconnexion'])) {
+    include_once 'modules/web/web_deconnexion.php';
+    
 } else {
     // Loading home
     include_once 'modules/web/web_home.php';

@@ -24,7 +24,7 @@
         <div class="large-3 columns">
             <?php
             if (isConnected()) {
-                echo 'Connecté en tant que '.$User->getPseudo();
+                echo 'Connecté en tant que '.$User->getPseudo().'<br /><a href="connexion/out">Déconnexion</a>';
             } else {
                 echo '<a href="connexion">Connexion</a>';
             }
