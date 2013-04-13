@@ -1,6 +1,7 @@
 <?php
 function head($file = false)
 {
+    global $User;
     return FlyTemplate::head($file);
 }
 

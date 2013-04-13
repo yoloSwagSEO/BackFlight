@@ -29,4 +29,11 @@ require_once 'includes/functions.php';
 // Loading template functions
 require_once 'includes/functions_template.php';
 
+if (!empty($_SESSION['User'])) {
+    $User = new User($_SESSION['User']);
+} else {
+    $User = new User();
+}
+
+
 ?>

@@ -2,3 +2,5 @@ RewriteEngine On
 
 RewriteRule ^scripts$ scripts.php
 RewriteRule ^scripts/([0-9a-z-]+)$ scripts.php?script=$1
+
+RewriteRule ^connexion$ index.php?connexion

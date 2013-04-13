@@ -18,8 +18,17 @@
 </head>
 <body>
     <div class="row">
-        <div class="large-12 columns">
+        <div class="large-9 columns">
             <h1><a href="#">LastFly</a></h1>
-            <hr />
         </div>
+        <div class="large-3 columns">
+            <?php
+            if (isConnected()) {
+                echo 'Connecté en tant que '.$User->getPseudo();
+            } else {
+                echo '<a href="connexion">Connexion</a>';
+            }
+            ?>
+        </div>
+        <hr />
     </div>
