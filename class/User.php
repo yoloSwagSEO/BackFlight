@@ -168,6 +168,7 @@ class User extends Fly
     public static function getAll($to_array, $id = null, $pseudo = null, $rank = null)
     {
         $sql = FlyPDO::get();
+        $array_users = array();
         $where = '';
         $cond = false;
         $args = array();
