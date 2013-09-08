@@ -17,3 +17,12 @@ CREATE TABLE IF NOT EXISTS `map` (
   `type` varchar(10) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `ships` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `playerId` int(11) NOT NULL,
+  `type` varchar(10) NOT NULL,
+  `positionId` int(11) NOT NULL,
+  `state` varchar(10) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;

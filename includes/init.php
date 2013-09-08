@@ -31,6 +31,9 @@ require_once 'includes/functions_template.php';
 
 if (!empty($_SESSION['User'])) {
     $User = new User($_SESSION['User']);
+    if ($User->isConnected()) {
+        include_once 'includes/player_load_verif.php';
+    }
 } else {
     $User = new User();
 }

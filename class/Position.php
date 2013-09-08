@@ -115,4 +115,9 @@ class Position extends Fly
     {
         self::$_typesProbabilities = $probabilities;
     }
+    
+    public static function getClearPosition()
+    {
+        
+    }
 }
