@@ -8,7 +8,11 @@ if (!empty($_GET['module'])) {
     if ($module == 'overview') {
         include_once 'modules/game/overview/overview.php';
     } else if ($module == 'observatory') {
-        include_once 'modules/game/observatory/observatory_home.php';
+        if (empty($_GET['action'])) {
+            include_once 'modules/game/observatory/observatory_home.php';
+        } else if ($_GET['action'] == 'fast') {
+            include_once 'modules/game/observatory/observatory_fast.php';
+        }
     }
 }
 
