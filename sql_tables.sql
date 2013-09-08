@@ -8,3 +8,12 @@ CREATE TABLE IF NOT EXISTS `users` (
   UNIQUE KEY `pseudo` (`pseudo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE IF NOT EXISTS `map` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `x` int(11) NOT NULL,
+  `y` int(11) NOT NULL,
+  `zone` int(11) NOT NULL,
+  `category` varchar(10) NOT NULL,
+  `type` varchar(10) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
