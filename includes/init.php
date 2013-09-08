@@ -35,5 +35,7 @@ if (!empty($_SESSION['User'])) {
     $User = new User();
 }
 
+// Game configuration
+require_once 'config/game.php';
 
 ?>
