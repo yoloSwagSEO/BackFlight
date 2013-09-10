@@ -23,7 +23,7 @@ abstract class Fly
         }
         
         if (!empty($missing_methods)) {
-            $methods = explode(',', $missing_methods);
+            $methods = implode(',', $missing_methods);
             trigger_error ($methods.' must be defined for '.get_class($this).'!', E_USER_ERROR);
         }
 
