@@ -109,7 +109,7 @@ abstract class Fly
      * @param int $id
      * @return array
      */
-    public static function get($id, $args)
+    protected static function get($id, $args)
     {
         $array = array();
         if (!empty($id)) {
