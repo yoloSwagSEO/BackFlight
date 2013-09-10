@@ -5,12 +5,23 @@ abstract class Fly
     protected $_sql;
 
     /**
+     * SQL table for class
+     * @var string
+     */
+    protected static $_sqlTable;
+
+    /**
      * Called when an object is instanciated
      * Check all requirements and exit if unsuccessfull
      * @param mixed $param
      */
     public function __construct($param = null)
     {
+        // Check if table exists
+        if (empty(static::$_sqlTable)) {
+            trigger_error(get_class($this).' has no table assigned!', E_USER_ERROR);
+        }
+
         // Check if required methods exists
         $required_methods = array('_create', '_update', '_load');
         $missing_methods = array();
@@ -104,7 +115,11 @@ abstract class Fly
         if (!empty($id)) {
             $array = self::getAll(true, $id);
         }
-        return array_shift($array);
+
+        if (!empty($array)) {
+            return array_shift($array);
+        }
+        return false;
     }
 
     /**
@@ -124,7 +139,7 @@ abstract class Fly
         }
 
         $sql = FlyPDO::get();
-        $req = $sql->prepare('SELECT * FROM '.static::$_tableSql.$where);
+        $req = $sql->prepare('SELECT * FROM '.static::$_sqlTable.$where);
         if ($req->execute($args)) {
             while ($row = $req->fetch())
             {
