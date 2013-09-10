@@ -19,7 +19,7 @@
 <body>
     <div class="row">
         <div class="large-9 columns">
-            <h1><a href="#">LastFly</a></h1>
+            <h1><a href="#">BackFlight</a></h1>
         </div>
         <div class="large-3 columns">
             <?php
