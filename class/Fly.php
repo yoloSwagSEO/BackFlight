@@ -124,9 +124,10 @@ abstract class Fly
 
     /**
      * Get all elements of class
-     * @param boolean $to_array true to return non instanciated values
+     * @param type $toArray true to return non instanciated values
+     * @param type $id
      */
-    public static function getAll($to_array = false, $id = null)
+    public static function getAll($toArray = false, $id = null)
     {
         $array = array();
         $className = get_called_class();
@@ -143,7 +144,7 @@ abstract class Fly
         if ($req->execute($args)) {
             while ($row = $req->fetch())
             {
-                if (!$to_array) {
+                if (!$toArray) {
                     $array[] = new $className($row);
                 } else {
                     $array[] = $row;
