@@ -26,3 +26,5 @@ CREATE TABLE IF NOT EXISTS `ships` (
   `state` varchar(10) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+ALTER TABLE  `positions` CHANGE  `zone`  `zone` INT( 11 ) NULL ;

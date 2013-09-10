@@ -1,8 +1,9 @@
 <?php
 class Ship extends Fly
 {
-    
-    public function get($id)
+    protected static $_sqlTable = TABLE_SHIPS;
+
+    public static function get($id)
     {
         if (is_numeric($id)) {
             return self::getAll($id);
@@ -23,8 +24,16 @@ class Ship extends Fly
     {
         
     }
-    
-    public function getAll($id, $toArray=false, $playerId=null, $type=null)
+
+    /**
+     *
+     * @param type $id
+     * @param type $toArray
+     * @param type $playerId
+     * @param type $type
+     * @param type $position
+     */
+    public static function getAll($id, $toArray=false, $playerId=null, $type=null, $position=null)
     {
         $where = '';
         $args = array();
@@ -38,7 +47,7 @@ class Ship extends Fly
             $where = 'WHERE `playerId` = :playerId';
             $args[':playerId'] = $playerId;
         }
-        
+
         if ($type) {
             if (empty($where)) {
                 $where = 'WHERE ';
@@ -47,10 +56,20 @@ class Ship extends Fly
             }
             $where .= ' `type` = :type';
             $args[':type'] = $type;
-        }        
+        }
+
+        if ($position) {
+            if (empty($where)) {
+                $where = 'WHERE ';
+            } else {
+                $where .= ' AND ';
+            }
+            $where .= ' `positionId` = :position';
+            $args[':position'] = $position;
+        }   
         
         $sql = FlyPDO::get();
-        $req = $sql->prepare('SELECT * FROM `'.TABLE_SHIPS.'` '.$where);
+        $req = $sql->prepare('SELECT * FROM `'.self::$_sqlTable.'` '.$where);
         if ($req->execute($args)) {
             $array = array();
             while ($row = $req->fetch()) {
@@ -61,5 +80,19 @@ class Ship extends Fly
                 }
             }
         }
+    }
+
+    /**
+     * Check if anybody is at given position
+     * @param int $positionId
+     * @return boolean
+     */
+    public static function isOn($positionId)
+    {
+        $array = self::getAll('', true, '', 'master', $positionId);
+        if (!empty($array)) {
+            return true;
+        }
+        return false;
     }
 }
