@@ -123,7 +123,7 @@ abstract class Fly
             $args[':id'] = $id;
         }
 
-        $sql = MyPDO::get();
+        $sql = FlyPDO::get();
         $req = $sql->prepare('SELECT * FROM '.static::$_tableSql.$where);
         if ($req->execute($args)) {
             while ($row = $req->fetch())
