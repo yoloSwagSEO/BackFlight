@@ -4,8 +4,6 @@ abstract class Fly
     protected $_id;
     protected $_sql;
 
-    protected static $_sqlTable;
-
     /**
      * Called when an object is instanciated
      * Check all requirements and exit if unsuccessfull
@@ -13,11 +11,6 @@ abstract class Fly
      */
     public function __construct($param = null)
     {
-        // Check if table exists
-        if (empty(static::$_sqlTable)) {
-            trigger_error(get_class($this).' has no table assigned!', E_USER_ERROR);
-        }
-
         // Check if required methods exists
         $required_methods = array('_create', '_update', '_load');
         $missing_methods = array();
