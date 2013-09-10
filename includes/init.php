@@ -29,6 +29,10 @@ require_once 'includes/functions.php';
 // Loading template functions
 require_once 'includes/functions_template.php';
 
+// Game configuration
+require_once 'config/game.php';
+
+
 if (!empty($_SESSION['User'])) {
     $User = new User($_SESSION['User']);
     if ($User->isConnected()) {
@@ -37,8 +41,5 @@ if (!empty($_SESSION['User'])) {
 } else {
     $User = new User();
 }
-
-// Game configuration
-require_once 'config/game.php';
 
 ?>
