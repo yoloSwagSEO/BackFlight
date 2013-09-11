@@ -36,7 +36,7 @@ abstract class FlyTemplate
 
         self::$_title = $title;
         if (!$title_only) {
-            $title .= ' - LastFly';
+            $title .= ' - BackFlight';
         }
     }
 
