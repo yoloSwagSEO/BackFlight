@@ -1,6 +1,36 @@
 <?php
 class Ship extends Fly
 {
+    /**
+     * Ship owner's ID
+     * @var int
+     */
+    protected $_userId;
+
+    /**
+     * Type of thip : master / battle / cargo / station
+     * @var string
+     */
+    protected $_type;
+
+    /**
+     * Ship model's ID
+     * @var int
+     */
+    protected $_model;
+
+    /**
+     * Position's ID
+     * @var int
+     */
+    protected $_positionId;
+
+    /**
+     * State of the ship : land, flying, etc
+     * @var string
+     */
+    protected $_state;
+
     protected static $_sqlTable = TABLE_SHIPS;
 
     public static function get($id)
@@ -10,19 +40,42 @@ class Ship extends Fly
         }
     }
     
-    protected function _load()
+    protected function _load($param)
     {
-        
+        if (!empty($param)) {
+            $this->_id = $param['id'];
+            $this->_userId = $param['userId'];
+            $this->_type = $param['type'];
+            $this->_model = $param['model'];
+            $this->_positionId = $param['positionId'];
+            $this->_state = $param['state'];
+            $this->_sql = true;
+        }
     }
     
     protected function _create()
     {
-        
+        $sql = FlyPDo::get();
+        $req = $sql->prepare('INSERT INTO `'.self::$_sqlTable.'` VALUES("", :userId, :type, :model, :positionId, :state)');
+        if ($req->execute(array(
+            ':userId' => $this->_userId,
+            ':type' => $this->_type,
+            ':model' => $this->_type,
+            ':positionId' => $this->_positionId,
+            ':state' => $this->_state
+        ))) {
+            return $sql->lastInsertId();
+        }
     }
     
     protected function _update()
     {
         
+    }
+
+    public function setPosition(Position $Position)
+    {
+        $this->_positionId = $Position->getId();
     }
 
     /**

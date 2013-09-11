@@ -28,3 +28,5 @@ CREATE TABLE IF NOT EXISTS `ships` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 ALTER TABLE  `positions` CHANGE  `zone`  `zone` INT( 11 ) NULL ;
+ALTER TABLE  `ships` CHANGE  `playerId`  `userId` INT( 11 ) NOT NULL ;
+ALTER TABLE  `ships` ADD  `model` INT NOT NULL AFTER  `type` ;

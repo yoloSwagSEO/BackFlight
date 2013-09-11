@@ -9,8 +9,10 @@ if (!$MasterShipPlayer->isSql()) {
     // Get a position for the player to begin
     $startPosition = Position::getClearPosition();
     if ($startPosition) {
-        echo '<div data-alert="" class="alert-box radius">Ship position : '.$startPosition->getX().'.</div>';
+        echo '<div data-alert="" class="alert-box radius">Ship position : '.$startPosition->getX().':'.$startPosition->getY().'.</div>';
     }
+
+    $MasterShipPlayer->setPosition($startPosition);
     
     
 }
