@@ -30,3 +30,12 @@ CREATE TABLE IF NOT EXISTS `ships` (
 ALTER TABLE  `positions` CHANGE  `zone`  `zone` INT( 11 ) NULL ;
 ALTER TABLE  `ships` CHANGE  `playerId`  `userId` INT( 11 ) NOT NULL ;
 ALTER TABLE  `ships` ADD  `model` INT NOT NULL AFTER  `type` ;
+
+CREATE TABLE IF NOT EXISTS `models` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(25) NOT NULL,
+  `user` int(11) DEFAULT NULL,
+  `category` varchar(25) NOT NULL,
+  `type` varchar(25) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

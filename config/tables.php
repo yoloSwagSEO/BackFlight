@@ -8,4 +8,5 @@ define('TABLE_POSITIONS', 'positions');
 
 define('TABLE_SHIPS', 'ships');
 
+define('TABLE_MODELS', 'models');
 ?>
