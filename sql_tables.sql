@@ -39,3 +39,23 @@ CREATE TABLE IF NOT EXISTS `models` (
   `type` varchar(25) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `moves` (
+    `id` INT(11) NOT NULL AUTO_INCREMENT,
+    `user` INT(11) NOT NULL,
+    `type` varchar(25) NOT NULL,
+    `from` INT(11) NOT NULL,
+    `to` INT(11) NOT NULL,
+    `start` INT(11) NULL,
+    `duration` INT(11) NOT NULL,
+    `end` INT(11) NULL,
+    `state` varchar(25) DEFAULT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `fleets` (
+  `moveId` int(11) NOT NULL,
+  `userId` int(11) NOT NULL,
+  `shipId` int(11) NOT NULL,
+  KEY `moveId` (`moveId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
