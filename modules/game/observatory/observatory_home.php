@@ -7,7 +7,7 @@ head();
 <div class="row">
     <div class="column large-3">
         <ul class="side-nav">
-            <li><a href="overview">Quai</a></li>
+            <li><a href="overview">Ma position</a></li>
         </ul>
     </div>
     <div class="column large-9">

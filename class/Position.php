@@ -43,6 +43,10 @@ class Position extends Fly
      */
     static private $_typesProbabilities;
 
+    static private $_types;
+
+    static private $_categories;
+
     protected static $_sqlTable = TABLE_POSITIONS;
 
 
@@ -66,10 +70,13 @@ class Position extends Fly
         return 1;
     }
     
-    public function getCategory()
+    public function getCategory($full = false)
     {
         if (empty($this->_category)) {
             $this->_category = $this->_chooseCategory();
+        }
+        if ($full) {
+            return self::$_categories[$this->_category];
         }
         return $this->_category;
     }
@@ -127,6 +134,16 @@ class Position extends Fly
     public static function setTypesProbabilities(array $probabilities)
     {
         self::$_typesProbabilities = $probabilities;
+    }
+
+    public static function setTypes(array $types)
+    {
+        self::$_types = $types;
+    }
+
+    public static function setCategories(array $categories)
+    {
+        self::$_categories = $categories;
     }
 
     /**
@@ -217,8 +234,6 @@ class Position extends Fly
             $args[':x'] = $x;
         }
 
-        var_dump($y);
-
         if ($y) {
             if (empty($where)) {
                 $where = 'WHERE ';
@@ -228,8 +243,6 @@ class Position extends Fly
             $where .= ' `y` = :y';
             $args[':y'] = $y;
         }
-
-        var_dump($args);
 
         $sql = FlyPDO::get();
         $req = $sql->prepare('SELECT * FROM `'.self::$_sqlTable.'` '.$where);

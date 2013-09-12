@@ -3,6 +3,8 @@ Position::setCategoriesProbabilities(array('space' => 70, 'asteroids' => 20, 'pl
 
 Position::setTypesProbabilities(array());
 
+Position::setCategories(array('space' => 'Espace', 'asteroids' => 'Astéroïdes', 'planet' => 'Planète'));
+
 define('POSITION_DEEP_SEARCH_LIMIT', 500);
 
 

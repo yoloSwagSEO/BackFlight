@@ -1,6 +1,11 @@
 <?php
-title('Quai');
+title('Ma position');
 head();
+
+
+$MasterShipPosition = new Position($MasterShipPlayer->getPositionId());
+
+
 ?>
 <div class="row">
     <div class="column large-3">
@@ -9,10 +14,14 @@ head();
         </ul>
     </div>
     <div class="column large-9">
-        <h3>Quai</h3>
+        <h3>Ma position</h3>
         <div data-alert class="alert-box radius">
             Tout semble si calme...
         </div>
+        <p>
+            <strong>Position actuelle :</strong> <?php echo $MasterShipPlayer->getPositionX()?>:<?php echo $MasterShipPlayer->getPositionY()?><br />
+            <strong>Espace rencontré :</strong> <?php echo $MasterShipPosition->getCategory(true)?>
+        </p>
     </div>
 </div>
 
