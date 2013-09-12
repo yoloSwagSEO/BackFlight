@@ -1,0 +1,1 @@
+INSERT INTO `backflight`.`models` (`id`, `name`, `user`, `category`, `type`) VALUES (NULL, 'Survivor', NULL, 'master', '');
