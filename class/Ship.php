@@ -37,6 +37,24 @@ class Ship extends Fly
      */
     protected $_positionY;
 
+    /**
+     * The model's ship name
+     * @var string (max 20 carac.)
+     */
+    protected $_modelName;
+
+    /**
+     * The model's ship category
+     * @var string
+     */
+    protected $_modelCategory;
+
+    /**
+     * The model's ship type
+     * @var string
+     */
+    protected $_modelType;
+
 
     /**
      * State of the ship : land, flying, etc
@@ -72,6 +90,33 @@ class Ship extends Fly
     public function getModel()
     {
         return $this->_model;
+    }
+
+    /**
+     *
+     * @return string
+     */
+    public function getModelName()
+    {
+        return $this->_modelName;
+    }
+
+    /**
+     *
+     * @return string
+     */
+    public function getModelCategory()
+    {
+        return $this->_modelCategory;
+    }
+
+    /**
+     *
+     * @return string
+     */
+    public function getModelType()
+    {
+        return $this->_modelType;
     }
 
     /**
@@ -185,6 +230,9 @@ class Ship extends Fly
             $this->_model = $param['model'];
             $this->_positionId = $param['positionId'];
             $this->_state = $param['state'];
+            $this->_modelName = $param['modelName'];
+            $this->_modelCategory = $param['modelCategory'];
+            $this->_modelType = $param['modelType'];
 
 
             if (!empty($param['x'])) {
@@ -261,9 +309,11 @@ class Ship extends Fly
         }   
         
         $sql = FlyPDO::get();
-        $req = $sql->prepare('SELECT `'.self::$_sqlTable.'`.*, pos.x, pos.y FROM `'.self::$_sqlTable.'`
-        LEFT JOIN `'.TABLE_POSITIONS.'` pos
-            ON `'.self::$_sqlTable.'`.positionId =  pos.id
+        $req = $sql->prepare('SELECT `'.self::$_sqlTable.'`.*, pos.x, pos.y, mod.name modelName, mod.type modelType, mod.category modelCategory FROM `'.self::$_sqlTable.'`
+            LEFT JOIN `'.TABLE_POSITIONS.'` pos
+                ON `'.self::$_sqlTable.'`.positionId =  pos.id
+            LEFT JOIN `'.TABLE_MODELS.'` `mod`
+                ON `'.self::$_sqlTable.'`.model = `mod`.id
         '.$where);
         if ($req->execute($args)) {
             $current = 0;

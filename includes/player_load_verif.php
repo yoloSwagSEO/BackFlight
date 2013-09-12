@@ -21,5 +21,5 @@ if (!$MasterShipPlayer->isSql()) {
     
     
 } else {
-    echo '<div data-alert="" class="alert-box radius">MasterShip position : '.$MasterShipPlayer->getPositionX().':'.$MasterShipPlayer->getPositionY().'</div>';
+    echo '<div data-alert="" class="alert-box radius">MasterShip ('.$MasterShipPlayer->getModelName().') position : '.$MasterShipPlayer->getPositionX().':'.$MasterShipPlayer->getPositionY().'</div>';
 }
