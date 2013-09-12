@@ -16,7 +16,7 @@ if (!$MasterShipPlayer->isSql()) {
     $MasterShipPlayer->setType('master');
     $MasterShipPlayer->setModel(1);
     $MasterShipPlayer->setUserId($User->getId());
-    $MasterShipPlayer->setState('flying');
+    $MasterShipPlayer->setState('space');
     $MasterShipPlayer->save();
     
     

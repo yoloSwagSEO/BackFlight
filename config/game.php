@@ -7,4 +7,8 @@ Position::setCategories(array('space' => 'Espace', 'asteroids' => 'Astéroïdes'
 
 define('POSITION_DEEP_SEARCH_LIMIT', 500);
 
+define('DESTINATION_EMPTY', 1);
+
+define('DESTINATION_NORMAL', 2);
+
 

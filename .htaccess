@@ -10,3 +10,6 @@ RewriteRule ^overview$ game.php?module=overview
 
 RewriteRule ^observatory$ game.php?module=observatory
 RewriteRule ^observatory/(fast)$ game.php?module=observatory&action=$1
+
+RewriteRule ^fly/([a-z]+)$ game.php?module=fly&to=$1
+RewriteRule ^fly/([a-z]+)/(fast)$ game.php?module=fly&to=$1&speed=$2

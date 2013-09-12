@@ -118,6 +118,20 @@ class Position extends Fly
     {
         $this->_y = $y;
     }
+
+
+    /**
+     * Get a destination
+     * @param int $type 'DESTINATION_EMPTY' to get empty destination
+     * @return \Position
+     */
+    public function determineDestination($type = DESTINATION_NORMAL)
+    {
+        if ($type == DESTINATION_EMPTY) {
+            return self::getClearPosition($this->_x, $this->_y);
+        }
+        // TODO : determine destination for "normal" search
+    }
     
     /**
      * 

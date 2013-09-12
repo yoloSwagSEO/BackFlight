@@ -1,5 +1,5 @@
 <?php
-class Model extends BaseOwnWeb
+class Model extends Fly
 {
     protected $_id;
     protected $_name;
@@ -78,7 +78,7 @@ class Model extends BaseOwnWeb
     protected function _create()
     {
         $sql = FlyPDO::get();
-        $req = $sql->prepare('INSERT INTO `'.static::$_tableSql.'` VALUES (:id, :name, :user, :category, :type)');
+        $req = $sql->prepare('INSERT INTO `'.static::$_sqlTable.'` VALUES (:id, :name, :user, :category, :type)');
         $args = array(
             ':id' => $this->_id,
             ':name' => $this->_name,
@@ -98,7 +98,7 @@ class Model extends BaseOwnWeb
     protected function _update()
     {
         $sql = FlyPDO::get();
-        $req = $sql->prepare('UPDATE `'.static::$_tableSql.'` SET `name` = :name, `user` = :user, `category` = :category, `type` = :type WHERE id = :id');
+        $req = $sql->prepare('UPDATE `'.static::$_sqlTable.'` SET `name` = :name, `user` = :user, `category` = :category, `type` = :type WHERE id = :id');
         $args = array(
             ':id' => $this->_id,
             ':name' => $this->_name,
@@ -129,14 +129,14 @@ class Model extends BaseOwnWeb
             if (empty($where)) {
                 $where = ' WHERE ';
             }
-            $where .= '`'.static::$_tableSql.'`.id = :id';
+            $where .= '`'.static::$_sqlTable.'`.id = :id';
             $args[':id'] = $id;
         }
 
         $array = array();
         $sql = FlyPDO::get();
         $req = $sql->prepare('
-                    SELECT `'.static::$_tableSql.'`.* FROM `'.static::$_tableSql.'`'.$where);
+                    SELECT `'.static::$_sqlTable.'`.* FROM `'.static::$_sqlTable.'`'.$where);
 
         if ($req->execute($args)) {
             $current = 0;
