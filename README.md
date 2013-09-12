@@ -3,7 +3,9 @@ http://back-flight.fr - not yet
 
 A simple game in a a complexe space.
 
+
 ##Notes
+**Actually on heavy WIP**
 This project is just beginning. One day it will be playable, another day for multiplayers.
 
 
@@ -11,9 +13,10 @@ This project is just beginning. One day it will be playable, another day for mul
 ### Done
 - Create the base for developpements.
 - User connexion.
+- Basis overview.
 
 ### In progress
-- Basis overview.
+- Some actions : fly, settlements, and more...
 
 ### Soon
 - Map overview.
