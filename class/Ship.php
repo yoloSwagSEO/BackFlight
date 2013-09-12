@@ -24,6 +24,19 @@ class Ship extends Fly
      * @var int
      */
     protected $_positionId;
+    
+    /**
+     *
+     * @var int
+     */
+    protected $_positionX;
+
+    /**
+     *
+     * @var int
+     */
+    protected $_positionY;
+
 
     /**
      * State of the ship : land, flying, etc
@@ -33,10 +46,133 @@ class Ship extends Fly
 
     protected static $_sqlTable = TABLE_SHIPS;
 
-    public static function get($id)
+
+    /**
+     *
+     * @return int
+     */
+    public function getUserId()
     {
+        return $this->_userId;
+    }
+
+    /**
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->_type;
+    }
+
+    /**
+     *
+     * @return int
+     */
+    public function getModel()
+    {
+        return $this->_model;
+    }
+
+    /**
+     *
+     * @return int
+     */
+    public function getPositionId()
+    {
+        return $this->_positionId;
+    }
+
+    /**
+     *
+     * @return int
+     */
+    public function getPositionX()
+    {
+        return $this->_positionX;
+    }
+
+    /**
+     *
+     * @return int
+     */
+    public function getPositionY()
+    {
+        return $this->_positionY;
+    }
+
+    /**
+     *
+     * @return string
+     */
+    public function getState()
+    {
+        return $this->_state;
+    }
+
+
+    /**
+     * User ID
+     * @param int $userId
+     */
+    public function setUserId($userId)
+    {
+        $this->_userId = $userId;
+    }
+
+    /**
+     * The ship's type
+     * @param string $type
+     */
+    public function setType($type)
+    {
+        $this->_type = $type;
+    }
+
+    /**
+     * The model of the ship
+     * @param int $model Model ID
+     */
+    public function setModel($model)
+    {
+        $this->_model = $model;
+    }
+
+
+    /**
+     * Set the position
+     * @param Position $Position
+     */
+    public function setPosition(Position $Position)
+    {
+        $this->_positionId = $Position->getId();
+    }
+
+    /**
+     * Set ship's state
+     * @param string $state flying / land / base, etc
+     */
+    public function setState($state)
+    {
+        $this->_state = $state;
+    }
+
+
+    public static function get($id, $args=null)
+    {
+        $array = array();
+
         if (is_numeric($id)) {
-            return self::getAll($id);
+            $array = self::getAll($id);
+        } else {
+            if (!empty($args[1])) {
+                // $param[0] : type / $param[1] player ID:
+                $array = self::getAll('', true, $args[1], $args[0]);
+            }
+        }
+
+        if (!empty($array)) {
+            return array_shift($array);
         }
     }
     
@@ -49,6 +185,13 @@ class Ship extends Fly
             $this->_model = $param['model'];
             $this->_positionId = $param['positionId'];
             $this->_state = $param['state'];
+
+
+            if (!empty($param['x'])) {
+                $this->_positionX = $param['x'];
+                $this->_positionY = $param['y'];
+            }
+
             $this->_sql = true;
         }
     }
@@ -60,7 +203,7 @@ class Ship extends Fly
         if ($req->execute(array(
             ':userId' => $this->_userId,
             ':type' => $this->_type,
-            ':model' => $this->_type,
+            ':model' => $this->_model,
             ':positionId' => $this->_positionId,
             ':state' => $this->_state
         ))) {
@@ -73,10 +216,6 @@ class Ship extends Fly
         
     }
 
-    public function setPosition(Position $Position)
-    {
-        $this->_positionId = $Position->getId();
-    }
 
     /**
      *
@@ -86,19 +225,19 @@ class Ship extends Fly
      * @param type $type
      * @param type $position
      */
-    public static function getAll($id, $toArray=false, $playerId=null, $type=null, $position=null)
+    public static function getAll($id, $toArray=false, $userId=null, $type=null, $position=null)
     {
         $where = '';
         $args = array();
         
         if ($id) {
-            $where = 'WHERE id = :id';
+            $where = 'WHERE `'.self::$_sqlTable.'`.id = :id';
             $args[':id'] = $id;
         }
         
-        if ($playerId) {
-            $where = 'WHERE `playerId` = :playerId';
-            $args[':playerId'] = $playerId;
+        if ($userId) {
+            $where = 'WHERE `'.self::$_sqlTable.'`.`userId` = :userId';
+            $args[':userId'] = $userId;
         }
 
         if ($type) {
@@ -107,7 +246,7 @@ class Ship extends Fly
             } else {
                 $where .= ' AND ';
             }
-            $where .= ' `type` = :type';
+            $where .= ' `'.self::$_sqlTable.'`.`type` = :type';
             $args[':type'] = $type;
         }
 
@@ -117,21 +256,53 @@ class Ship extends Fly
             } else {
                 $where .= ' AND ';
             }
-            $where .= ' `positionId` = :position';
+            $where .= ' `'.self::$_sqlTable.'`.`positionId` = :position';
             $args[':position'] = $position;
         }   
         
         $sql = FlyPDO::get();
-        $req = $sql->prepare('SELECT * FROM `'.self::$_sqlTable.'` '.$where);
+        $req = $sql->prepare('SELECT `'.self::$_sqlTable.'`.*, pos.x, pos.y FROM `'.self::$_sqlTable.'`
+        LEFT JOIN `'.TABLE_POSITIONS.'` pos
+            ON `'.self::$_sqlTable.'`.positionId =  pos.id
+        '.$where);
         if ($req->execute($args)) {
-            $array = array();
-            while ($row = $req->fetch()) {
+            $current = 0;
+            $loaded = false;
+            $param = array();
+            $class = get_called_class();
+            while ($row = $req->fetch())
+            {
+                // Nécessaire aux jointures (pour médias ou autres)
+                if ($current != $row['id'] && $current != '') {
+                    if ($toArray) {
+                        $array[$current] = $param;
+                    } else {
+                        $array[$current] = new $class($param);
+                    }
+                    $param = array();
+                    $loaded = false;
+                }
+
+                $current = $row['id'];
+                if (!$loaded) {
+                    $loaded = true;
+                    $param = $row;
+                }
+
+                // A partir d'ici, on charge les paramètres supplémentaires (par exemple conversion pour les médias)
+
+            }
+            if (!empty($param)) {
                 if ($toArray) {
-                    $array[$row['id']] = $row;
+                    $array[$current] = $param;
                 } else {
-                    $array[$row['id']] = new Ship($row);
+                    $array[$current] = new $class($param);
                 }
             }
+            return $array;
+        } else {
+            var_dump($req->errorInfo());
+            trigger_error('Chargement impossible', E_USER_ERROR);
         }
     }
 
