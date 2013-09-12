@@ -6,14 +6,17 @@ if (User::_isPseudoValid($_POST['pseudo'])) {
                 header('location: overview');
                 exit;
             } else {
-                header('location: '.$_SERVER['PHP_SELF']);
+                $_SESSION['error_connexion'] = true;
+                header('location: ./connexion');
                 exit;
             }
 	}
-        header('location: '.$_SERVER['PHP_SELF']);
+        $_SESSION['error_connexion'] = true;
+        header('location: ./connexion');
         exit;
 
 } else {
-    header('location: '.$_SERVER['PHP_SELF']);
+    $_SESSION['error_connexion'] = true;
+        header('location: ./connexion');
     exit;
 }
