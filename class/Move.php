@@ -5,7 +5,11 @@ class Move extends Fly
     protected $_user;
     protected $_type;
     protected $_from;
+    protected $_toY;
+    protected $_fromX;
+    protected $_fromY;
     protected $_to;
+    protected $_toX;
     protected $_start;
     protected $_end;
     protected $_state;
@@ -100,7 +104,6 @@ class Move extends Fly
     }
 
 
-
     /*
      * Charge les valeurs de l'objet
      * @param array $param Le tableau avec les valeurs nécessaire à l'instanciation de l'objet
@@ -112,6 +115,10 @@ class Move extends Fly
             $this->_user = $param['user'];
             $this->_type = $param['type'];
             $this->_from = $param['from'];
+            $this->_fromX = $param['fromX'];
+            $this->_fromY = $param['fromY'];
+            $this->_toX = $param['toX'];
+            $this->_toY = $param['toY'];
             $this->_to = $param['to'];
             $this->_start = $param['start'];
             $this->_duration = $param['duration'];
@@ -153,6 +160,11 @@ class Move extends Fly
         $this->setEnd(time() + $this->_duration);
         $this->setState('flying');
         $this->save();
+    }
+
+    public function countRemainingTime()
+    {
+        return $this->_end - time();
     }
 
     protected function _update()
@@ -200,7 +212,12 @@ class Move extends Fly
         $array = array();
         $sql = FlyPDO::get();
         $req = $sql->prepare('
-                    SELECT `'.static::$_sqlTable.'`.* FROM `'.static::$_sqlTable.'`'.$where);
+                    SELECT `'.static::$_sqlTable.'`.*, posFrom.x fromX, posFrom.y fromY, posTo.x toX, posto.y toY FROM `'.static::$_sqlTable.'`
+                        LEFT JOIN `'.TABLE_POSITIONS.'` posFrom
+                            ON posFrom.id = `'.static::$_sqlTable.'`.from
+                        LEFT JOIN `'.TABLE_POSITIONS.'` posTo
+                            ON posTo.id = `'.static::$_sqlTable.'`.to
+                        '.$where);
 
         if ($req->execute($args)) {
             $current = 0;

@@ -39,4 +39,9 @@ $Fleet->save();
 $Move->start();
 $Fleet->takeOff();
 
+header('location: overview');
+exit;
+
+
+
 ?>

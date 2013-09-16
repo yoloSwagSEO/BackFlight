@@ -5,3 +5,9 @@ function isConnected()
         return true;
     }
 }
+
+
+function renderCountDown($time)
+{
+    return '<span class="countdown" data-time="'.(time() + $time).'"></span>';
+}

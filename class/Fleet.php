@@ -65,7 +65,6 @@ class Fleet extends Fly
     protected function _load($param)
     {
         if($param) {
-            $this->_id = $param['id'];
             $this->_userId = $param['userId'];
             $this->_ships = $param['ships'];
             $this->_moveId = $param['moveId'];
@@ -107,7 +106,7 @@ class Fleet extends Fly
         return array_shift($array);
     }
 
-    public static function getAll($id = null, $to_array = false)
+    public static function getAll($id = null, $to_array = false, $userId = null)
     {
         $where = '';
         $args = array();
@@ -118,6 +117,16 @@ class Fleet extends Fly
             }
             $where .= '`'.static::$_sqlTable.'`.id = :id';
             $args[':id'] = $id;
+        }
+
+        if ($userId) {
+            if (empty($where)) {
+                $where = ' WHERE ';
+            } else {
+                $where .= ' AND ';
+            }
+            $where .= '`'.static::$_sqlTable.'`.userId = :userId';
+            $args[':userId'] = $userId;
         }
 
         $array = array();

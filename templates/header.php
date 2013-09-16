@@ -32,3 +32,17 @@
         </div>
         <hr />
     </div>
+    <?php
+    if ($User->isConnected()) {
+        if (!empty($array_moves)) {
+            foreach ($array_moves as $Move)
+            {
+        ?>
+            <div data-alert="" class="alert-box radius">
+                <strong>Flotte de <?php echo $User->getPseudo()?></strong> en provenance de <?php echo $Move->getFrom()?> et à destination de <?php echo $Move->getTo() ?> (<?php echo renderCountDown($Move->countRemainingTime())?>)
+        </div>
+        <?php
+            }
+        }
+    }
+    ?>
