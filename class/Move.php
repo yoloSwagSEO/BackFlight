@@ -13,6 +13,7 @@ class Move extends Fly
     protected $_start;
     protected $_end;
     protected $_state;
+    protected $_ships;
     protected $_duration;
 
 
@@ -56,6 +57,11 @@ class Move extends Fly
     public function getState()
     {
         return $this->_state;
+    }
+
+    public function getShips()
+    {
+        return $this->_ships;
     }
 
     public function getDuration()
@@ -124,6 +130,9 @@ class Move extends Fly
             $this->_duration = $param['duration'];
             $this->_end = $param['end'];
             $this->_state = $param['state'];
+            if (!empty($param['ships'])) {
+                $this->_ships = $param['ships'];
+            }
             $this->_sql = true;
         }
     }
@@ -162,6 +171,18 @@ class Move extends Fly
         $this->save();
     }
 
+    public function land()
+    {
+        foreach ($this->_ships as $shipId => $null)
+        {
+            $Ship = new Ship($shipId);
+            $Ship->setState('arrived');
+            $Ship->save();
+        }
+        $this->setState('arrived');
+        $this->save();
+    }
+
     public function countRemainingTime()
     {
         return $this->_end - time();
@@ -196,7 +217,7 @@ class Move extends Fly
         return array_shift($array);
     }
 
-    public static function getAll($id = null, $to_array = false)
+    public static function getAll($id = null, $to_array = false, $userId = null, $state = null)
     {
         $where = '';
         $args = array();
@@ -209,14 +230,36 @@ class Move extends Fly
             $args[':id'] = $id;
         }
 
+        if ($userId) {
+            if (empty($where)) {
+                $where = ' WHERE ';
+            } else {
+                $where .= ' AND ';
+            }
+            $where .= '`'.static::$_sqlTable.'`.user = :userId';
+            $args[':userId'] = $userId;
+        }
+
+        if ($state) {
+            if (empty($where)) {
+                $where = ' WHERE ';
+            } else {
+                $where .= ' AND ';
+            }
+            $where .= '`'.static::$_sqlTable.'`.`state` = :state';
+            $args[':state'] = $state;
+        }
+
         $array = array();
         $sql = FlyPDO::get();
         $req = $sql->prepare('
-                    SELECT `'.static::$_sqlTable.'`.*, posFrom.x fromX, posFrom.y fromY, posTo.x toX, posto.y toY FROM `'.static::$_sqlTable.'`
+                    SELECT `'.static::$_sqlTable.'`.*, posFrom.x fromX, posFrom.y fromY, posTo.x toX, posto.y toY, fleets.shipId ship FROM `'.static::$_sqlTable.'`
                         LEFT JOIN `'.TABLE_POSITIONS.'` posFrom
                             ON posFrom.id = `'.static::$_sqlTable.'`.from
                         LEFT JOIN `'.TABLE_POSITIONS.'` posTo
                             ON posTo.id = `'.static::$_sqlTable.'`.to
+                        LEFT JOIN `'.TABLE_FLEETS.'` fleets
+                            ON fleets.moveId = `'.static::$_sqlTable.'`.id
                         '.$where);
 
         if ($req->execute($args)) {
@@ -242,6 +285,8 @@ class Move extends Fly
                     $loaded = true;
                     $param = $row;
                 }
+
+                $param['ships'][$row['ship']] = true;
 
                 // A partir d'ici, on charge les paramètres supplémentaires (par exemple conversion pour les médias)
 

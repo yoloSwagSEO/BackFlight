@@ -38,8 +38,7 @@ $Fleet->save();
 // Let's go
 $Move->start();
 $Fleet->takeOff();
-
-header('location: overview');
+header('location: ../overview');
 exit;
 
 
