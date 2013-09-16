@@ -19,6 +19,7 @@ if ($type === 'jump') {
     $time = 30;
 }
 
+
 $Move = new Move();
 $Move->setFrom($PositionCurrent->getId());
 $Move->setTo($PositionDestination->getId());

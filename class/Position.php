@@ -128,7 +128,7 @@ class Position extends Fly
     public function determineDestination($type = DESTINATION_NORMAL)
     {
         if ($type == DESTINATION_EMPTY) {
-            return self::getClearPosition($this->_x, $this->_y);
+            return self::getClearPosition($this->_x, $this->_y, $this->_id);
         }
         // TODO : determine destination for "normal" search
     }
@@ -166,13 +166,12 @@ class Position extends Fly
      * @param int $y
      * @return \Position
      */
-    public static function getClearPosition($x = 1, $y = 1)
+    public static function getClearPosition($x = 1, $y = 1, $not_position_id = null)
     {
         for ($x; $x < POSITION_DEEP_SEARCH_LIMIT; $x++) {
             for ($y; $y < POSITION_DEEP_SEARCH_LIMIT; $y++)
             {
-                var_dump($x, $y);
-                if (Position::isEmpty($x, $y)) {
+                if (Position::isEmpty($x, $y, $not_position_id)) {
                     $Position = new Position($x, $y);
                     if (!$Position->isSql()) {
                         $Position->setX($x);
@@ -193,9 +192,8 @@ class Position extends Fly
      * @param type $y
      * @return boolean true if it's empty, false otherwise
      */
-    protected function isEmpty($x, $y)
+    protected function isEmpty($x, $y, $not_position_id = null)
     {
-        var_dump('Check empty');
         $sql = FlyPDO::get();
         $req = $sql->prepare('SELECT * FROM '.self::$_sqlTable.' WHERE x = :y AND y = :y');
         if ($req->execute(array(
@@ -215,8 +213,8 @@ class Position extends Fly
     protected static function get($id, $param=null)
     {
         // Position is instancied with X and Y values
-        if (!empty($param[2])) {
-            $array = self::getAll(true, '', $param[1], $param[2]);
+        if (!empty($param[1])) {
+            $array = self::getAll(true, '', $param[0], $param[1]);
 
         // Position is instancied with ID value
         } else {
