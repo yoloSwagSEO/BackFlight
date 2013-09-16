@@ -82,6 +82,8 @@ abstract class Fly
     {
         if (!$this->isSql()) {            
             $id = $this->_create();
+            $this->_sql = true;
+            $this->_id = $id;
         } else {
             $id = $this->_update();
         }

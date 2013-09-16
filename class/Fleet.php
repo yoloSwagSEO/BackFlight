@@ -48,7 +48,7 @@ class Fleet extends Fly
 
     public function takeOff()
     {
-        foreach ($this->_ships as $shipId)
+        foreach ($this->_ships as $shipId => $value)
         {
             $Ship = new Ship($shipId);
             $Ship->setState('flying');

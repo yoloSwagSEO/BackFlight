@@ -208,7 +208,7 @@ class Ship extends Fly
         $array = array();
 
         if (is_numeric($id)) {
-            $array = self::getAll($id);
+            $array = self::getAll($id, true);
         } else {
             if (!empty($args[1])) {
                 // $param[0] : type / $param[1] player ID:
@@ -233,7 +233,6 @@ class Ship extends Fly
             $this->_modelName = $param['modelName'];
             $this->_modelCategory = $param['modelCategory'];
             $this->_modelType = $param['modelType'];
-
 
             if (!empty($param['x'])) {
                 $this->_positionX = $param['x'];
@@ -261,7 +260,20 @@ class Ship extends Fly
     
     protected function _update()
     {
-        
+        $sql = FlyPDo::get();
+        $req = $sql->prepare('UPDATE `'.self::$_sqlTable.'` SET `userId` = :userId, `type` = :type, `model` = :model, `positionId` = :positionId, `state` = :state');
+        if ($req->execute(array(
+            ':userId' => $this->_userId,
+            ':type' => $this->_type,
+            ':model' => $this->_model,
+            ':positionId' => $this->_positionId,
+            ':state' => $this->_state
+        ))) {
+            return $this->_id;
+        } else {
+            var_dump($req->errorInfo());
+            trigger_error('Enregistrement impossible !', E_USER_ERROR);
+        }
     }
 
 
