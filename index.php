@@ -13,7 +13,12 @@ if (isset($_GET['connexion'])) {
     
 } else {
     // Loading home
-    include_once 'modules/web/web_home.php';
+    if ($User->isConnected()) {
+        header('location: overview');
+        exit;
+    } else {
+        include_once 'modules/web/web_home.php';
+    }
 }
 
 ?>
