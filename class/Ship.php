@@ -336,15 +336,21 @@ class Ship extends Model
             $this->_modelName = $param['modelName'];
             $this->_modelCategory = $param['modelCategory'];
             $this->_modelType = $param['modelType'];
-            $this->_loadMax = $param['loadMax'];
-            $this->_energyMax = $param['energyMax'];
-            $this->_fuelMax = $param['fuelMax'];
-            $this->_powerMax = $param['powerMax'];
-            $this->_speed = $param['speed'];
+
             $this->_load = $param['load'];
+            $this->_loadMax = $param['loadMax'];
+
             $this->_energy = $param['energy'];
+            $this->_energyMax = $param['energyMax'];
+            $this->_energyMax = $param['energyGain'];
+
             $this->_fuel = $param['fuel'];
+            $this->_fuelMax = $param['fuelMax'];
+
             $this->_power = $param['power'];
+            $this->_powerMax = $param['powerMax'];
+            
+            $this->_speed = $param['speed'];
             
             if (!empty($param['x'])) {
                 $this->_positionX = $param['x'];
