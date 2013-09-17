@@ -17,7 +17,6 @@ $PositionDestination = $PositionCurrent->determineDestination(DESTINATION_EMPTY)
 $time = 4 * 60;
 $energy = 5;
 
-
 if ($type === 'jump') {
     $energy = 20;
     $time = 30;

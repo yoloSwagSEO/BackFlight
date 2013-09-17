@@ -166,21 +166,23 @@ class Position extends Fly
      * @param int $y
      * @return \Position
      */
-    public static function getClearPosition($x = 1, $y = 1, $not_position_id = null)
+    public static function getClearPosition($startX = 1, $startY = 1)
     {
-        for ($x; $x < POSITION_DEEP_SEARCH_LIMIT; $x++) {
-            for ($y; $y < POSITION_DEEP_SEARCH_LIMIT; $y++)
+        for ($x = $startX; $x < POSITION_DEEP_SEARCH_LIMIT; $x++) {
+            for ($y = $startY; $y < POSITION_DEEP_SEARCH_LIMIT; $y++)
             {
-                if (Position::isEmpty($x, $y, $not_position_id)) {
-                    $Position = new Position($x, $y);
-                    if (!$Position->isSql()) {
-                        $Position->setX($x);
-                        $Position->setY($y);
-                        $Position->setCategory($Position->_chooseCategory());
-                        $Position->setType($Position->_chooseType());
-                        $Position->save();
+                if ($x !== $startX && $y !== $startY) {
+                    if (Position::isEmpty($x, $y)) {
+                        $Position = new Position($x, $y);
+                        if (!$Position->isSql()) {
+                            $Position->setX($x);
+                            $Position->setY($y);
+                            $Position->setCategory($Position->_chooseCategory());
+                            $Position->setType($Position->_chooseType());
+                            $Position->save();
+                        }
+                        return $Position;
                     }
-                    return $Position;
                 }
             }
         }
@@ -192,7 +194,7 @@ class Position extends Fly
      * @param type $y
      * @return boolean true if it's empty, false otherwise
      */
-    protected function isEmpty($x, $y, $not_position_id = null)
+    protected function isEmpty($x, $y)
     {
         $sql = FlyPDO::get();
         $req = $sql->prepare('SELECT * FROM '.self::$_sqlTable.' WHERE x = :y AND y = :y');
