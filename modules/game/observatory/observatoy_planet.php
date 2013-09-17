@@ -10,6 +10,6 @@
   <li data-tooltip class="has-tip" title="Les activités et ressources seront scannées rapidement. <br />Arrivée : 4m"><a href="fly/planet">Approche normale</a></li>
 </ul>
 <ul id="continue" class="f-dropdown" data-dropdown-content>
-  <li data-tooltip class="has-tip" title="Déplacement ultra-rapide vers une autre zone de l'espace.<br />Prochain bond : 30s<br />"><a href="fly/space/fast">Bond hyperespace</a></li>
-  <li data-tooltip class="has-tip" title="Déplacement vers une autre zone de l'espace. <br />Arrivée : 6m"><a href="fly/space">Vol hyperespace</a></li>
+  <li data-tooltip class="has-tip" title="Déplacement ultra-rapide vers une autre zone de l'espace.<br />Prochain bond : 30s<br />Energie : 20"><a href="fly/space/fast">Bond hyperespace</a></li>
+  <li data-tooltip class="has-tip" title="Déplacement vers une autre zone de l'espace. <br />Arrivée : 6m<br />Energie : 5"><a href="fly/space">Vol hyperespace</a></li>
 </ul>
