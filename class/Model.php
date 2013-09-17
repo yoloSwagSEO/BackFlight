@@ -6,6 +6,11 @@ class Model extends Fly
     protected $_user;
     protected $_category;
     protected $_type;
+    protected $_loadMax;
+    protected $_energyMax;
+    protected $_fuelMax;
+    protected $_powerMax;
+    protected $_speed;
 
 
     /**

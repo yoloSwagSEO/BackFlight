@@ -177,6 +177,7 @@ class Move extends Fly
         {
             $Ship = new Ship($shipId);
             $Ship->setState('arrived');
+            $Ship->setPosition(new Position($this->_to));
             $Ship->save();
         }
         $this->setState('arrived');
