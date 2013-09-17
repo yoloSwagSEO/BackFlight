@@ -42,7 +42,9 @@ $Fleet->save();
 // Let's go
 $Move->start();
 $Fleet->takeOff($energy);
-header('location: ../overview');
+
+
+header('location: '.PATH.'overview');
 exit;
 
 
