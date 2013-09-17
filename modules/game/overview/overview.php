@@ -12,6 +12,7 @@ $MasterShipPosition = new Position($MasterShipPlayer->getPositionId());
         <ul class="side-nav">
             <li><a href="observatory">Observatoire</a></li>
         </ul>
+        <?php include_once 'modules/game/ship/ship_details.php';?>
     </div>
     <div class="column large-9">
         <h3>Ma position</h3>

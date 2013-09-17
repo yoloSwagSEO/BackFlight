@@ -20,6 +20,4 @@ if (!$MasterShipPlayer->isSql()) {
     $MasterShipPlayer->save();
     
     
-} else {
-    echo '<div data-alert="" class="alert-box radius">MasterShip ('.$MasterShipPlayer->getModelName().') position : '.$MasterShipPlayer->getPositionX().':'.$MasterShipPlayer->getPositionY().'</div>';
 }
