@@ -1,5 +1,5 @@
 <?php
-class Ship extends Fly
+class Ship extends Model
 {
     /**
      * Ship owner's ID
@@ -54,6 +54,30 @@ class Ship extends Fly
      * @var string
      */
     protected $_modelType;
+
+    /**
+     *
+     * @var int
+     */
+    protected $_load;
+
+    /**
+     *
+     * @var int
+     */
+    protected $_energy;
+
+    /**
+     *
+     * @var int
+     */
+    protected $_fuel;
+
+    /**
+     *
+     * @var int
+     */
+    protected $_power;
 
 
     /**
@@ -155,6 +179,26 @@ class Ship extends Fly
         return $this->_state;
     }
 
+     public function getLoad()
+    {
+        return $this->_load;
+    }
+
+    public function getEnergy()
+    {
+        return $this->_energy;
+    }
+
+    public function getFuel()
+    {
+        return $this->_fuel;
+    }
+
+    public function getPower()
+    {
+        return $this->_power;
+    }
+
 
     /**
      * User ID
@@ -202,6 +246,65 @@ class Ship extends Fly
         $this->_state = $state;
     }
 
+    public function setLoad($load)
+    {
+        if ($load > $this->_loadMax*SHIP_LOAD_TOLERANCE) {
+            $this->_load = $this->_loadMax*SHIP_LOAD_TOLERANCE;
+        }
+        $this->_load = $load;
+    }
+
+    /**
+     * Set energy level
+     * @param int $energy
+     * @return type
+     */
+    public function setEnergy($energy)
+    {
+        if ($energy > $this->_energyMax) {
+            return $this->_energy = $this->_energyMax;
+        }
+        return $this->_energy = $energy;
+    }
+
+    /**
+     * Set fuel level
+     * @param int $fuel fuel level
+     * @return boolean
+     */
+    public function setFuel($fuel)
+    {
+        if ($fuel > $this->_fuelMax) {
+            return $this->_fuel = $this->_fuelMax;
+        }
+        return $this->_fuel = $fuel;
+    }
+
+    /**
+     * Set ship's power
+     * @param int $power power level
+     * @return boolean r
+     */
+    public function setPower($power)
+    {
+        if ($power > $this->_powerMax) {
+            return $this->_power = $this->_powerMax;
+        }
+        return $this->_power = $power;
+    }
+
+    /**
+     * Check if load > loadMax
+     * @return boolean
+     */
+    public function isOverloaded()
+    {
+        if ($this->_load > $this->_loadMax) {
+            return true;
+        }
+        return false;
+    }
+
 
     public static function get($id, $args=null)
     {
@@ -233,7 +336,16 @@ class Ship extends Fly
             $this->_modelName = $param['modelName'];
             $this->_modelCategory = $param['modelCategory'];
             $this->_modelType = $param['modelType'];
-
+            $this->_loadMax = $param['loadMax'];
+            $this->_energyMax = $param['energyMax'];
+            $this->_fuelMax = $param['fuelMax'];
+            $this->_powerMax = $param['powerMax'];
+            $this->_speed = $param['speed'];
+            $this->_load = $param['load'];
+            $this->_energy = $param['energy'];
+            $this->_fuel = $param['fuel'];
+            $this->_power = $param['power'];
+            
             if (!empty($param['x'])) {
                 $this->_positionX = $param['x'];
                 $this->_positionY = $param['y'];
@@ -246,12 +358,16 @@ class Ship extends Fly
     protected function _create()
     {
         $sql = FlyPDo::get();
-        $req = $sql->prepare('INSERT INTO `'.self::$_sqlTable.'` VALUES("", :userId, :type, :model, :positionId, :state)');
+        $req = $sql->prepare('INSERT INTO `'.self::$_sqlTable.'` VALUES("", :userId, :type, :model, :positionId, :load, :energy, :fuel, :power, :state)');
         if ($req->execute(array(
             ':userId' => $this->_userId,
             ':type' => $this->_type,
             ':model' => $this->_model,
             ':positionId' => $this->_positionId,
+            ':load' => $this->_load,
+            ':energy' => $this->_energy,
+            ':fuel' => $this->_fuel,
+            ':power' => $this->_power,
             ':state' => $this->_state
         ))) {
             return $sql->lastInsertId();
@@ -261,12 +377,17 @@ class Ship extends Fly
     protected function _update()
     {
         $sql = FlyPDo::get();
-        $req = $sql->prepare('UPDATE `'.self::$_sqlTable.'` SET `userId` = :userId, `type` = :type, `model` = :model, `positionId` = :positionId, `state` = :state');
+        $req = $sql->prepare('UPDATE `'.self::$_sqlTable.'` 
+            SET `userId` = :userId, `type` = :type, `model` = :model, `positionId` = :positionId, `load` = :load, `energy` = :energy, `fuel` = :fuel, `power` = :power, `state` = :state');
         if ($req->execute(array(
             ':userId' => $this->_userId,
             ':type' => $this->_type,
             ':model' => $this->_model,
             ':positionId' => $this->_positionId,
+            ':load' => $this->_load,
+            ':energy' => $this->_energy,
+            ':fuel' => $this->_fuel,
+            ':power' => $this->_power,
             ':state' => $this->_state
         ))) {
             return $this->_id;
@@ -321,7 +442,9 @@ class Ship extends Fly
         }   
         
         $sql = FlyPDO::get();
-        $req = $sql->prepare('SELECT `'.self::$_sqlTable.'`.*, pos.x, pos.y, mod.name modelName, mod.type modelType, mod.category modelCategory FROM `'.self::$_sqlTable.'`
+        $req = $sql->prepare('SELECT `'.self::$_sqlTable.'`.*, pos.x, pos.y, 
+                mod.name modelName, mod.type modelType, mod.category modelCategory, mod.loadMax, mod.energyMax, mod.fuelMax, mod.powerMax, mod.speed
+            FROM `'.self::$_sqlTable.'`
             LEFT JOIN `'.TABLE_POSITIONS.'` pos
                 ON `'.self::$_sqlTable.'`.positionId =  pos.id
             LEFT JOIN `'.TABLE_MODELS.'` `mod`

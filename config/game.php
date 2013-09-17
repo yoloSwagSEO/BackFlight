@@ -11,4 +11,6 @@ define('DESTINATION_EMPTY', 1);
 
 define('DESTINATION_NORMAL', 2);
 
+define('SHIP_LOAD_TOLERANCE', 1.1)
+
 

@@ -65,3 +65,8 @@ ADD  `energyMax` INT NOT NULL ,
 ADD  `fuelMax` INT NOT NULL ,
 ADD  `powerMax` INT NOT NULL ,
 ADD  `speed` INT NOT NULL ;
+
+ALTER TABLE  `ships` ADD  `load` INT NOT NULL AFTER  `positionId` ,
+ADD  `energy` INT NOT NULL AFTER  `load` ,
+ADD  `fuel` INT NOT NULL AFTER  `energy` ,
+ADD  `power` INT NOT NULL AFTER  `fuel` ;
