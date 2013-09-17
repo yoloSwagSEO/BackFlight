@@ -72,3 +72,4 @@ ADD  `fuel` INT NOT NULL AFTER  `energy` ,
 ADD  `power` INT NOT NULL AFTER  `fuel` ;
 
 ALTER TABLE  `models` ADD  `energyGain` INT NOT NULL AFTER  `energyMax` ;
+ALTER TABLE  `ships` ADD  `lastUpdate` INT NOT NULL AFTER  `power` ;

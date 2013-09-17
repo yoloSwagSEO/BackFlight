@@ -79,6 +79,11 @@ class Ship extends Model
      */
     protected $_power;
 
+    /**
+     * Determine last time energy has been augmented
+     * @var int
+     */
+    protected $_lastUpdate;
 
     /**
      * State of the ship : land, flying, etc
@@ -199,6 +204,11 @@ class Ship extends Model
         return $this->_power;
     }
 
+    public function getLastUpdate()
+    {
+        return $this->_lastUpdate;
+    }
+
 
     /**
      * User ID
@@ -293,6 +303,11 @@ class Ship extends Model
         return $this->_power = $power;
     }
 
+    public function setLastUpdate($lastUpdate)
+    {
+        $this->_lastUpdate = $lastUpdate;
+    }
+
     /**
      * Check if load > loadMax
      * @return boolean
@@ -303,6 +318,21 @@ class Ship extends Model
             return true;
         }
         return false;
+    }
+
+    /**
+     * Update ship energy
+     */
+    public function updateEnergy()
+    {
+        $time = time();
+        $diff = $time - $this->_lastUpdate;
+        if ($diff > 0) {
+            $gain = $this->_energyGain / 3600 * $diff;
+            $this->setEnergy($this->_energy + $gain);
+            $this->setLastUpdate($time);
+            $this->save();
+        }
     }
 
 
@@ -332,7 +362,6 @@ class Ship extends Model
             $this->_type = $param['type'];
             $this->_model = $param['model'];
             $this->_positionId = $param['positionId'];
-            $this->_state = $param['state'];
             $this->_modelName = $param['modelName'];
             $this->_modelCategory = $param['modelCategory'];
             $this->_modelType = $param['modelType'];
@@ -342,7 +371,7 @@ class Ship extends Model
 
             $this->_energy = $param['energy'];
             $this->_energyMax = $param['energyMax'];
-            $this->_energyMax = $param['energyGain'];
+            $this->_energyGain = $param['energyGain'];
 
             $this->_fuel = $param['fuel'];
             $this->_fuelMax = $param['fuelMax'];
@@ -356,6 +385,10 @@ class Ship extends Model
                 $this->_positionX = $param['x'];
                 $this->_positionY = $param['y'];
             }
+
+
+            $this->_lastUpdate = $param['lastUpdate'];
+            $this->_state = $param['state'];
 
             $this->_sql = true;
         }
@@ -384,7 +417,7 @@ class Ship extends Model
     {
         $sql = FlyPDo::get();
         $req = $sql->prepare('UPDATE `'.self::$_sqlTable.'` 
-            SET `userId` = :userId, `type` = :type, `model` = :model, `positionId` = :positionId, `load` = :load, `energy` = :energy, `fuel` = :fuel, `power` = :power, `state` = :state');
+            SET `userId` = :userId, `type` = :type, `model` = :model, `positionId` = :positionId, `load` = :load, `energy` = :energy, `fuel` = :fuel, `power` = :power, `lastUpdate` = :lastUpdate, `state` = :state');
         if ($req->execute(array(
             ':userId' => $this->_userId,
             ':type' => $this->_type,
@@ -394,6 +427,7 @@ class Ship extends Model
             ':energy' => $this->_energy,
             ':fuel' => $this->_fuel,
             ':power' => $this->_power,
+            ':lastUpdate' => $this->_lastUpdate,
             ':state' => $this->_state
         ))) {
             return $this->_id;
@@ -449,7 +483,7 @@ class Ship extends Model
         
         $sql = FlyPDO::get();
         $req = $sql->prepare('SELECT `'.self::$_sqlTable.'`.*, pos.x, pos.y, 
-                mod.name modelName, mod.type modelType, mod.category modelCategory, mod.loadMax, mod.energyMax, mod.fuelMax, mod.powerMax, mod.speed
+                mod.name modelName, mod.type modelType, mod.category modelCategory, mod.loadMax, mod.energyMax, mod.energyGain, mod.fuelMax, mod.powerMax, mod.speed
             FROM `'.self::$_sqlTable.'`
             LEFT JOIN `'.TABLE_POSITIONS.'` pos
                 ON `'.self::$_sqlTable.'`.positionId =  pos.id
