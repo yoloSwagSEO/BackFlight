@@ -1,6 +1,6 @@
 <div class="panel">
     <?php
-        echo '<div data-alert="" class="alert-box radius">('.$MasterShipPlayer->getModelName().') position : '.$MasterShipPlayer->getPositionX().':'.$MasterShipPlayer->getPositionY().'</div>';
+        echo '<div data-alert="" class="alert-box radius">'.$MasterShipPlayer->getModelName().' ('.$MasterShipPlayer->getState().')<br />Position : '.$MasterShipPlayer->getPositionX().':'.$MasterShipPlayer->getPositionY().'</div>';
     ?>
     Power <small>(<?php echo $MasterShipPlayer->getPower()?> / <?php echo $MasterShipPlayer->getPowerMax()?>)</small>
     <div class="progress success radius "><span class="meter" style="width: <?php echo round($MasterShipPlayer->getPower() / $MasterShipPlayer->getPowerMax() * 100)?>%"></span></div>
