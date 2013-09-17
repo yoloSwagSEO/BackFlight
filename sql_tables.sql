@@ -59,3 +59,9 @@ CREATE TABLE IF NOT EXISTS `fleets` (
   `shipId` int(11) NOT NULL,
   KEY `moveId` (`moveId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE  `models` ADD  `loadMax` INT NOT NULL ,
+ADD  `energyMax` INT NOT NULL ,
+ADD  `fuelMax` INT NOT NULL ,
+ADD  `powerMax` INT NOT NULL ,
+ADD  `speed` INT NOT NULL ;

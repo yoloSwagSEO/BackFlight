@@ -1,1 +1,1 @@
-INSERT INTO `backflight`.`models` (`id`, `name`, `user`, `category`, `type`) VALUES (NULL, 'Survivor', NULL, 'master', '');
+INSERT INTO  `backflight`.`models` (`id` ,`name` ,`user` ,`category` ,`type` ,`loadMax` ,`energyMax` ,`fuelMax` ,`powerMax` ,`speed`)VALUES (1 ,  'Survivor', NULL ,  'master', NULL ,  '1000',  '100',  '100',  '100',  '10');
