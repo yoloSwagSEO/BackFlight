@@ -11,17 +11,15 @@ This project is just beginning. One day it will be playable, another day for mul
 
 ## Work
 ### Done
-- Create the base for developpements.
-- User connexion.
-- Basis overview.
+- Ship
+- Positions
+- Moves & Fleets
 
 ### In progress
-- Some actions : fly, settlements, and more...
+- Ship improvements
 
 ### Soon
-- Map overview.
-- Launch attack.
-- Earn ressources.
+- See [roadmap](https://github.com/In4matik/BackFlight/blob/experimental/roadmap.md).
 
 ## Gameplay
 **2442**, somewhere in the space...
