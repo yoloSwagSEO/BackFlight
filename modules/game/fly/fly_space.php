@@ -14,11 +14,14 @@ if ($MasterShipPlayer->getState() == 'flying') {
 $PositionCurrent = new Position($MasterShipPlayer->getPositionId());
 
 $PositionDestination = $PositionCurrent->determineDestination(DESTINATION_EMPTY);
-$time = 4 *60;
+$time = 4 * 60;
+$energy = 5;
+
+
 if ($type === 'jump') {
+    $energy = 20;
     $time = 30;
 }
-
 
 $Move = new Move();
 $Move->setFrom($PositionCurrent->getId());
@@ -38,7 +41,7 @@ $Fleet->save();
 
 // Let's go
 $Move->start();
-$Fleet->takeOff();
+$Fleet->takeOff($energy);
 header('location: ../overview');
 exit;
 

@@ -46,12 +46,13 @@ class Fleet extends Fly
         $this->_ships[$shipId] = true;
     }
 
-    public function takeOff()
+    public function takeOff($energy)
     {
         foreach ($this->_ships as $shipId => $value)
         {
             $Ship = new Ship($shipId);
             $Ship->setState('flying');
+            $Ship->removeEnergy($energy);
             $Ship->save();
         }
     }

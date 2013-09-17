@@ -329,10 +329,30 @@ class Ship extends Model
         $diff = $time - $this->_lastUpdate;
         if ($diff > 0) {
             $gain = $this->_energyGain / 3600 * $diff;
-            $this->setEnergy($this->_energy + $gain);
+            $this->addEnergy($gain);
             $this->setLastUpdate($time);
             $this->save();
         }
+    }
+
+    /**
+     *
+     * @param int $energy
+     * @return type
+     */
+    public function removeEnergy($energy)
+    {
+        return $this->setEnergy($this->_energy - $energy);
+    }
+
+    /**
+     *
+     * @param int $energy
+     * @return type
+     */
+    public function addEnergy($energy)
+    {
+        return $this->setEnergy($this->_energy + $energy);        
     }
 
 
