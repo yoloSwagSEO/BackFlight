@@ -6,6 +6,18 @@ head();
     <div class="large-9 columns">
         <h3>Hello, space !</h3>
         <div class="panel">A simple game in a complex space</div>
+        <p>
+            <strong>2442, somewhere in the space...</strong> Spaceships return to life after their captains wake up from cryogenic sleep. Smart crews awake from different places, and all of them seems to be survivors of a biggest ship, now disappeard. In their possession, only some flight documents and... a mysterious encrypted map that lead to a very powerful traveling network.
+        </p>
+        <p>
+            You're one of this captains. Your mission ? Be the first crew to bring the map on Earth, or the first team to bring it to humanity. Choice is yours.
+        </p>
+        <p>
+        With technologics fragments, energy residues, patience and strategy, you have to survive in that complexe environnment.
+        </p>
+        <p>
+        More is to come...
+        </p>
     </div>
     <div class="large-3 columns">
         <h4>Here we go</h4>
