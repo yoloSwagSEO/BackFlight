@@ -132,6 +132,30 @@ class Position extends Fly
         }
         // TODO : determine destination for "normal" search
     }
+
+    /**
+     * Get distance between two positions
+     * @param type $depX
+     * @param type $depY
+     * @param type $arrX
+     * @param type $arrY
+     * @return type
+     */
+    public static function calculateDistance($depX, $depY, $arrX, $arrY)
+    {
+        $diffX = abs($depX - $arrX);
+        $diffY = abs($depY - $arrY);
+
+        if (!$diffX) {
+            return $diffY;
+        }
+
+        if (!$diffY) {
+            return $diffX;
+        }
+
+        return sqrt(pow($diffX, 2) + pow($diffY, 2)) * POSITION_LENGHT;
+    }
     
     /**
      * 
@@ -307,5 +331,6 @@ class Position extends Fly
             $this->_sql = true;
         }
     }
+
     
 }

@@ -17,10 +17,9 @@ if (!empty($array_ships)) {
     foreach ($array_ships as $Ship)
     {
         if ($Ship->getId() === $MasterShipPlayer->getId()) {
-            $MasterShipPlayer->updateEnergy();
-        } else {
-            $Ship->updateEnergy();
+            $MasterShipPlayer = $Ship;
         }
+        $Ship->updateEnergy();        
     }
 }
 

@@ -12,3 +12,11 @@ define('DESTINATION_EMPTY', 1);
 define('DESTINATION_NORMAL', 2);
 
 define('SHIP_LOAD_TOLERANCE', 1.1);
+
+define('GAME_SPEED', 20);
+
+define('POSITION_LENGHT', 100);
+
+define('SHIP_JUMP_SPEED_FACTOR', 5);
+
+define('SHIP_ENERGY_USE', .3);

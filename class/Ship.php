@@ -93,7 +93,6 @@ class Ship extends Model
 
     protected static $_sqlTable = TABLE_SHIPS;
 
-
     /**
      *
      * @return int
@@ -328,12 +327,13 @@ class Ship extends Model
         $time = time();
         $diff = $time - $this->_lastUpdate;
         if ($diff > 0) {
-            $gain = $this->_energyGain / 3600 * $diff;
+            $gain = $this->_energyGain / 3600 * $diff * GAME_SPEED;
             $this->addEnergy($gain);
             $this->setLastUpdate($time);
             $this->save();
         }
     }
+
 
     /**
      *
@@ -353,6 +353,22 @@ class Ship extends Model
     public function addEnergy($energy)
     {
         return $this->setEnergy($this->_energy + $energy);        
+    }
+
+    /**
+     * Get travel time
+     * @param int $distance
+     * @param string $type
+     * @return type
+     */
+    public function calculateTravelTime($distance, $type=null)
+    {
+        return ceil($distance / $this->getSpeed($type));
+    }
+
+    public function calculateTravelEnergy($distance, $type=null)
+    {
+        return ceil($distance / POSITION_LENGHT * $this->getSpeed($type) * SHIP_ENERGY_USE);
     }
 
 

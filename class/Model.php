@@ -66,8 +66,11 @@ class Model extends Fly
         return $this->_powerMax;
     }
 
-    public function getSpeed()
+    public function getSpeed($type = null)
     {
+        if ($type === 'jump') {
+            return $this->_speed * SHIP_JUMP_SPEED_FACTOR;
+        }
         return $this->_speed;
     }
 

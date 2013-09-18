@@ -14,13 +14,11 @@ if ($MasterShipPlayer->getState() == 'flying') {
 $PositionCurrent = new Position($MasterShipPlayer->getPositionId());
 
 $PositionDestination = $PositionCurrent->determineDestination(DESTINATION_EMPTY);
-$time = 4 * 60;
-$energy = 5;
+$distance = Position::calculateDistance($PositionCurrent->getX(), $PositionCurrent->getY(), $PositionDestination->getX(), $PositionDestination->getY());
+$time = $MasterShipPlayer->calculateTravelTime($distance, $type);
 
-if ($type === 'jump') {
-    $energy = 20;
-    $time = 30;
-}
+$energy = $MasterShipPlayer->calculateTravelEnergy($distance, $type);
+
 
 $Move = new Move();
 $Move->setFrom($PositionCurrent->getId());
