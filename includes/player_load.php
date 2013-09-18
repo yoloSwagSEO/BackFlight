@@ -12,13 +12,15 @@ if (!empty($array_moves)) {
     }
 }
 
-
-
 $array_ships = Ship::getAll('', '', $User->getId());
 if (!empty($array_ships)) {
     foreach ($array_ships as $Ship)
     {
-        $Ship->updateEnergy();
+        if ($Ship->getId() === $MasterShipPlayer->getId()) {
+            $MasterShipPlayer->updateEnergy();
+        } else {
+            $Ship->updateEnergy();
+        }
     }
 }
 
