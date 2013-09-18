@@ -1,5 +1,5 @@
 <?php
-title('LastFly');
+title('BackFlight - A simple game in a complex space');
 head();
 ?>
 <div class="row">
