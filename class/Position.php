@@ -128,7 +128,9 @@ class Position extends Fly
     public function determineDestination($type = DESTINATION_NORMAL)
     {
         if ($type == DESTINATION_EMPTY) {
-            return self::getClearPosition($this->_x, $this->_y, $this->_id);
+            $position = self::getClearPosition($this->_x, $this->_y, $this->_id);
+            var_dump($position);
+            return $position;
         }
         // TODO : determine destination for "normal" search
     }
@@ -308,7 +310,7 @@ class Position extends Fly
             ':category' => $this->_category,
             ':type' => $this->_type
         ))) {
-            $this->_id = $sql->lastInsertId();
+            return $sql->lastInsertId();
         } else {
             var_dump($req->errorInfo());
         }

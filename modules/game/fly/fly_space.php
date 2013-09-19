@@ -20,6 +20,8 @@ $time = $MasterShipPlayer->calculateTravelTime($distance, $type);
 $energy = $MasterShipPlayer->calculateTravelEnergy($distance, $type);
 
 
+var_dump($PositionDestination);
+
 $Move = new Move();
 $Move->setFrom($PositionCurrent->getId());
 $Move->setTo($PositionDestination->getId());
@@ -41,6 +43,7 @@ $Move->start();
 $Fleet->takeOff($energy);
 
 
+//exit;
 header('location: '.PATH.'overview');
 exit;
 
