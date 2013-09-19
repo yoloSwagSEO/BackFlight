@@ -3,6 +3,9 @@ title('Observatory');
 head();
 
 
+$MasterShipPosition = new Position($MasterShipPlayer->getPositionId());
+$position_category = $MasterShipPosition->getCategory();
+
 ?>
 <div class="row">
     <div class="column large-3">
@@ -14,18 +17,27 @@ head();
     <div class="column large-9">
         <h3>Observatoire</h3>
         <div data-alert class="alert-box success radius">
-            Une lueur est visible dans le ciel...<br />
-            <a href="observatory" class="close">&times;</a>
+            <?php
+            if ($position_category == 'planet') {
+            ?>
+                Nos capteurs détectent une planète habitable.
+            <?php
+            } else if ($position_category == 'asteroids') {
+                ?>
+                Nos capteurs détectent un vaste champs d'astéroïdes.
+                <?php
+            } else if ($position_category == 'space') {
+                ?>
+                Nos capteurs détectent seulement du vide : nous sommes en plein espace.
+                <?php
+            }
+            ?>
         </div>
 
-        <div>
-        <a href="#" data-dropdown="watch" class="button">Observer</a>
-        </div>
-    </div>
-</div>
-<ul id="watch" class="f-dropdown" data-dropdown-content>
-  <li><a href="observatory/fast" data-tooltip class="has-tip" title="Détecte une planète proche de la base">Jeter un oeil</a></li>
-</ul>
+        <?php
+        include_once 'modules/game/observatory/observatory_'.$position_category.'.php';
+        ?>
+
 
 <?php
 foot();
