@@ -73,3 +73,9 @@ ADD  `power` INT NOT NULL AFTER  `fuel` ;
 
 ALTER TABLE  `models` ADD  `energyGain` INT NOT NULL AFTER  `energyMax` ;
 ALTER TABLE  `ships` ADD  `lastUpdate` INT NOT NULL AFTER  `power` ;
+
+CREATE TABLE IF NOT EXISTS `users_positions` (
+  `userId` int(11) NOT NULL,
+  `positionId` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
