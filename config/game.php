@@ -20,3 +20,5 @@ define('POSITION_LENGHT', 100);
 define('SHIP_JUMP_SPEED_FACTOR', 5);
 
 define('SHIP_ENERGY_USE', .3);
+
+define('SHIP_FUEL_USE', .2);

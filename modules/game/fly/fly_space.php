@@ -18,9 +18,8 @@ $distance = Position::calculateDistance($PositionCurrent->getX(), $PositionCurre
 $time = $MasterShipPlayer->calculateTravelTime($distance, $type);
 
 $energy = $MasterShipPlayer->calculateTravelEnergy($distance, $type);
+$fuel = $MasterShipPlayer->calculateTravelFuel($distance, $type);
 
-
-var_dump($PositionDestination);
 
 $Move = new Move();
 $Move->setFrom($PositionCurrent->getId());
@@ -40,7 +39,7 @@ $Fleet->save();
 
 // Let's go
 $Move->start();
-$Fleet->takeOff($energy);
+$Fleet->takeOff($energy, $fuel);
 
 
 //exit;

@@ -371,6 +371,35 @@ class Ship extends Model
         return ceil($distance / POSITION_LENGHT * $this->getSpeed($type) * SHIP_ENERGY_USE);
     }
 
+    public function calculateTravelFuel($distance, $type=null)
+    {
+        if ($type == 'jump') {
+            return 1;
+        }
+        return ceil($distance / POSITION_LENGHT * $this->getSpeed($type) * SHIP_FUEL_USE);
+    }
+
+
+    /**
+     *
+     * @param int $fuel
+     * @return type
+     */
+    public function removeFuel($fuel)
+    {
+        return $this->setFuel($this->_fuel - $fuel);
+    }
+
+    /**
+     *
+     * @param int $fuel
+     * @return type
+     */
+    public function addFuel($fuel)
+    {
+        return $this->setFuel($this->_fuel + $fuel);
+    }
+
 
     public static function get($id, $args=null)
     {
