@@ -1,4 +1,4 @@
-# BlackFlight
+# BackFlight
 http://back-flight.fr - not yet
 
 A simple game in a a complexe space.
