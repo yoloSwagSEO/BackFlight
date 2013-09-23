@@ -20,14 +20,22 @@ head();
         </p>
     </div>
     <div class="large-3 columns">
-        <h4>Here we go</h4>
-        <span class="small success button">PHP5</span>
-        <span class="small success button">HTML5</span>
-        <span class="small success button">Foundation4</span>
+        <h4>Dates</h4>
+        <span class="small success button">First alpha : 10/11</span>
+        <span class="small success button">First closed beta : november</span>
+        <span class="small success button">First open beta : december</span>
+        <span class="small success button">Game launch : 2014</span>
         <h4>Scripts</h4>
         <a href="scripts/create-player"><span class="small button">Create player</span></a>
     </div>
 
+</div>
+<div class="row">
+    <div class="large-9 columns">
+        <a class="th radius" href="img/ui/sample.jpg" style="width: 200px; height: 150px;" target="_blank">
+            <img src="img/ui/sample-th.jpg" />
+        </a>
+    </div>
 </div>
 <?php
 foot();
