@@ -11,8 +11,8 @@ This roadmap is not significant for the real developpment effort. It's just a ro
 
 ## Ship
 ### Caracteristics
- - **20/09** : Handle power & energy
- - **20/09** : Handle fuel
+ - **20/09** [Done] : Handle power & energy
+ - **20/09** [Partial] : Handle fuel
  - **20/09** : Handle loading
 
 ### Upgrades
@@ -24,7 +24,7 @@ This roadmap is not significant for the real developpment effort. It's just a ro
 ## Planets
 
 ### Earth
-- **27/09** : Count distance remaining for Earth.
+- **27/09** : Count distance remaining from Earth.
 
 ### Others
 - **4/10** : Add ability to settle
