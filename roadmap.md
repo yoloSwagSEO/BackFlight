@@ -11,8 +11,8 @@ This roadmap is not significant for the real developpment effort. It's just a ro
 
 ## Ship
 ### Caracteristics
- - **20/09** [Done] : Handle power & energy
- - **20/09** [Partial] : Handle fuel
+ - [Partial] **20/09** : Handle power & energy
+ - [Partial] **20/09**  : Handle fuel
  - **20/09** : Handle loading
 
 ### Upgrades
