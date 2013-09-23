@@ -30,6 +30,12 @@ $MasterShipPosition = new Position($MasterShipPlayer->getPositionId());
             Vous avez déjà exploré ces positions et pouvez y retourner en un saut.
         </div>
 
+        <dl class="sub-nav">
+            <dt>Type de vol : </dt>
+            <dd <?php if ($type == 'jump') { echo 'class="active"'; }?>><a href="positions/fly/jump">Saut hyperespace</a></dd>
+            <dd <?php if ($type !== 'jump') { echo 'class="active"'; }?>><a href="positions/fly">Vol hyperespace</a></dd>
+        </dl>
+
         <table width="100%">
             <thead>
                 <tr>
@@ -38,6 +44,9 @@ $MasterShipPosition = new Position($MasterShipPlayer->getPositionId());
                     </th>
                     <th>
                         Type
+                    </th>
+                    <th>
+                        Distance
                     </th>
                     <th>
                         Energie
@@ -65,9 +74,10 @@ $MasterShipPosition = new Position($MasterShipPlayer->getPositionId());
             <tr>
                 <td><?php echo $Position->getX()?>:<?php echo $Position->getY()?></td>
                 <td><?php echo $Position->getCategory(true)?></td>
+                <td><?php echo ceil($distance)?></td>
                 <td><?php echo $MasterShipPlayer->calculateTravelEnergy($distance, $type)?></td>
                 <td><?php echo $MasterShipPlayer->calculateTravelFuel($distance, $type)?></td>
-                <td><?php echo $MasterShipPlayer->calculateTravelTime($distance, $type)?></td>
+                <td><?php echo $MasterShipPlayer->calculateTravelTime($distance, $type)?>s</td>
                 <td>
                     <?php
                     if (!$current_position) {
