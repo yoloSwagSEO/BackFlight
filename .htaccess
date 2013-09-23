@@ -1,14 +1,20 @@
 RewriteEngine On
 
-RewriteRule ^scripts$ scripts.php
-RewriteRule ^scripts/([0-9a-z-]+)$ scripts.php?script=$1
+RewriteRule ^scripts$ scripts.php [L]
+RewriteRule ^scripts/([0-9a-z-]+)$ scripts.php?script=$1 [L]
 
-RewriteRule ^connexion$ index.php?connexion
-RewriteRule ^connexion/out$ index.php?deconnexion
+RewriteRule ^connexion$ index.php?connexion [L]
+RewriteRule ^connexion/out$ index.php?deconnexion [L]
 
-RewriteRule ^overview$ game.php?module=overview
+RewriteRule ^overview$ game.php?module=overview [L]
 
-RewriteRule ^observatory$ game.php?module=observatory
+RewriteRule ^observatory$ game.php?module=observatory [L]
 
-RewriteRule ^fly/([a-z]+)$ game.php?module=fly&to=$1
-RewriteRule ^fly/([a-z]+)/(fast)$ game.php?module=fly&to=$1&speed=$2
+RewriteRule ^positions$ game.php?module=positions
+RewriteRule ^positions/fly$ game.php?module=positions&fly
+RewriteRule ^positions/fly/(jump)$ game.php?module=positions&fly&speed=$1
+
+RewriteRule ^fly/([0-9]+)-([0-9]+)$ game.php?module=fly&x=$1&y=$2 [L]
+RewriteRule ^fly/([0-9]+)-([0-9]+)/(jump)$ game.php?module=fly&x=$1&y=$2&speed=$3 [L]
+RewriteRule ^fly/([a-z]+)$ game.php?module=fly&to=$1 [L]
+RewriteRule ^fly/([a-z]+)/(jump)$ game.php?module=fly&to=$1&speed=$2 [L]

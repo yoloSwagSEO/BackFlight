@@ -254,10 +254,12 @@ class Position extends Fly
         }
     }
 
-    public static function getAll($toArray = false, $id = null, $x = null, $y = null)
+    public static function getAll($toArray = false, $id = null, $x = null, $y = null, $userId = null)
     {
         $where = '';
         $args = array();
+        $join = '';
+        $join_select = '';
 
         if ($id) {
             $where = 'WHERE id = :id';
@@ -284,8 +286,22 @@ class Position extends Fly
             $args[':y'] = $y;
         }
 
+        if ($userId) {
+            if (empty($where)) {
+                $where = 'WHERE ';
+            } else {
+                $where .= ' AND ';
+            }
+            $where .= ' posus.`userId` = :userId';
+            $args[':userId'] = $userId;
+            $join = 'LEFT JOIN  `'.TABLE_USERS_POSITIONS.'` posus ON posus.`positionId` = id';
+            $join_select = '';
+        }
+
         $sql = FlyPDO::get();
-        $req = $sql->prepare('SELECT * FROM `'.self::$_sqlTable.'` '.$where);
+        $req = $sql->prepare('SELECT * '.$join_select.' FROM `'.self::$_sqlTable.'`
+            '.$join.'
+        '.$where);
         if ($req->execute($args)) {
             $array = array();
             while ($row = $req->fetch()) {
@@ -362,5 +378,8 @@ class Position extends Fly
         }
     }
 
-    
+    public static function getKnownFor($userId)
+    {
+        return self::getAll(false, '', '', '', $userId);
+    }
 }
