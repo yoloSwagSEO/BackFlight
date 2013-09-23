@@ -334,5 +334,33 @@ class Position extends Fly
         }
     }
 
+    /**
+     * Save known position for user
+     * @param int $userId
+     * @param int $positionId
+     * @return boolean
+     */
+    public static function addUserPosition($userId, $positionId)
+    {
+        $sql = FlyPDO::get();
+        $req = $sql->prepare('SELECT userId FROM `'.TABLE_USERS_POSITIONS.'` WHERE userId = :userId AND positionId = :positionId');
+        if ($req->execute(array(
+            ':userId' => $userId,
+            ':positionId' => $positionId
+        ))) {
+            while ($row = $req->fetch())
+            {
+                return;
+            }
+            $req = $sql->prepare('INSERT INTO `'.TABLE_USERS_POSITIONS.'` VALUES(:userId, :positionId)');
+            if ($req->execute(array(
+                ':userId' => $userId,
+                ':positionId' => $positionId
+            ))) {
+                return true;
+            }
+        }
+    }
+
     
 }

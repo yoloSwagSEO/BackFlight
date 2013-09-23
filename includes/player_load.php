@@ -7,6 +7,7 @@ if (!empty($array_moves)) {
     {
         if ($Move->countRemainingTime() < 0) {
             $Move->land();
+            Position::addUserPosition($User->getId(), $Move->getTo());
             unset($array_moves[$i]);
         }
     }

@@ -13,4 +13,6 @@ define('TABLE_MODELS', 'models');
 define('TABLE_MOVES', 'moves');
 
 define('TABLE_FLEETS', 'fleets');
+
+define('TABLE_USERS_POSITIONS', 'users_positions');
 ?>
