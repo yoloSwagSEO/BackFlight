@@ -17,6 +17,7 @@ This project is just beginning. One day it will be playable, another day for mul
 
 ### In progress
 - Ship improvements
+- Moves improvements
 
 ### Soon
 - See [roadmap](https://github.com/In4matik/BackFlight/blob/experimental/roadmap.md).
