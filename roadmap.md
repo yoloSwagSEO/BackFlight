@@ -1,7 +1,7 @@
 # RoadMap
 This roadmap is not significant for the real developpment effort. It's just a road-map. :)
 
-***First alpha : 11/10*** (includes some functionnalities only)
+***First alpha : 18/10*** (includes some functionnalities only)
 
 ***First closed beta : november 13*** (includes playable full game)
 
@@ -12,14 +12,14 @@ This roadmap is not significant for the real developpment effort. It's just a ro
 ## Ship
 ### Caracteristics
  - [Partial] **20/09** : Handle power & energy
- - [Partial] **20/09**  : Handle fuel
- - **20/09** : Handle loading
+ - [Done] **20/09**  : Handle fuel
+ - [Done] **20/09** : Handle loading
 
 ### Upgrades
- - **27/09** : Add possibility to build modules (for more energy, loading, etc)
+ - **4/10** : Add possibility to build modules (for more energy, loading, etc)
 
 ## Ressources
- - **20/09** : Handle ressource collect
+ - [Done] **20/09** : Handle ressource collect
 
 ## Planets
 
@@ -27,8 +27,8 @@ This roadmap is not significant for the real developpment effort. It's just a ro
 - **27/09** : Count distance remaining from Earth.
 
 ### Others
-- **4/10** : Add ability to settle
-- **4/10** : Add ability to build ressources-extractors / emergency station / ship factory
+- **11/10** : Add ability to settle
+- **18/10** : Add ability to build ressources-extractors / emergency station / ship factory
 
 ## Design
 ### Maquette
