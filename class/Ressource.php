@@ -47,8 +47,6 @@ class Ressource extends Fly
         return $this->_quality;
     }
 
-
-
     public function setUserId($userId)
     {
         $this->_userId = $userId;

@@ -14,6 +14,7 @@
     Load <small>(<?php echo round($MasterShipPlayer->getLoad())?> / <?php echo $MasterShipPlayer->getLoadMax()?>)</small>
     <div class="progress success radius "><span class="meter" style="width: <?php echo round($MasterShipPlayer->getLoad() / $MasterShipPlayer->getLoadMax() * 100)?>%"></span></div>
 
-    Speed : <?php echo $MasterShipPlayer->getSpeed()?>
+    <a class="button tiny secondary" >Speed <?php echo $MasterShipPlayer->getSpeed()?></a>
+    <a class="button tiny" ><?php echo $MasterShipPlayer->getTechs()?> techs </a>
 
 </div>

@@ -202,6 +202,12 @@ class Ship extends Model
         return $this->_fuel;
     }
 
+    public function getTechs()
+    {
+        return $this->_techs;
+    }
+
+
     public function getPower()
     {
         return $this->_power;
