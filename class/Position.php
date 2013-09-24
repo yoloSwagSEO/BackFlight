@@ -119,6 +119,26 @@ class Position extends Fly
         $this->_y = $y;
     }
 
+    public static function searchRessources($id, $type)
+    {
+        $proba = POSITION_PROBA_FAST;
+        if ($type == 'probes') {
+            $proba = POSITION_PROBA_PROBES;
+        }
+
+        $rand = rand(0, 100);
+        // Something has been found
+        if ($rand <= $proba) {
+            $rand2 = rand(0, 100);
+            if ($rand2 <= POSITION_PROBA_FUEL) {
+                return array('fuel', RESSOURCES_SEARCH_FUEL_QUANTITY);
+            } else {
+                return array('techs', RESSOURCES_SEARCH_TECHS_QUANTITY);
+            }
+        }
+        return array();
+    }
+
 
     /**
      * Get a destination

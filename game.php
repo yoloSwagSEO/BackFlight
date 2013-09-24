@@ -24,6 +24,8 @@ if (!empty($_GET['module'])) {
         }
     } else if ($module == 'positions') {
         include_once 'modules/game/positions/positions_known.php';
+    } else if ($module == 'search') {
+        include_once 'modules/game/search/search_search.php';
     }
 }
 

@@ -40,7 +40,7 @@
         ?>
     <div class="row">
             <div data-alert="" class="alert-box radius">
-                <strong>Flotte de <?php echo $User->getPseudo()?></strong> en provenance de <?php echo $Move->getFrom()?> et à destination de <?php echo $Move->getTo() ?> (<?php echo renderCountDown($Move->countRemainingTime())?>)
+                <strong>Flotte de <?php echo $User->getPseudo()?></strong> (<?php echo $Move->getType()?>) en provenance de <?php echo $Move->getFrom()?> et à destination de <?php echo $Move->getTo() ?> (<?php echo renderCountDown($Move->countRemainingTime())?>)
         </div>
     </div>
         <?php

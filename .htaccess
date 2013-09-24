@@ -18,3 +18,5 @@ RewriteRule ^fly/([0-9]+)-([0-9]+)$ game.php?module=fly&x=$1&y=$2 [L]
 RewriteRule ^fly/([0-9]+)-([0-9]+)/(jump)$ game.php?module=fly&x=$1&y=$2&speed=$3 [L]
 RewriteRule ^fly/([a-z]+)$ game.php?module=fly&to=$1 [L]
 RewriteRule ^fly/([a-z]+)/(jump)$ game.php?module=fly&to=$1&speed=$2 [L]
+
+RewriteRule ^search/(fast|probes)$ game.php?module=search&speed=$1

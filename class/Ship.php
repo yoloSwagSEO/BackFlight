@@ -75,6 +75,8 @@ class Ship extends Model
 
     protected $_techs;
 
+    protected $_techsStart;
+
     protected $_fuelStart;
 
     /**
@@ -299,6 +301,11 @@ class Ship extends Model
         return $this->_fuel = $fuel;
     }
 
+    public function setTechs($techs)
+    {
+        $this->_techs = $techs;
+    }
+
     /**
      * Set ship's power
      * @param int $power power level
@@ -410,6 +417,16 @@ class Ship extends Model
         return $this->setFuel($this->_fuel + $fuel);
     }
 
+    public function addTechs($techs)
+    {
+        return $this->setTechs($this->_techs + $techs);
+    }
+
+    public function removeTechs($techs)
+    {
+        return $this->setTechs($this->_techs - $techs);
+    }
+
     /**
      * Calculate actual ship load
      * @return int
@@ -467,6 +484,7 @@ class Ship extends Model
 
             if (!empty($param['techs'])) {
                 $this->_techs = $param['techs'];
+                $this->_techsStart = $param['techs'];
             }
 
             $this->_power = $param['power'];
@@ -525,11 +543,18 @@ class Ship extends Model
             ':lastUpdate' => $this->_lastUpdate,
             ':state' => $this->_state
         ))) {
-            if ($this->_fuel == $this->_fuelStart) {
+            if ($this->_fuel != $this->_fuelStart) {
                 $RessourceFuel = new Ressource('fuel', 'ship', $this->_id);
                 $RessourceFuel->setQuantity($this->_fuel);
                 $RessourceFuel->save();
             }
+
+            if ($this->_techs != $this->_techsStart) {
+                $RessourceFuel = new Ressource('techs', 'ship', $this->_id);
+                $RessourceFuel->setQuantity($this->_techs);
+                $RessourceFuel->save();                
+            }
+
             return $this->_id;
         } else {
             var_dump($req->errorInfo());
