@@ -22,7 +22,7 @@ This project is just beginning. One day it will be playable, another day for mul
 - Moves improvements
 
 ### Soon
-- See [roadmap](https://github.com/In4matik/BackFlight/blob/experimental/roadmap.md).
+- See [roadmap](https://github.com/In4matik/BackFlight/blob/experimental/roadmap.md) and [todo](https://github.com/In4matik/BackFlight/blob/experimental/TODO.md).
 
 ## Gameplay
 **2442**, somewhere in the space...
