@@ -22,3 +22,7 @@ define('SHIP_JUMP_SPEED_FACTOR', 5);
 define('SHIP_ENERGY_USE', .3);
 
 define('SHIP_FUEL_USE', .2);
+
+define('FUEL_WEIGHT', 3);
+
+define('TECHS_WEIGHT', 1.4);

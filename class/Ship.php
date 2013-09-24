@@ -73,6 +73,10 @@ class Ship extends Model
      */
     protected $_fuel;
 
+    protected $_techs;
+
+    protected $_fuelStart;
+
     /**
      *
      * @var int
@@ -400,6 +404,16 @@ class Ship extends Model
         return $this->setFuel($this->_fuel + $fuel);
     }
 
+    /**
+     * Calculate actual ship load
+     * @return int
+     */
+    public function calculateLoad()
+    {
+        $this->_load = $this->_fuel * FUEL_WEIGHT + $this->_techs * TECHS_WEIGHT;
+        return $this->_load;
+    }
+
 
     public static function get($id, $args=null)
     {
@@ -438,8 +452,16 @@ class Ship extends Model
             $this->_energyMax = $param['energyMax'];
             $this->_energyGain = $param['energyGain'];
 
-            $this->_fuel = $param['fuel'];
             $this->_fuelMax = $param['fuelMax'];
+
+            if (!empty($param['fuel'])) {
+                $this->_fuel = $param['fuel'];
+                $this->_fuelStart = $param['fuel'];
+            }
+
+            if (!empty($param['techs'])) {
+                $this->_techs = $param['techs'];
+            }
 
             $this->_power = $param['power'];
             $this->_powerMax = $param['powerMax'];
@@ -480,9 +502,12 @@ class Ship extends Model
     
     protected function _update()
     {
+        $this->calculateLoad();
+
+
         $sql = FlyPDo::get();
         $req = $sql->prepare('UPDATE `'.self::$_sqlTable.'` 
-            SET `userId` = :userId, `type` = :type, `model` = :model, `positionId` = :positionId, `load` = :load, `energy` = :energy, `fuel` = :fuel, `power` = :power, `lastUpdate` = :lastUpdate, `state` = :state');
+            SET `userId` = :userId, `type` = :type, `model` = :model, `positionId` = :positionId, `load` = :load, `energy` = :energy, `power` = :power, `lastUpdate` = :lastUpdate, `state` = :state');
         if ($req->execute(array(
             ':userId' => $this->_userId,
             ':type' => $this->_type,
@@ -490,11 +515,15 @@ class Ship extends Model
             ':positionId' => $this->_positionId,
             ':load' => $this->_load,
             ':energy' => $this->_energy,
-            ':fuel' => $this->_fuel,
             ':power' => $this->_power,
             ':lastUpdate' => $this->_lastUpdate,
             ':state' => $this->_state
         ))) {
+            if ($this->_fuel == $this->_fuelStart) {
+                $RessourceFuel = new Ressource('fuel', 'ship', $this->_id);
+                $RessourceFuel->setQuantity($this->_fuel);
+                $RessourceFuel->save();
+            }
             return $this->_id;
         } else {
             var_dump($req->errorInfo());
@@ -547,13 +576,16 @@ class Ship extends Model
         }   
         
         $sql = FlyPDO::get();
-        $req = $sql->prepare('SELECT `'.self::$_sqlTable.'`.*, pos.x, pos.y, 
+        $req = $sql->prepare('SELECT `'.self::$_sqlTable.'`.*, pos.x, pos.y, res.quantity ressourceQuantity, res.type ressourceType,
                 mod.name modelName, mod.type modelType, mod.category modelCategory, mod.loadMax, mod.energyMax, mod.energyGain, mod.fuelMax, mod.powerMax, mod.speed
             FROM `'.self::$_sqlTable.'`
             LEFT JOIN `'.TABLE_POSITIONS.'` pos
                 ON `'.self::$_sqlTable.'`.positionId =  pos.id
             LEFT JOIN `'.TABLE_MODELS.'` `mod`
                 ON `'.self::$_sqlTable.'`.model = `mod`.id
+
+            LEFT JOIN `'.TABLE_RESSOURCES.'` res
+                ON `'.self::$_sqlTable.'`.id = res.intoId AND `into` = "ship"
         '.$where);
         if ($req->execute($args)) {
             $current = 0;
@@ -580,6 +612,9 @@ class Ship extends Model
                 }
 
                 // A partir d'ici, on charge les paramètres supplémentaires (par exemple conversion pour les médias)
+                if (!empty($row['ressourceType'])) {
+                    $param[$row['ressourceType']] = $row['ressourceQuantity'];
+                }
 
             }
             if (!empty($param)) {

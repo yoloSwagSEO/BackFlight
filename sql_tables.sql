@@ -79,3 +79,15 @@ CREATE TABLE IF NOT EXISTS `users_positions` (
   `positionId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+CREATE TABLE IF NOT EXISTS `ressources` (
+    `id` INT(11) NOT NULL AUTO_INCREMENT,
+    `userId` INT(11) NOT NULL,
+    `into` varchar(10) NOT NULL,
+    `intoId` INT(11) NOT NULL,
+    `type` varchar(10) NOT NULL,
+    `quantity` INT(11) NOT NULL,
+    `quality` INT(11) NOT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE  `ships` DROP  `fuel` ;

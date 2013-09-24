@@ -17,7 +17,25 @@ if (!$MasterShipPlayer->isSql()) {
     $MasterShipPlayer->setModel(1);
     $MasterShipPlayer->setUserId($User->getId());
     $MasterShipPlayer->setState('space');
-    $MasterShipPlayer->save();
-    
+    $MasterShipPlayer->save();   
     
 }
+
+$array_ressources = Ressource::getAll('', '', $User->getId(), 'ship', $MasterShipPlayer->getId());
+if (empty($array_ressources)) {
+    $RessourceFuel = new Ressource();
+    $RessourceFuel->setInto('ship');
+    $RessourceFuel->setIntoId($MasterShipPlayer->getId());
+    $RessourceFuel->setUserId($User->getId());
+
+    $RessourceTechs = clone($RessourceFuel);
+    $RessourceTechs->setType('techs');
+    $RessourceFuel->setType('fuel');
+
+    $RessourceFuel->setQuantity(60);
+    $RessourceTechs->setQuantity(10);
+
+    $RessourceFuel->save();
+    $RessourceTechs->save();
+}
+
