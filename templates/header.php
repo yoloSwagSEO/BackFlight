@@ -39,12 +39,34 @@
             {
         ?>
     <div class="row">
-            <div data-alert="" class="alert-box radius">
-                <strong>Flotte de <?php echo $User->getPseudo()?></strong> (<?php echo $Move->getType()?>) en provenance de <?php echo $Move->getFrom()?> et à destination de <?php echo $Move->getTo() ?> (<?php echo renderCountDown($Move->countRemainingTime())?>)
+        <div data-alert="" class="alert-box radius">
+            <strong>Flotte de <?php echo $User->getPseudo()?></strong> (<?php echo $Move->getType()?>) en provenance de <?php echo $Move->getFrom()?> et à destination de <?php echo $Move->getTo() ?> (<?php echo renderCountDown($Move->countRemainingTime())?>)
         </div>
     </div>
         <?php
             }
+        }
+
+        if (!empty($_SESSION['infos']['search'])) {
+            if ($_SESSION['infos']['search'] == 'empty') {
+                ?>
+
+    <div class="row">
+        <div data-alert="" class="alert-box radius">
+            Malgré des scans intensifs, rien n'a été trouvé au cours de la recherche.
+        </div>
+    </div>
+    <?php
+            } else {
+                ?>
+    <div class="row">
+        <div data-alert="" class="alert-box success radius">
+            La recherche a été fructueuse : +<?php echo $_SESSION['infos']['search'][1]?> <?php echo $_SESSION['infos']['search'][0]?>
+        </div>
+    </div>
+    <?php
+            }
+            unset($_SESSION['infos']['search']);
         }
     }
     ?>

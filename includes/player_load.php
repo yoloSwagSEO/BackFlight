@@ -17,6 +17,10 @@ if (!empty($array_moves)) {
                         $MasterShipPlayer->addTechs($result[1]);
                         $MasterShipPlayer->save();
                     }
+
+                    $_SESSION['infos']['search'] = $result;
+                } else {
+                    $_SESSION['infos']['search'] = 'empty';
                 }
 
             } else {
