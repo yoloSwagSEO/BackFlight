@@ -289,7 +289,7 @@ class Ship extends Model
     }
 
     /**
-     * Set fuel level
+     * Set fuel level 
      * @param int $fuel fuel level
      * @return boolean
      */
@@ -310,6 +310,13 @@ class Ship extends Model
 
     public function setTechs($techs)
     {
+        $dif = $techs - $this->_techs;
+        $max_load = $this->_getAvailableLoadFor('techs');
+
+        if ($dif > $max_load) {
+            $techs = $this->_techs + $max_load;
+        }
+
         $this->_techs = $techs;
     }
 
@@ -411,12 +418,14 @@ class Ship extends Model
     protected function _getAvailableLoadFor($type)
     {
         $free_load = $this->getFreeLoad();
+
         if ($type == 'fuel') {
             $weight = FUEL_WEIGHT;
         } else {
             $weight = TECHS_WEIGHT;
         }
-        return ceil($free_load / $weight);
+
+        return $free_load / $weight;
     }
 
 
@@ -444,7 +453,9 @@ class Ship extends Model
 
     public function addTechs($techs)
     {
-        return $this->setTechs($this->_techs + $techs);
+        $previous_techs = $this->_techs;
+        $this->setTechs($this->_techs + $techs);
+        return $this->_techs - $previous_techs;
     }
 
     public function removeTechs($techs)

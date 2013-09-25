@@ -70,6 +70,7 @@
             unset($_SESSION['infos']['search']);
         }
 
+        // Max fuel level
         if (!empty($_SESSION['errors']['fuel']['lost'])) {
             ?>
 
@@ -80,6 +81,19 @@
     </div>
     <?php
         unset($_SESSION['errors']['fuel']['lost']);
+        }
+
+        // Max techs quantiy
+        if (!empty($_SESSION['errors']['techs']['lost'])) {
+            ?>
+
+    <div class="row">
+        <div data-alert="" class="alert-box alert radius">
+            Pour éviter une surcharge, <?php echo $_SESSION['errors']['techs']['lost'] ?> débris technologiques ont été abandonnés dans l'espace. Songez à agrandir votre capacité de chargement.
+        </div>
+    </div>
+    <?php
+        unset($_SESSION['errors']['techs']['lost']);
         }
 
 
