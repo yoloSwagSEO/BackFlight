@@ -91,3 +91,10 @@ CREATE TABLE IF NOT EXISTS `ressources` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 ALTER TABLE  `ships` DROP  `fuel` ;
+
+CREATE TABLE IF NOT EXISTS `positions_searches` (
+  `positionId` int(11) NOT NULL,
+  `userId` int(11) NOT NULL,
+  `date` int(11) NOT NULL,
+  `result` varchar(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

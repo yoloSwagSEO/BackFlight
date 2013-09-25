@@ -6,6 +6,8 @@ define('TABLE_USERS', 'users');
 
 define('TABLE_POSITIONS', 'positions');
 
+define('TABLE_POSITIONS_SEARCHES', 'positions_searches');
+
 define('TABLE_SHIPS', 'ships');
 
 define('TABLE_MODELS', 'models');

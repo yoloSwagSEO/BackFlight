@@ -6,10 +6,12 @@ if (!empty($array_moves)) {
     foreach ($array_moves as $i => $Move)
     {
         if ($Move->countRemainingTime() < 0) {
-            
+            // Searches
             if ($Move->getType() == 'search' || $Move->getType() == 'probes') {
                 $result = Position::searchRessources($Move->getTo(), $Move->getType());
+                $search_result = '';
                 if (!empty($result)) {
+                    $search_result = $result[0];
                     $MasterShipPlayer->calculateLoad();
                     if ($result[0] == 'fuel') {
                         $fuel_added = $MasterShipPlayer->addFuel($result[1]);
@@ -31,6 +33,9 @@ if (!empty($array_moves)) {
                     $_SESSION['infos']['search'] = 'empty';
                 }
 
+                Position::addPositionSearch($Move->getTo(), $User->getId(), $Move->getEnd(), $search_result);
+
+            // Normal flight
             } else {
                 Position::addUserPosition($User->getId(), $Move->getTo());
             }

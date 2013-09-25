@@ -398,6 +398,31 @@ class Position extends Fly
         }
     }
 
+    /**
+     * Add search position
+     * @param int $positionId
+     * @param int $userId
+     * @param int $date
+     * @param string $result
+     * @return boolean
+     */
+    public static function addPositionSearch($positionId, $userId, $date, $result)
+    {
+        $sql = FlyPDO::get();
+        $req = $sql->prepare('INSERT INTO `'.TABLE_POSITIONS_SEARCHES.'` VALUES(:positionId, :userId, :date, :result)');
+        if ($req->execute(array(
+            ':positionId' => $positionId,
+            ':userId' => $userId,
+            ':date' => $date,
+            ':result' => $result
+        ))) {
+            return true;
+        } else {
+            var_dump($req->errorInfo());
+            trigger_error('Unable to add position search', E_USER_ERROR);
+        }
+    }
+
     public static function getKnownFor($userId)
     {
         return self::getAll(false, '', '', '', $userId);
