@@ -295,6 +295,13 @@ class Ship extends Model
      */
     public function setFuel($fuel)
     {
+        $dif = $fuel - $this->_fuel;
+        $max_load = $this->_getAvailableLoadFor('fuel');
+
+        if ($dif > $max_load) {
+            $fuel = $this->_fuel + $max_load;
+        }
+
         if ($fuel > $this->_fuelMax) {
             return $this->_fuel = $this->_fuelMax;
         }
@@ -351,6 +358,11 @@ class Ship extends Model
         }
     }
 
+    public function getFreeLoad()
+    {
+        return $this->_loadMax - $this->_load;
+    }
+
 
     /**
      *
@@ -396,6 +408,17 @@ class Ship extends Model
         return ceil($distance / POSITION_LENGHT * $this->getSpeed($type) * SHIP_FUEL_USE);
     }
 
+    protected function _getAvailableLoadFor($type)
+    {
+        $free_load = $this->getFreeLoad();
+        if ($type == 'fuel') {
+            $weight = FUEL_WEIGHT;
+        } else {
+            $weight = TECHS_WEIGHT;
+        }
+        return ceil($free_load / $weight);
+    }
+
 
     /**
      *
@@ -410,11 +433,13 @@ class Ship extends Model
     /**
      *
      * @param int $fuel
-     * @return type
+     * @return int Fuel added
      */
     public function addFuel($fuel)
     {
-        return $this->setFuel($this->_fuel + $fuel);
+        $previous_fuel = $this->_fuel;
+        $this->setFuel($this->_fuel + $fuel);
+        return $this->_fuel - $previous_fuel;
     }
 
     public function addTechs($techs)

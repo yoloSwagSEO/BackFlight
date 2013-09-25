@@ -11,9 +11,13 @@ if (!empty($array_moves)) {
                 $result = Position::searchRessources($Move->getTo(), $Move->getType());
                 if (!empty($result)) {
                     if ($result[0] == 'fuel') {
-                        $MasterShipPlayer->addFuel($result[1]);
+                        $fuel_added = $MasterShipPlayer->addFuel($result[1]);
+                        if ($fuel_added != $result[1]) {
+                            $_SESSION['errors']['fuel']['lost'] = $result[1] - $fuel_added;
+                        }
                         $MasterShipPlayer->save();
                     } else {
+                        exit;
                         $MasterShipPlayer->addTechs($result[1]);
                         $MasterShipPlayer->save();
                     }

@@ -1,13 +1,13 @@
 <?php
 $type = 'search';
-$time = 30;
+$time = 30 / GAME_SPEED;
 $energy = 3;
 $fuel = 1;
 
 if (!empty($_GET['speed'])) {
     if ($_GET['speed'] === 'probes') {
         $type = 'probes';
-        $time = 4 * 30;
+        $time = 4 * 30 / GAME_SPEED;
         $energy = 6;
         $fuel = 0;
     }

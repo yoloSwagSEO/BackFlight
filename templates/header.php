@@ -47,6 +47,7 @@
             }
         }
 
+        // Searches
         if (!empty($_SESSION['infos']['search'])) {
             if ($_SESSION['infos']['search'] == 'empty') {
                 ?>
@@ -68,5 +69,19 @@
             }
             unset($_SESSION['infos']['search']);
         }
+
+        if (!empty($_SESSION['errors']['fuel']['lost'])) {
+            ?>
+
+    <div class="row">
+        <div data-alert="" class="alert-box alert radius">
+            Par manque de place dans le réservoir, <?php echo $_SESSION['errors']['fuel']['lost'] ?> fuel a été abandonné dans l'espace. Songez à agrandir vos réserves.
+        </div>
+    </div>
+    <?php
+        unset($_SESSION['errors']['fuel']['lost']);
+        }
+
+
     }
     ?>
