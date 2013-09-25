@@ -171,9 +171,9 @@ class Position extends Fly
 
         $rand = rand(0, 100);
         if ($rand <= $foundFuel) {
-            return array('fuel', RESSOURCES_SEARCH_FUEL_QUANTITY);
+            return array('fuel', POSITION_SEARCH_FUEL_QUANTITY);
         } else if ($rand <= $foundFuel + $foundTechs) {
-                return array('techs', RESSOURCES_SEARCH_TECHS_QUANTITY);
+                return array('techs', POSITION_SEARCH_TECHS_QUANTITY);
         }
         
         return array();
