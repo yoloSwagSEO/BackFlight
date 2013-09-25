@@ -2,13 +2,16 @@
 $array_fleets = Fleet::getAll('', '', $User->getId());
 $array_moves = Move::getAll('', '', $User->getId(), 'flying');
 
+
+$CurrentPosition = new Position($MasterShipPlayer->getPositionId());
+
 if (!empty($array_moves)) {
     foreach ($array_moves as $i => $Move)
     {
         if ($Move->countRemainingTime() < 0) {
             // Searches
             if ($Move->getType() == 'search' || $Move->getType() == 'probes') {
-                $result = Position::searchRessources($Move->getTo(), $Move->getType());
+                $result = $CurrentPosition->searchRessources($Move->getType());
                 $search_result = '';
                 if (!empty($result)) {
                     $search_result = $result[0];

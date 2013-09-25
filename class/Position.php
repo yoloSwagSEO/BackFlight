@@ -49,6 +49,10 @@ class Position extends Fly
 
     protected static $_sqlTable = TABLE_POSITIONS;
 
+    protected $_searchResults;
+
+    protected $_searchProbabilities;
+
 
     private function _chooseCategory()
     {
@@ -99,6 +103,11 @@ class Position extends Fly
         return $this->_y;
     }
 
+    public function searchResults()
+    {
+        return $this->_searchResults;
+    }
+
     public function setType($type)
     {
         $this->_type = $type;
@@ -119,23 +128,54 @@ class Position extends Fly
         $this->_y = $y;
     }
 
-    public static function searchRessources($id, $type)
+    public function getSearchProbability($type)
+    {
+        if (empty($this->_searchProbabilities)) {
+            $this->_calculateSearchProbabilities();
+        }
+        return $this->_searchProbabilities[$type];
+    }
+
+    private function _calculateSearchProbabilities()
+    {
+        $array = array('fuel' => 0, 'techs' => 0);
+        foreach ($this->_searchResults as $result)
+        {
+            $array[$result]++;
+        }
+
+        foreach ($array as $type => $results)
+        {
+            if ($results > POSITION_SEARCH_POOR) {
+                $this->_searchProbabilities[$type] = POSITION_SEARCH_POOR_PROBA;
+            } else if ($results > POSITION_SEARCH_NORMAL) {
+                $this->_searchProbabilities[$type] = POSITION_SEARCH_NORMAL_PROBA;
+            } else {
+                $this->_searchProbabilities[$type] = 1;
+            }
+        }
+    }
+
+    public function searchRessources($type)
     {
         $proba = POSITION_PROBA_FAST;
         if ($type == 'probes') {
             $proba = POSITION_PROBA_PROBES;
         }
 
+        $fuelProba = $this->getSearchProbability('fuel');
+        $techsProba = $this->getSearchProbability('techs');
+
+        $foundFuel = $proba * $fuelProba * POSITION_PROBA_FUEL * 100;
+        $foundTechs = $proba * $techsProba * POSITION_PROBA_TECHS * 100;
+
         $rand = rand(0, 100);
-        // Something has been found
-        if ($rand <= $proba) {
-            $rand2 = rand(0, 100);
-            if ($rand2 <= POSITION_PROBA_FUEL) {
-                return array('fuel', RESSOURCES_SEARCH_FUEL_QUANTITY);
-            } else {
+        if ($rand <= $foundFuel) {
+            return array('fuel', RESSOURCES_SEARCH_FUEL_QUANTITY);
+        } else if ($rand <= $foundFuel + $foundTechs) {
                 return array('techs', RESSOURCES_SEARCH_TECHS_QUANTITY);
-            }
         }
+        
         return array();
     }
 
@@ -319,18 +359,54 @@ class Position extends Fly
         }
 
         $sql = FlyPDO::get();
-        $req = $sql->prepare('SELECT * '.$join_select.' FROM `'.self::$_sqlTable.'`
+        $req = $sql->prepare('SELECT * '.$join_select.', posearch.result searchResult FROM `'.self::$_sqlTable.'`
             '.$join.'
+                LEFT JOIN (SELECT date, result, positionId FROM `'.TABLE_POSITIONS_SEARCHES.'` WHERE `date` > "'.(time() - POSITION_SEARCH_REGENERATION).'" ORDER BY date DESC) posearch
+                    ON `'.self::$_sqlTable.'`.id = posearch.positionId
         '.$where);
         if ($req->execute($args)) {
             $array = array();
+            $current = 0;
+            $loaded = false;
+            $param = array();
+            $class = get_called_class();
             while ($row = $req->fetch()) {
+                // Nécessaire aux jointures (pour médias ou autres)
+                if ($current != $row['id'] && $current != '') {
+                    if ($toArray) {
+                        $array[$current] = $param;
+                    } else {
+                        $array[$current] = new $class($param);
+                    }
+                    $param = array();
+                    $loaded = false;
+                }
+
+                $current = $row['id'];
+                if (!$loaded) {
+                    $loaded = true;
+                    $param = $row;
+                }
+
+                // A partir d'ici, on charge les paramètres supplémentaires (par exemple conversion pour les médias)
+                if (!empty($row['searchResult'])) {
+                    if (empty($param['searchResults'])) {
+                        $param['searchResults'] = array();
+                    }
+                    $param['searchResults'][] = $row['searchResult'];
+                }
+
+            }
+            if (!empty($param)) {
                 if ($toArray) {
-                    $array[$row['id']] = $row;
+                    $array[$current] = $param;
                 } else {
-                    $array[$row['id']] = new Position($row);
+                    $array[$current] = new $class($param);
                 }
             }
+        } else {
+            var_dump($req->errorInfo());
+            trigger_error('Unable to get positions', E_USER_ERROR);
         }
         return $array;
     }
@@ -366,6 +442,9 @@ class Position extends Fly
             $this->_x= $param['x'];
             $this->_y = $param['y'];
             $this->_zone = $param['zone'];
+            if (!empty($param['searchResults'])) {
+                $this->_searchResults = $param['searchResults'];
+            }
             $this->_sql = true;
         }
     }
