@@ -24,7 +24,7 @@ This roadmap is not significant for the real developpment effort. It's just a ro
 ## Planets
 
 ### Earth
-- **27/09** : Count distance remaining from Earth.
+- [Done] **27/09** : Count distance remaining from Earth.
 
 ### Others
 - **11/10** : Add ability to settle
