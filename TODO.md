@@ -1,8 +1,6 @@
 # Todo
 ## 09/27/13
 * Ship can be damaged during flights (power)
-* Game start in zone 8 (zone = 100 positions wide) so earth is at 800 positions from begining
-* Change move calculation : default goal is to reach earth not to travel in diagonal
 
 
 ## 10/04/13
