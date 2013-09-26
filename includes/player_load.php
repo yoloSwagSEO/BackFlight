@@ -41,6 +41,7 @@ if (!empty($array_moves)) {
             // Normal flight
             } else {
                 Position::addUserPosition($User->getId(), $Move->getTo());
+                $CurrentPosition = new Position($Move->getTo());
             }
 
             
