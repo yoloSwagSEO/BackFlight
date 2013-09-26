@@ -27,6 +27,7 @@ head();
         <span class="small success button">Game launch : 2014</span>
         <h4>Scripts</h4>
         <a href="scripts/create-player"><span class="small button">Create player</span></a>
+        <a href="scripts/start-over"><span class="small button">Start over</span></a>
     </div>
 
 </div>
