@@ -2,20 +2,20 @@ var countdowns;
 
 function updateCompteurs()
 {
-    var couting = 0;
+    var counting = 0;
     countdowns.each(function() {
         var time = $(this).data('time');
         if (time !== 0) {
             var timeLeft = (parseInt(time) - 1);
             $(this).html(transformerTime(timeLeft));
             $(this).data('time', timeLeft);
-            couting++;
+            counting++;
         } else {
             $(this).html('Terminé');
         }
     });
 
-    if (couting !== '0') {
+    if (counting !== '0') {
         setTimeout('updateCompteurs()', 1000);
     }
 }
@@ -51,5 +51,7 @@ function transformerTime(time)
 $(function () {
     countdowns = $('.countdown');   
 
-    updateCompteurs();
+    setTimeout(function () {
+        updateCompteurs();
+    }, 1000);
 });
