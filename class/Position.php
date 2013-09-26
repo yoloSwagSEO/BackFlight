@@ -252,12 +252,21 @@ class Position extends Fly
      * @param int $y
      * @return \Position
      */
-    public static function getClearPosition($startX = 1, $startY = 1)
+    public static function getClearPosition($startX = POSITION_START_X, $startY = POSITION_START_Y)
     {
-        for ($x = $startX; $x < POSITION_DEEP_SEARCH_LIMIT; $x++) {
-            for ($y = $startY; $y < POSITION_DEEP_SEARCH_LIMIT; $y++)
+        $rand = rand(0,1);
+        if ($rand == 0) {
+            $rand = -1;
+        }
+        for ($x = $startX; $x > POSITION_DEEP_SEARCH_LIMIT; $x--) {
+            for ($y = $startY; sqrt(pow($startY - $y, 2)) < POSITION_DEEP_SEARCH_LIMIT_Y; $y = $y + $rand)
             {
-                if ($x !== $startX && $y !== $startY) {
+                // Detect if ship will move forward
+                $move_forward = rand(1,10);
+                if ($move_forward == 1) {
+                    break;
+                }
+                if (($x != $startX) || ($y != $startY)) {
                     if (Position::isEmpty($x, $y)) {
                         $Position = new Position($x, $y);
                         if (!$Position->isSql()) {
@@ -267,6 +276,7 @@ class Position extends Fly
                             $Position->setType($Position->_chooseType());
                             $Position->save();
                         }
+
                         return $Position;
                     }
                 }

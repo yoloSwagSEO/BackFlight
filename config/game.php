@@ -102,7 +102,9 @@ Position::setCategories(array('space' => 'Espace', 'asteroids' => 'Astéroïdes'
 /**
  * Limit for searching a clean place for new users
  */
-define('POSITION_DEEP_SEARCH_LIMIT', 500);
+define('POSITION_DEEP_SEARCH_LIMIT', 700);
+
+define('POSITION_DEEP_SEARCH_LIMIT_Y', 50);
 
 /**
  * An empty destination
@@ -172,6 +174,17 @@ define('POSITION_SEARCH_FUEL_QUANTITY', 30);
  * Minimal quantity of techs found during sucessful search
  */
 define('POSITION_SEARCH_TECHS_QUANTITY', 80);
+
+
+/**
+ * First ship start position X
+ */
+define('POSITION_START_X', 800);
+
+/**
+ * First ship start position Y
+ */
+define('POSITION_START_Y', 0);
 
                     //
                     // RESSOURCES

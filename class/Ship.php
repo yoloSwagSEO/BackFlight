@@ -546,7 +546,6 @@ class Ship extends Model
     protected function _create()
     {
         if (!$this->_lastUpdate) {
-            var_dump('AHA');
             $this->_lastUpdate = time();
         }
 

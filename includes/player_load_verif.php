@@ -7,12 +7,12 @@ if (!$MasterShipPlayer->isSql()) {
     $MasterShipPlayer = new Ship('master', $User->getId());
     
     // Get a position for the player to begin
-    $startPosition = Position::getClearPosition();
-    if ($startPosition) {
-        echo '<div data-alert="" class="alert-box radius">Ship position : '.$startPosition->getX().':'.$startPosition->getY().'.</div>';
+    $StartPosition = Position::getClearPosition();
+    if ($StartPosition) {
+        echo '<div data-alert="" class="alert-box radius">Ship position : '.$StartPosition->getX().':'.$StartPosition->getY().'.</div>';
     }
 
-    $MasterShipPlayer->setPosition($startPosition);
+    $MasterShipPlayer->setPosition($StartPosition);
     $MasterShipPlayer->setType('master');
     $MasterShipPlayer->setModel(1);
     $MasterShipPlayer->setUserId($User->getId());
