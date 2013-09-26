@@ -185,13 +185,13 @@ class Position extends Fly
     /**
      * Get a destination
      * @param int $type 'DESTINATION_EMPTY' to get empty destination
+     * @param string $moveType
      * @return \Position
      */
-    public function determineDestination($type = DESTINATION_NORMAL)
+    public function determineDestination($type = DESTINATION_NORMAL, $moveType = 'flight')
     {
         if ($type == DESTINATION_EMPTY) {
-            $position = self::getClearPosition($this->_x, $this->_y, $this->_id);
-            var_dump($position);
+            $position = self::getClearPosition($this->_x, $this->_y, $moveType);
             return $position;
         }
         // TODO : determine destination for "normal" search
@@ -254,19 +254,31 @@ class Position extends Fly
      * @param int $y
      * @return \Position
      */
-    public static function getClearPosition($startX = POSITION_START_X, $startY = POSITION_START_Y)
+    public static function getClearPosition($startX = POSITION_START_X, $startY = POSITION_START_Y, $moveType = 'flight')
     {
         $rand = rand(0,1);
         if ($rand == 0) {
             $rand = -1;
         }
+
+        $probaMoveForward = SHIP_FLIGHT_FORWARD_PROBA;
+        $max_forward = 1;
+        if ($moveType == 'jump') {
+            $max_forward = 5;
+            $probaMoveForward = SHIP_JUMP_FORWARD_PROBA;
+        }
+
         for ($x = $startX; $x > POSITION_DEEP_SEARCH_LIMIT; $x--) {
             for ($y = $startY; sqrt(pow($startY - $y, 2)) < POSITION_DEEP_SEARCH_LIMIT_Y; $y = $y + $rand)
             {
-                // Detect if ship will move forward
-                $move_forward = rand(1,10);
-                if ($move_forward == 1) {
-                    break;
+                if ($max_forward > 0) {
+                    // Detect if ship will move forward
+                    $move_forward = rand(1,100);
+                    if ($move_forward < $probaMoveForward * 100) {
+                    var_dump('avance');
+                    $max_forward--;
+                        break;
+                    }
                 }
                 if (($x != $startX) || ($y != $startY)) {
                     if (Position::isEmpty($x, $y)) {

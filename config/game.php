@@ -89,6 +89,10 @@ define('SHIP_START_POWER', 70);
  */
 define('SHIP_START_LOADMAX', 1000);
 
+define('SHIP_FLIGHT_FORWARD_PROBA', 0.9);
+
+define('SHIP_JUMP_FORWARD_PROBA', 0.2);
+
                     //
                     // POSITION
                     //
