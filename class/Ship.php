@@ -282,8 +282,10 @@ class Ship extends Model
      */
     public function setEnergy($energy)
     {
-        if ($energy > $this->_energyMax) {
-            return $this->_energy = $this->_energyMax;
+        if ($this->_energyMax) {
+            if ($energy > $this->_energyMax) {
+                return $this->_energy = $this->_energyMax;
+            }
         }
         return $this->_energy = $energy;
     }
@@ -327,7 +329,7 @@ class Ship extends Model
      */
     public function setPower($power)
     {
-        if ($power > $this->_powerMax) {
+        if ($power > $this->_powerMax && $this->_powerMax) {
             return $this->_power = $this->_powerMax;
         }
         return $this->_power = $power;
@@ -543,8 +545,14 @@ class Ship extends Model
     
     protected function _create()
     {
+        if (!$this->_lastUpdate) {
+            var_dump('AHA');
+            $this->_lastUpdate = time();
+        }
+
+
         $sql = FlyPDo::get();
-        $req = $sql->prepare('INSERT INTO `'.self::$_sqlTable.'` VALUES("", :userId, :type, :model, :positionId, :load, :energy, :fuel, :power, :state)');
+        $req = $sql->prepare('INSERT INTO `'.self::$_sqlTable.'` VALUES("", :userId, :type, :model, :positionId, :load, :energy, :power, :lastUpdate, :state)');
         if ($req->execute(array(
             ':userId' => $this->_userId,
             ':type' => $this->_type,
@@ -552,11 +560,25 @@ class Ship extends Model
             ':positionId' => $this->_positionId,
             ':load' => $this->_load,
             ':energy' => $this->_energy,
-            ':fuel' => $this->_fuel,
+            ':lastUpdate' => $this->_lastUpdate,
             ':power' => $this->_power,
             ':state' => $this->_state
         ))) {
+            if ($this->_fuel != $this->_fuelStart) {
+                $RessourceFuel = new Ressource('fuel', 'ship', $this->_id);
+                $RessourceFuel->setQuantity($this->_fuel);
+                $RessourceFuel->save();
+            }
+
+            if ($this->_techs != $this->_techsStart) {
+                $RessourceFuel = new Ressource('techs', 'ship', $this->_id);
+                $RessourceFuel->setQuantity($this->_techs);
+                $RessourceFuel->save();
+            }
             return $sql->lastInsertId();
+        } else {
+            var_dump($req->errorInfo());
+            trigger_error('Unable to create ship', E_USER_ERROR);
         }
     }
     

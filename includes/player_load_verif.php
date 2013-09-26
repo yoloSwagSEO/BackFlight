@@ -1,8 +1,6 @@
 <?php
 $MasterShipPlayer = new Ship('master', $User->getId());
 
-exit;
-
 // If the player has no master ship, we create it
 if (!$MasterShipPlayer->isSql()) {
     echo '<div data-alert="" class="alert-box radius">No master ship for user.</div>';
@@ -19,6 +17,13 @@ if (!$MasterShipPlayer->isSql()) {
     $MasterShipPlayer->setModel(1);
     $MasterShipPlayer->setUserId($User->getId());
     $MasterShipPlayer->setState('space');
+    $MasterShipPlayer->setFuel(SHIP_START_FUEL);
+    $MasterShipPlayer->setTechs(SHIP_START_TECHS);
+    $MasterShipPlayer->calculateLoad();
+    $MasterShipPlayer->setPower(SHIP_START_POWER);
+    $MasterShipPlayer->setEnergy(SHIP_START_ENERGY);
+
+
     $MasterShipPlayer->save();   
     
 }

@@ -1,9 +1,9 @@
 <?php
 
 
-//
-// GLOBAL
-//
+                //
+                // GLOBAL
+                //
 /**
  * Game speed
  */
@@ -16,9 +16,9 @@ define('POSITION_LENGHT', 100);
 
 
 
-//
-// SHIP
-//
+                //
+                // SHIP
+                //
 
 /**
  * How much faster than normal flight jumps are
@@ -40,10 +40,58 @@ define('SHIP_FUEL_USE', .2);
  */
 define('SHIP_LOAD_TOLERANCE', 1.1);
 
+/**
+ * Quantity of fuel on ship creation
+ */
+define('SHIP_START_FUEL', 50);
 
-//
-// POSITION
-//
+/**
+ * Maximal energy for a basic ship
+ */
+define('SHIP_START_ENERGYMAX', 100);
+
+/**
+ * Energy gain per hour
+ */
+define('SHIP_START_ENERGY_GAIN', 100);
+
+/**
+ * Max fuel for a basic ship
+ */
+define('SHIP_START_FUELMAX', 100);
+
+/**
+ * Max power for a basic ship
+ */
+define('SHIP_START_POWERMAX', 100);
+
+/**
+ * Speed of a basic ship
+ */
+define('SHIP_START_SPEED', 10);
+
+/**
+ * Quantity of techs on ship creation
+ */
+define('SHIP_START_TECHS', 200);
+/**
+ * Quantity of energy on ship creation
+ */
+define('SHIP_START_ENERGY', 100);
+
+/**
+ * Quantity of power on ship creation
+ */
+define('SHIP_START_POWER', 70);
+
+/**
+ * Max loading for a basic ship
+ */
+define('SHIP_START_LOADMAX', 1000);
+
+                    //
+                    // POSITION
+                    //
 
 Position::setCategoriesProbabilities(array('space' => 70, 'asteroids' => 20, 'planet' => 10));
 
@@ -66,9 +114,9 @@ define('DESTINATION_EMPTY', 1);
  */
 define('DESTINATION_NORMAL', 2);
 
-//
-// POSITION SEARCHES
-//
+                    //
+                    // POSITION SEARCHES
+                    //
 
 /**
  * Probability to find something on fast search
@@ -125,9 +173,9 @@ define('POSITION_SEARCH_FUEL_QUANTITY', 30);
  */
 define('POSITION_SEARCH_TECHS_QUANTITY', 80);
 
-//
-// RESSOURCES
-//
+                    //
+                    // RESSOURCES
+                    //
 
 /**
  * Weight of one unit of fuel
