@@ -209,11 +209,11 @@ class Position extends Fly
         $diffY = abs($depY - $arrY);
 
         if (!$diffX) {
-            return $diffY;
+            return $diffY * POSITION_LENGHT;
         }
 
         if (!$diffY) {
-            return $diffX;
+            return $diffX * POSITION_LENGHT;
         }
 
         return sqrt(pow($diffX, 2) + pow($diffY, 2)) * POSITION_LENGHT;
