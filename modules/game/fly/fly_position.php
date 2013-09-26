@@ -14,6 +14,16 @@ if ($MasterShipPlayer->getState() == 'flying') {
 $PositionCurrent = new Position($MasterShipPlayer->getPositionId());
 
 $PositionDestination = new Position($_GET['x'], $_GET['y']);
+if (!$PositionDestination->isSql()) {
+    exit('Unknown position');
+}
+
+if (!$PositionDestination->isKnownBy($User->getId())) {
+    exit('You have never visited this position');
+}
+
+var_dump($PositionDestination);
+exit;
 
 $distance = Position::calculateDistance($PositionCurrent->getX(), $PositionCurrent->getY(), $PositionDestination->getX(), $PositionDestination->getY());
 $time = $MasterShipPlayer->calculateTravelTime($distance, $type);

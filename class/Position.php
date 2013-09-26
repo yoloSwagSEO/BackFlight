@@ -516,4 +516,20 @@ class Position extends Fly
     {
         return self::getAll(false, '', '', '', $userId);
     }
+
+    public function isKnownBy($userId)
+    {
+        $sql = FlyPDO::get();
+        $req = $sql->prepare('SELECT userId from `'.TABLE_USERS_POSITIONS.'` WHERE positionId = :positionId AND userId = :userId LIMIT 1');
+        if ($req->execute(array(
+            ':positionId' => $this->_id,
+            ':userId' => $userId
+        ))) {
+            while ($row = $req->fetch())
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 }
