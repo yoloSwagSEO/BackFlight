@@ -139,9 +139,11 @@ class Position extends Fly
     private function _calculateSearchProbabilities()
     {
         $array = array('fuel' => 0, 'techs' => 0);
-        foreach ($this->_searchResults as $result)
-        {
-            $array[$result]++;
+        if (!empty($this->_searchResults)) {
+            foreach ($this->_searchResults as $result)
+            {
+                $array[$result]++;
+            }
         }
 
         foreach ($array as $type => $results)
