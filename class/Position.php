@@ -534,4 +534,9 @@ class Position extends Fly
         }
         return false;
     }
+
+    public function getDistanceFromEarth()
+    {
+        return $this->calculateDistance($this->_x, $this->_y, 0, 0);
+    }
 }

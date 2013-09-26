@@ -23,6 +23,7 @@ $MasterShipPosition = new Position($MasterShipPlayer->getPositionId());
             <li><a href="overview">Ma position</a></li>
         </ul>
         <?php include_once 'modules/game/ship/ship_details.php';?>
+        <?php include_once 'modules/game/earth/earth_details.php';?>
     </div>
     <div class="column large-9">
         <h3>Positions</h3>
