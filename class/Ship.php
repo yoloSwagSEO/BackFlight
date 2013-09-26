@@ -611,6 +611,7 @@ class Ship extends Model
     {
         $where = '';
         $args = array();
+        $array = array();
         
         if ($id) {
             $where = 'WHERE `'.self::$_sqlTable.'`.id = :id';

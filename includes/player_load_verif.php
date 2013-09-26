@@ -1,6 +1,8 @@
 <?php
 $MasterShipPlayer = new Ship('master', $User->getId());
 
+exit;
+
 // If the player has no master ship, we create it
 if (!$MasterShipPlayer->isSql()) {
     echo '<div data-alert="" class="alert-box radius">No master ship for user.</div>';
