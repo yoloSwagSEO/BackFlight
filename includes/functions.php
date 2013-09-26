@@ -9,7 +9,7 @@ function isConnected()
 
 function renderCountDown($time)
 {
-    return '<span class="countdown" data-time="'.  countDown(time() + $time).'"></span>';
+    return '<span class="countdown" data-time="'.$time.'">'.countDown($time).'</span>';
 }
 
 function countDown($rem)
@@ -18,8 +18,11 @@ function countDown($rem)
     $hr  = floor(($rem % 86400) / 3600);
     $min = floor(($rem % 3600) / 60);
     $sec = ($rem % 60);
-    if($day) echo $day."j ";
-    if($hr) echo $hr."h ";
-    if($min) echo $min."m ";
-    if($sec) echo $sec."s ";
+
+    $time = '';
+    if($day) $time .= $day."j ";
+    if($hr) $time .= $hr."h ";
+    if($min) $time .= $min."m ";
+    if($sec) $time .= $sec."s ";
+    return $time;
 }
