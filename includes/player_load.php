@@ -38,6 +38,16 @@ if (!empty($array_moves)) {
 
                 Position::addPositionSearch($Move->getTo(), $User->getId(), $Move->getEnd(), $search_result);
 
+                // Ship damages
+                if ($Move->getType() == 'search') {
+                    if ($MasterShipPlayer->hasTouchAsteroids()) {
+                        $damages = $MasterShipPlayer->getAsteroidsDamages();
+
+                        // TODO : shield
+                        $MasterShipPlayer->removePower($damages);
+                    }
+                }
+
             // Normal flight
             } else {
                 Position::addUserPosition($User->getId(), $Move->getTo());
