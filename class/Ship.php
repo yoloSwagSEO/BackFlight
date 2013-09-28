@@ -475,6 +475,19 @@ class Ship extends Model
         return $this->_load;
     }
 
+    public function addPower($power)
+    {
+        $previous_power = $this->_power;
+        $this->setPower($this->_power + $power);
+        return $this->_power - $previous_power;
+    }
+
+    public function removePower($power)
+    {
+        return $this->setPower($this->_power - $power);
+        
+    }
+
 
     public static function get($id, $args=null)
     {
@@ -732,5 +745,25 @@ class Ship extends Model
             return true;
         }
         return false;
+    }
+
+    public function hasTouchAsteroids($type)
+    {
+        if ($type == 'flight') {
+            $proba = FLIGHT_PROBA_ASTEROIDS_HIT_FLIGHT;
+        } else if ($type == 'search') {
+            $proba = FLIGHT_PROBA_ASTEROIDS_HIT_SEARCH;
+        }
+
+        $rand = rand(0,100);
+        if ($rand <= $proba * 100) {
+            return true;
+        }
+        return false;
+    }
+
+    public function getAsteroidsDamages($type)
+    {
+        return 5;
     }
 }

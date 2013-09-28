@@ -96,6 +96,18 @@
         unset($_SESSION['errors']['techs']['lost']);
         }
 
+        if (!empty($_SESSION['infos']['flight']['damages'])) {
+            ?>
+    <div class="row">
+        <div data-alert="" class="alert-box alert radius">
+            Au cours du vol, le vaisseau a été pris dans un champ d'astéroïdes de petite taille et a perdu <?php echo $_SESSION['infos']['flight']['damages']?> power.
+        </div>
+    </div>
+    <?php
+            unset($_SESSION['infos']['flight']['damages']);
+
+        }
+
 
     }
     ?>

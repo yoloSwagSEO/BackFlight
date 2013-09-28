@@ -39,12 +39,15 @@ if (!empty($array_moves)) {
                 Position::addPositionSearch($Move->getTo(), $User->getId(), $Move->getEnd(), $search_result);
 
                 // Ship damages
-                if ($Move->getType() == 'search') {
-                    if ($MasterShipPlayer->hasTouchAsteroids()) {
-                        $damages = $MasterShipPlayer->getAsteroidsDamages();
+                if ($Move->getType() == 'search' || $Move->getType('flight')) {
+                    if ($MasterShipPlayer->hasTouchAsteroids($Move->getType())) {
+                        $damages = $MasterShipPlayer->getAsteroidsDamages($Move->getType());
 
                         // TODO : shield
                         $MasterShipPlayer->removePower($damages);
+                        $MasterShipPlayer->save();
+
+                        $_SESSION['infos']['flight']['damages'] = $damages;
                     }
                 }
 
