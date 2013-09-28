@@ -98,3 +98,7 @@ CREATE TABLE IF NOT EXISTS `positions_searches` (
   `date` int(11) NOT NULL,
   `result` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE  `ships` CHANGE  `load`  `load` FLOAT NOT NULL ,
+CHANGE  `energy`  `energy` FLOAT NOT NULL ,
+CHANGE  `power`  `power` FLOAT NOT NULL ;

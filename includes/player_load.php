@@ -73,7 +73,10 @@ if (!empty($array_ships)) {
         if ($Ship->getId() === $MasterShipPlayer->getId()) {
             $MasterShipPlayer = $Ship;
         }
-        $Ship->updateEnergy();        
+        $Ship->updateEnergy();
+        $Ship->updatePower();
+        $Ship->setLastUpdate(time());
+        $Ship->save();
     }
 }
 
