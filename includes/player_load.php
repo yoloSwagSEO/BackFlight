@@ -38,18 +38,18 @@ if (!empty($array_actions)) {
 
                 Position::addPositionSearch($Action->getTo(), $User->getId(), $Action->getEnd(), $search_result);
 
-                // Ship damages
-                if ($Action->getType() == 'search' || $Action->getType('flight')) {
-                    if ($MasterShipPlayer->hasTouchAsteroids($Action->getType())) {
-                        $damages = $MasterShipPlayer->getAsteroidsDamages($Action->getType());
+            } else if ($Action->getType() == 'repair') {
+                $repair_diff = $MasterShipPlayer->getLastUpdateDiff();
+                $repair_ratio = $repair_diff * GAME_SPEED / SHIP_REPAIR_TIME;
 
-                        // TODO : shield
-                        $MasterShipPlayer->removePower($damages);
-                        $MasterShipPlayer->save();
-
-                        $_SESSION['infos']['flight']['damages'] = $damages;
-                    }
+                $repair = SHIP_REPAIR_VALUE * $repair_ratio;
+                if ($repair_ratio > 1) {
+                    $repair_ratio = 1;
                 }
+
+                $MasterShipPlayer->addPower($repair);
+                $MasterShipPlayer->setLastUpdate(time());
+                $MasterShipPlayer->save();
 
             // Normal flight
             } else {
@@ -57,14 +57,37 @@ if (!empty($array_actions)) {
                 $CurrentPosition = new Position($Action->getTo());
             }
 
-            
+            // Ship damages
+            if ($Action->getType() == 'search' || $Action->getType() == 'flight') {
+                if ($MasterShipPlayer->hasTouchAsteroids($Action->getType())) {
+                    $damages = $MasterShipPlayer->getAsteroidsDamages($Action->getType());
+
+                    // TODO : shield
+                    $MasterShipPlayer->removePower($damages);
+                    $MasterShipPlayer->save();
+
+                    $_SESSION['infos']['flight']['damages'] = $damages;
+                }
+            }
+
             $Action->land();
 
 
             unset($array_actions[$i]);
         } else {
             if ($Action->getType() == 'repair') {
-                var_dump('yes');
+                $repair_diff = $MasterShipPlayer->getLastUpdateDiff();
+                $repair_ratio = $repair_diff * GAME_SPEED / SHIP_REPAIR_TIME;
+
+                if ($repair_ratio > 1) {
+                    $repair_ratio = 1;
+                }
+
+                $repair = SHIP_REPAIR_VALUE * $repair_ratio;
+                
+                $MasterShipPlayer->addPower($repair);
+                $MasterShipPlayer->setLastUpdate(time());
+                $MasterShipPlayer->save();
             }
         }
     }

@@ -220,6 +220,11 @@ class Ship extends Model
         return $this->_lastUpdate;
     }
 
+    public function getLastUpdateDiff()
+    {
+        return time() - $this->_lastUpdate;
+    }
+
 
     /**
      * User ID

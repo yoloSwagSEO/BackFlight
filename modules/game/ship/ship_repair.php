@@ -35,7 +35,15 @@ $Action->setDuration($time);
 $Action->setType('repair');
 $Action->setUser($User->getId());
 
-$Action->start();
+$id_action = $Action->start();
+
+$Fleet = new Fleet();
+$Fleet->setActionId($id_action);
+$Fleet->addShip($MasterShipPlayer->getId());
+$Fleet->setUserId($User->getId());
+$Fleet->save();
+
+$Fleet->start('repairing');
 
 header('location: '.PATH.'ship');
 exit;

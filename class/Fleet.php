@@ -3,7 +3,7 @@ class Fleet extends Fly
 {
     protected $_userId;
     protected $_ships;
-    protected $_moveId;
+    protected $_actionId;
 
 
     /**
@@ -25,7 +25,7 @@ class Fleet extends Fly
 
     public function getActionId()
     {
-        return $this->_moveId;
+        return $this->_actionId;
     }
 
 
@@ -36,9 +36,9 @@ class Fleet extends Fly
     }
 
 
-    public function setActionId($moveId)
+    public function setActionId($actionId)
     {
-        $this->_moveId = $moveId;
+        $this->_actionId = $actionId;
     }
 
     public function addShip($shipId)
@@ -58,6 +58,16 @@ class Fleet extends Fly
         }
     }
 
+    public function start($type)
+    {
+        foreach ($this->_ships as $shipId => $value)
+        {
+            $Ship = new Ship($shipId);
+            $Ship->setState($type);
+            $Ship->save();
+        }
+    }
+
 
     /*
      * Charge les valeurs de l'objet
@@ -68,7 +78,7 @@ class Fleet extends Fly
         if($param) {
             $this->_userId = $param['userId'];
             $this->_ships = $param['ships'];
-            $this->_moveId = $param['moveId'];
+            $this->_actionId = $param['moveId'];
             $this->_sql = true;
         }
     }
@@ -83,7 +93,7 @@ class Fleet extends Fly
             $args = array(
                 ':userId' => $this->_userId,
                 ':shipId' => $shipId,
-                ':moveId' => $this->_moveId
+                ':moveId' => $this->_actionId
             );
             if (!$req->execute($args)) {
                 var_dump($req->errorInfo());

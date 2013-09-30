@@ -167,8 +167,8 @@ class Action extends Fly
     {
         $this->setStart(time());
         $this->setEnd(time() + $this->_duration);
-        $this->setState($this->_type);
-        $this->save();
+        $this->setState('current');
+        return $this->save();
     }
 
     public function land()
