@@ -20,3 +20,5 @@ RewriteRule ^fly/([a-z]+)$ game.php?module=fly&to=$1 [L]
 RewriteRule ^fly/([a-z]+)/(jump)$ game.php?module=fly&to=$1&speed=$2 [L]
 
 RewriteRule ^search/(fast|probes)$ game.php?module=search&speed=$1
+
+RewriteRule ^ship$ game.php?module=ship
