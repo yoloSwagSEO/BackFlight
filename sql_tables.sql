@@ -102,3 +102,6 @@ CREATE TABLE IF NOT EXISTS `positions_searches` (
 ALTER TABLE  `ships` CHANGE  `load`  `load` FLOAT NOT NULL ,
 CHANGE  `energy`  `energy` FLOAT NOT NULL ,
 CHANGE  `power`  `power` FLOAT NOT NULL ;
+
+RENAME TABLE  `backflight`.`moves` TO  `backflight`.`actions` ;
+

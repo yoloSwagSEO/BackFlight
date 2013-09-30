@@ -1,0 +1,42 @@
+<?php
+$power_diff = $MasterShipPlayer->getPowerMax() - $MasterShipPlayer->getPower();
+
+$power_repair = SHIP_REPAIR_VALUE;
+if ($power_repair > $power_diff) {
+    $power_repair = $power_diff;
+}
+
+$power_repair_ratio = $power_repair / SHIP_REPAIR_VALUE;
+
+$repair_energy = SHIP_REPAIR_ENERGY * $power_repair_ratio;
+$repair_fuel = SHIP_REPAIR_FUEL * $power_repair_ratio;
+$repair_techs = SHIP_REPAIR_TECHS * $power_repair_ratio;
+
+
+$MasterShipPlayer->removeEnergy($repair_energy);
+$MasterShipPlayer->removeFuel($repair_fuel);
+$MasterShipPlayer->removeTechs($repair_techs);
+
+$MasterShipPlayer->save();
+
+// Is ship already flying ?
+if ($MasterShipPlayer->isBusy()) {
+    exit('Ship already occupied !');
+}
+
+$PositionCurrent = new Position($MasterShipPlayer->getPositionId());
+
+$time = SHIP_REPAIR_TIME / GAME_SPEED * $power_repair_ratio;
+
+$Action = new Action();
+$Action->setFrom($PositionCurrent->getId());
+$Action->setTo($PositionCurrent->getId());
+$Action->setDuration($time);
+$Action->setType('repair');
+$Action->setUser($User->getId());
+
+$Action->start();
+
+header('location: '.PATH.'ship');
+exit;
+?>

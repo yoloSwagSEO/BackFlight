@@ -34,13 +34,13 @@
     </div>
     <?php
     if ($User->isConnected()) {
-        if (!empty($array_moves)) {
-            foreach ($array_moves as $Move)
+        if (!empty($array_actions)) {
+            foreach ($array_actions as $Action)
             {
         ?>
     <div class="row">
         <div data-alert="" class="alert-box radius">
-            <strong>Flotte de <?php echo $User->getPseudo()?></strong> (<?php echo $Move->getType()?>) en provenance de <?php echo $Move->getFrom()?> et à destination de <?php echo $Move->getTo() ?> (<?php echo renderCountDown($Move->countRemainingTime())?>)
+            <strong>Flotte de <?php echo $User->getPseudo()?></strong> (<?php echo $Action->getType()?>) en provenance de <?php echo $Action->getFrom()?> et à destination de <?php echo $Action->getTo() ?> (<?php echo renderCountDown($Action->countRemainingTime())?>)
         </div>
     </div>
         <?php

@@ -1,5 +1,5 @@
 <?php
-class Move extends Fly
+class Action extends Fly
 {
     protected $_id;
     protected $_user;
@@ -21,7 +21,7 @@ class Move extends Fly
      * La table par défaut utilisée par la classe.
      * @var string
      */
-    protected static $_sqlTable = TABLE_MOVES;
+    protected static $_sqlTable = TABLE_ACTIONS;
 
 
     public function getUser()
@@ -167,7 +167,7 @@ class Move extends Fly
     {
         $this->setStart(time());
         $this->setEnd(time() + $this->_duration);
-        $this->setState('flying');
+        $this->setState($this->_type);
         $this->save();
     }
 

@@ -12,7 +12,7 @@ define('TABLE_SHIPS', 'ships');
 
 define('TABLE_MODELS', 'models');
 
-define('TABLE_MOVES', 'moves');
+define('TABLE_ACTIONS', 'actions');
 
 define('TABLE_FLEETS', 'fleets');
 

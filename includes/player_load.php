@@ -1,17 +1,17 @@
 <?php
 $array_fleets = Fleet::getAll('', '', $User->getId());
-$array_moves = Move::getAll('', '', $User->getId(), 'flying');
+$array_actions = Action::getAll('', '', $User->getId(), 'current');
 
 
 $CurrentPosition = new Position($MasterShipPlayer->getPositionId());
 
-if (!empty($array_moves)) {
-    foreach ($array_moves as $i => $Move)
+if (!empty($array_actions)) {
+    foreach ($array_actions as $i => $Action)
     {
-        if ($Move->countRemainingTime() < 0) {
+        if ($Action->countRemainingTime() < 0) {
             // Searches
-            if ($Move->getType() == 'search' || $Move->getType() == 'probes') {
-                $result = $CurrentPosition->searchRessources($Move->getType());
+            if ($Action->getType() == 'search' || $Action->getType() == 'probes') {
+                $result = $CurrentPosition->searchRessources($Action->getType());
                 $search_result = '';
                 if (!empty($result)) {
                     $search_result = $result[0];
@@ -36,12 +36,12 @@ if (!empty($array_moves)) {
                     $_SESSION['infos']['search'] = 'empty';
                 }
 
-                Position::addPositionSearch($Move->getTo(), $User->getId(), $Move->getEnd(), $search_result);
+                Position::addPositionSearch($Action->getTo(), $User->getId(), $Action->getEnd(), $search_result);
 
                 // Ship damages
-                if ($Move->getType() == 'search' || $Move->getType('flight')) {
-                    if ($MasterShipPlayer->hasTouchAsteroids($Move->getType())) {
-                        $damages = $MasterShipPlayer->getAsteroidsDamages($Move->getType());
+                if ($Action->getType() == 'search' || $Action->getType('flight')) {
+                    if ($MasterShipPlayer->hasTouchAsteroids($Action->getType())) {
+                        $damages = $MasterShipPlayer->getAsteroidsDamages($Action->getType());
 
                         // TODO : shield
                         $MasterShipPlayer->removePower($damages);
@@ -53,15 +53,19 @@ if (!empty($array_moves)) {
 
             // Normal flight
             } else {
-                Position::addUserPosition($User->getId(), $Move->getTo());
-                $CurrentPosition = new Position($Move->getTo());
+                Position::addUserPosition($User->getId(), $Action->getTo());
+                $CurrentPosition = new Position($Action->getTo());
             }
 
             
-            $Move->land();
+            $Action->land();
 
 
-            unset($array_moves[$i]);
+            unset($array_actions[$i]);
+        } else {
+            if ($Action->getType() == 'repair') {
+                var_dump('yes');
+            }
         }
     }
 }

@@ -27,7 +27,14 @@ if (!empty($_GET['module'])) {
     } else if ($module == 'search') {
         include_once 'modules/game/search/search_search.php';
     } else if ($module == 'ship') {
+        if (isset($_GET['action'])) {
+            $action = $_GET['action'];
+            if ($action == 'repair') {
+                include_once 'modules/game/ship/ship_repair.php';
+            }
+        } else {
         include_once 'modules/game/ship/ship_overview.php';
+        }
     }
 }
 

@@ -261,11 +261,11 @@ class Position extends Fly
             $rand = -1;
         }
 
-        $probaMoveForward = SHIP_FLIGHT_FORWARD_PROBA;
+        $probaActionForward = SHIP_FLIGHT_FORWARD_PROBA;
         $max_forward = 1;
         if ($moveType == 'jump') {
             $max_forward = 5;
-            $probaMoveForward = SHIP_JUMP_FORWARD_PROBA;
+            $probaActionForward = SHIP_JUMP_FORWARD_PROBA;
         }
 
         for ($x = $startX; $x > POSITION_DEEP_SEARCH_LIMIT; $x--) {
@@ -274,7 +274,7 @@ class Position extends Fly
                 if ($max_forward > 0) {
                     // Detect if ship will move forward
                     $move_forward = rand(1,100);
-                    if ($move_forward < $probaMoveForward * 100) {
+                    if ($move_forward < $probaActionForward * 100) {
                     var_dump('avance');
                     $max_forward--;
                         break;

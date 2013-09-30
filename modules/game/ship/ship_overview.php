@@ -14,6 +14,17 @@ head();
         <?php include_once 'modules/game/earth/earth_details.php';?>
     </div>
     <div class="column large-9">
+        <?php
+        if (!empty($_SESSION['infos']['ship']['repair'])) {
+            ?>
+    <div class="row">
+        <div data-alert="" class="alert-box success radius">
+            La réparation du vaisseau est terminée : +<?php echo $_SESSION['infos']['search'][1]?> <?php echo $_SESSION['infos']['search'][0]?>
+        </div>
+    </div>
+        <?php
+        }
+        ?>
         <h3>Vaisseau</h3>
         <p>
             <strong>Modèle :</strong> <?php echo $MasterShipPlayer->getModelName()?><br />
@@ -23,7 +34,7 @@ head();
         <?php
         if ($MasterShipPlayer->getPower() != $MasterShipPlayer->getPowerMax()) {
         ?>
-        <a href="ship/repair" class="button">
+        <a href="ship/repair" class="button has-tip" data-tooltip title="Nécessite : <br />30 fuel, 250 techs et 5 énergie">
             Réparer le vaisseau
         </a>
         <?php

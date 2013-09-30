@@ -93,6 +93,16 @@ define('SHIP_FLIGHT_FORWARD_PROBA', 0.9);
 
 define('SHIP_JUMP_FORWARD_PROBA', 0.2);
 
+define('SHIP_REPAIR_VALUE', 30);
+
+define('SHIP_REPAIR_FUEL', 15);
+
+define('SHIP_REPAIR_TECHS', 250);
+
+define('SHIP_REPAIR_ENERGY', 5);
+
+define('SHIP_REPAIR_TIME', 80);
+
 
 define('FLIGHT_PROBA_ASTEROIDS_HIT_FLIGHT', 0.2);
 

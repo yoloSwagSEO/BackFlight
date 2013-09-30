@@ -23,7 +23,7 @@ class Fleet extends Fly
         return $this->_ships;
     }
 
-    public function getMoveId()
+    public function getActionId()
     {
         return $this->_moveId;
     }
@@ -36,7 +36,7 @@ class Fleet extends Fly
     }
 
 
-    public function setMoveId($moveId)
+    public function setActionId($moveId)
     {
         $this->_moveId = $moveId;
     }

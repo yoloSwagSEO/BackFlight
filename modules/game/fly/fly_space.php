@@ -22,24 +22,24 @@ $energy = $MasterShipPlayer->calculateTravelEnergy($distance, $type);
 $fuel = $MasterShipPlayer->calculateTravelFuel($distance, $type);
 
 
-$Move = new Move();
-$Move->setFrom($PositionCurrent->getId());
-$Move->setTo($PositionDestination->getId());
-$Move->setDuration($time);
-$Move->setType($type);
-$Move->setUser($User->getId());
+$Action = new Action();
+$Action->setFrom($PositionCurrent->getId());
+$Action->setTo($PositionDestination->getId());
+$Action->setDuration($time);
+$Action->setType($type);
+$Action->setUser($User->getId());
 
-$id_move = $Move->save();
+$id_move = $Action->save();
 
 // Creating fleet
 $Fleet = new Fleet();
-$Fleet->setMoveId($id_move);
+$Fleet->setActionId($id_move);
 $Fleet->addShip($MasterShipPlayer->getId());
 $Fleet->setUserId($User->getId());
 $Fleet->save();
 
 // Let's go
-$Move->start();
+$Action->start();
 $Fleet->takeOff($energy, $fuel);
 
 

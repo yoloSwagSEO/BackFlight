@@ -777,4 +777,16 @@ class Ship extends Model
     {
         return 5;
     }
+
+    /**
+     * Check if ship is busy
+     * @return boolean
+     */
+    public function isBusy()
+    {
+        if ($this->_state == 'arrived' || $this->_state == '') {
+            return false;
+        }
+        return true;
+    }
 }
