@@ -1,7 +1,6 @@
 # Todo
 
-## 10/04/13
-* Add possibility to restore power with techs and fuel
+## 10/04/13 
 * Add module builder for ships (with techs and fuel)
 * Handle shield for ship (with energy)
 
