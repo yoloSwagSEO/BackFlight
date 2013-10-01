@@ -1,8 +1,7 @@
 <?php
 title('Vaisseau');
 
-
-$modules_nb = $MasterShipPlayer->getModulesMaxNumber();
+$array_modules = Module::getAll();
 
 head();
 
@@ -53,63 +52,42 @@ head();
                 <h4>Modules à fabriquer</h4>
                 <p>Les modules doivent être fabriqués avant d'être activés</p>
                 <div class="row">
+                    <?php foreach ($array_modules as $Module)
+                    {
+                        if ($Module->getType() == 'load') {
+                            $icon = '&#xe0a1;';
+                        } else if ($Module->getType() == 'power') {
+                            $icon = '&#xe091;';
+                        } else if ($Module->getType() == 'energy') {
+                            $icon = '&#xe091;';
+                        } else {
+                            $icon = '&#xe0f6;';
+                        }
+                        ?>
                     <div class='large-4 columns'>
                         <a href='#'>
                             <div class='panel'>
                                 <div class='module_type'>
-                                    <span data-icon="&#xe0a1;"></span>
+                                    <span data-icon="<?php echo $icon?>"></span>
                                 </div>
                                 <span class="icon_big" data-icon="&#xe091;"></span>
-                                <strong>Bloc de soute</strong>
+                                <strong><?php echo $Module->getName()?></strong>
                                 <P>
-                                    Chargement x2
+                                    <?php echo $Module->getIntro()?>
                                 </P>
                                 <div class="modules_ressources">
-                                    <span data-icon="&#xe0a4;" class="fuel">25</span>
-                                    <span data-icon="&#xe08e;" class="techs">200</span>
-                                    <span data-icon="&#xe0b0;" class="energy">20</span>
+                                    <span data-icon="&#xe0a4;" class="fuel"><?php echo $Module->getCostFuel()?></span>
+                                    <span data-icon="&#xe08e;" class="techs"><?php echo $Module->getCostTechs()?></span>
+                                    <span data-icon="&#xe0b0;" class="energy"><?php echo $Module->getCostEnergy()?></span>
                                 </div>
                             </div>
                         </a>
                     </div>
-                    <div class='large-4 columns'>
-                        <a href='#'>
-                            <div class='panel'>
-                                <div class='module_type'>
-                                    <span data-icon="&#xe0d1;"></span>
-                                </div>
-                                <span class="icon_big" data-icon="&#xe091;"></span>
-                                <strong>Renforcement coque</strong>
-                                <P>
-                                    +30% vitalité
-                                </P>
-                                <div class="modules_ressources">
-                                    <span data-icon="&#xe0a4;" class="fuel">25</span>
-                                    <span data-icon="&#xe08e;" class="techs">200</span>
-                                    <span data-icon="&#xe0b0;" class="energy">20</span>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class='large-4 columns'>
-                        <a href='#'>
-                            <div class='panel'>
-                                <div class='module_type'>
-                                    <span data-icon="&#xe0b0;"></span>
-                                </div>
-                                <span class="icon_big" data-icon="&#xe091;"></span>
-                                <strong>Batterie supplémentaire</strong>
-                                <P>
-                                    Energie x2
-                                </P>
-                                <div class="modules_ressources">
-                                    <span data-icon="&#xe0a4;" class="fuel">25</span>
-                                    <span data-icon="&#xe08e;" class="techs">200</span>
-                                    <span data-icon="&#xe0b0;" class="energy">20</span>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
+                    <?php
+                    }
+?>
+                    
+                    
                 </div>
 
             </div>
