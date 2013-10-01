@@ -7,6 +7,8 @@
     <title><?php echo title()?></title>
     <link rel="stylesheet" href="css/normalize.css" />
     <link rel="stylesheet" href="css/foundation.css" />
+    <link rel="stylesheet" href="css/fonts.css" />
+    <link rel="stylesheet" href="css/game.css" />
 <?php
     $array_styles = css();
     foreach ($array_styles as $src => $null)
