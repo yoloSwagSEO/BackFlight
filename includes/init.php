@@ -33,6 +33,7 @@ require_once 'includes/functions_template.php';
 require_once 'config/game.php';
 
 
+include_once 'includes/game_verif.php';
 if (!empty($_SESSION['User'])) {
     $User = new User($_SESSION['User']);
     if ($User->isConnected()) {

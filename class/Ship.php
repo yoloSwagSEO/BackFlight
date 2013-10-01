@@ -79,6 +79,8 @@ class Ship extends Model
 
     protected $_fuelStart;
 
+    protected $_modules = array();
+
     /**
      *
      * @var int
@@ -564,6 +566,8 @@ class Ship extends Model
                 $this->_positionY = $param['y'];
             }
 
+            $this->_modulesMaxNumber = $param['modulesMax'];
+
 
             $this->_lastUpdate = $param['lastUpdate'];
             $this->_state = $param['state'];
@@ -695,15 +699,23 @@ class Ship extends Model
         
         $sql = FlyPDO::get();
         $req = $sql->prepare('SELECT `'.self::$_sqlTable.'`.*, pos.x, pos.y, res.quantity ressourceQuantity, res.type ressourceType,
-                mod.name modelName, mod.type modelType, mod.category modelCategory, mod.loadMax, mod.energyMax, mod.energyGain, mod.fuelMax, mod.powerMax, mod.speed
+                mod.name modelName, mod.type modelType, mod.category modelCategory, mod.loadMax, mod.energyMax, mod.energyGain, mod.fuelMax, mod.powerMax, mod.speed, mod.modulesMax,
+                smodu.moduleId
             FROM `'.self::$_sqlTable.'`
             LEFT JOIN `'.TABLE_POSITIONS.'` pos
                 ON `'.self::$_sqlTable.'`.positionId =  pos.id
+                    
             LEFT JOIN `'.TABLE_MODELS.'` `mod`
                 ON `'.self::$_sqlTable.'`.model = `mod`.id
 
             LEFT JOIN `'.TABLE_RESSOURCES.'` res
                 ON `'.self::$_sqlTable.'`.id = res.intoId AND `into` = "ship"
+
+            LEFT JOIN `'.TABLE_SHIPS_MODULES.'` smodu
+                ON smodu.shipId = `'.self::$_sqlTable.'`.id
+
+            LEFT JOIN `'.TABLE_MODULES.'` modu
+                ON modu.id = smodu.moduleId
         '.$where);
         if ($req->execute($args)) {
             $current = 0;
@@ -793,5 +805,15 @@ class Ship extends Model
             return false;
         }
         return true;
+    }
+
+    public function getModulesMaxNumber()
+    {
+        return $this->_modulesMaxNumber;
+    }
+
+    public function getModulesNumber()
+    {
+        return count($this->_modules);
     }
 }

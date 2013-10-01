@@ -108,6 +108,7 @@ define('FLIGHT_PROBA_ASTEROIDS_HIT_FLIGHT', 0.2);
 
 define('FLIGHT_PROBA_ASTEROIDS_HIT_SEARCH', 0.30);
 
+
                     //
                     // POSITION
                     //
