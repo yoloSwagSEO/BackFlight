@@ -1,5 +1,9 @@
 <?php
 title('Vaisseau');
+
+
+$modules_nb = $MasterShipPlayer->getModulesMaxNumber();
+
 head();
 
 
@@ -34,12 +38,82 @@ head();
         <?php
         if ($MasterShipPlayer->getPower() != $MasterShipPlayer->getPowerMax()) {
         ?>
-        <a href="ship/repair" class="button has-tip" data-tooltip title="Nécessite : <br />30 fuel, 250 techs et 5 énergie">
+        <a href="ship/repair" class="button has-tip success" data-tooltip title="Nécessite : <br />30 fuel, 250 techs et 5 énergie">
             Réparer le vaisseau
         </a>
         <?php
         }
         ?>
+            <div class="panel" id="modules">
+                <h4>Modules actifs (<?php echo $MasterShipPlayer->getModulesNumber() ?>/<?php echo $MasterShipPlayer->getModulesMaxNumber() ?>)</h4>
+                <p>
+                Il n'y a aucun module activé pour le moment !
+                </p>
+                <hr /><br />
+                <h4>Modules à fabriquer</h4>
+                <p>Les modules doivent être fabriqués avant d'être activés</p>
+                <div class="row">
+                    <div class='large-4 columns'>
+                        <a href='#'>
+                            <div class='panel'>
+                                <div class='module_type'>
+                                    <span data-icon="&#xe0a1;"></span>
+                                </div>
+                                <span class="icon_big" data-icon="&#xe091;"></span>
+                                <strong>Bloc de soute</strong>
+                                <P>
+                                    Chargement x2
+                                </P>
+                                <div class="modules_ressources">
+                                    <span data-icon="&#xe0a4;" class="fuel">25</span>
+                                    <span data-icon="&#xe08e;" class="techs">200</span>
+                                    <span data-icon="&#xe0b0;" class="energy">20</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class='large-4 columns'>
+                        <a href='#'>
+                            <div class='panel'>
+                                <div class='module_type'>
+                                    <span data-icon="&#xe0d1;"></span>
+                                </div>
+                                <span class="icon_big" data-icon="&#xe091;"></span>
+                                <strong>Renforcement coque</strong>
+                                <P>
+                                    +30% vitalité
+                                </P>
+                                <div class="modules_ressources">
+                                    <span data-icon="&#xe0a4;" class="fuel">25</span>
+                                    <span data-icon="&#xe08e;" class="techs">200</span>
+                                    <span data-icon="&#xe0b0;" class="energy">20</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class='large-4 columns'>
+                        <a href='#'>
+                            <div class='panel'>
+                                <div class='module_type'>
+                                    <span data-icon="&#xe0b0;"></span>
+                                </div>
+                                <span class="icon_big" data-icon="&#xe091;"></span>
+                                <strong>Batterie supplémentaire</strong>
+                                <P>
+                                    Energie x2
+                                </P>
+                                <div class="modules_ressources">
+                                    <span data-icon="&#xe0a4;" class="fuel">25</span>
+                                    <span data-icon="&#xe08e;" class="techs">200</span>
+                                    <span data-icon="&#xe0b0;" class="energy">20</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
     </div>
 </div>
 
