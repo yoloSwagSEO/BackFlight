@@ -57,15 +57,15 @@ head();
                         if ($Module->getType() == 'load') {
                             $icon = '&#xe0a1;';
                         } else if ($Module->getType() == 'power') {
-                            $icon = '&#xe091;';
+                            $icon = '&#xe0d1;';
                         } else if ($Module->getType() == 'energy') {
-                            $icon = '&#xe091;';
+                            $icon = '&#xe0b0;';
                         } else {
                             $icon = '&#xe0f6;';
                         }
                         ?>
                     <div class='large-4 columns'>
-                        <a href='#'>
+                        <a href='#' data-tooltip data-width=250 class="has-tip tip-top" title="<?php echo $Module->getDescription()?>" style="display: block">
                             <div class='panel'>
                                 <div class='module_type'>
                                     <span data-icon="<?php echo $icon?>"></span>
