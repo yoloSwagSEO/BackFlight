@@ -14,6 +14,7 @@ if (empty($array_modules)) {
     $HoldBasicModule->setCostEnergy(20);
     $HoldBasicModule->setCostFuel(50);
     $HoldBasicModule->setCostTechs(500);
+    $HoldBasicModule->setTime(300);
     $HoldBasicModule->save();
 
 
@@ -28,6 +29,7 @@ if (empty($array_modules)) {
     $HullBasicModule->setCostEnergy(10);
     $HullBasicModule->setCostFuel(45);
     $HullBasicModule->setCostTechs(700);
+    $HullBasicModule->setTime(250);
     $HullBasicModule->save();
 
 
@@ -42,6 +44,7 @@ if (empty($array_modules)) {
     $BatteryBasicModule->setCostEnergy(50);
     $BatteryBasicModule->setCostFuel(10);
     $BatteryBasicModule->setCostTechs(220);
+    $BatteryBasicModule->setTime(120);
     $BatteryBasicModule->save();
 }
 

@@ -7,6 +7,7 @@ class Module extends Fly
     protected $_intro;
     protected $_description;
     protected $_weight;
+    protected $_time;
     protected $_power;
     protected $_energy;
     protected $_load;
@@ -132,6 +133,11 @@ class Module extends Fly
         return $this->_type;
     }
 
+    public function getTime()
+    {
+        return $this->_time;
+    }
+
 
 
     public function setIntro($intro)
@@ -234,6 +240,10 @@ class Module extends Fly
         $this->_type = $type;
     }
 
+    public function setTime($time)
+    {
+        $this->_time = $time;
+    }
 
 
     /*
@@ -264,6 +274,7 @@ class Module extends Fly
             $this->_costFuel = $param['costFuel'];
             $this->_type = $param['type'];
             $this->_operation = $param['operation'];
+            $this->_time = $param['time'];
             $this->_sql = true;
         }
     }
@@ -271,7 +282,7 @@ class Module extends Fly
     protected function _create()
     {
         $sql = FlyPDO::get();
-        $req = $sql->prepare('INSERT INTO `'.static::$_sqlTable.'` VALUES (:id, :name, :intro, :description, :type, :operation, :weight, :power, :energy, :load, :fuel, :techs, :speed, :shield, :search, :attack, :weapons, :defense, :costEnergy, :costTechs, :costFuel)');
+        $req = $sql->prepare('INSERT INTO `'.static::$_sqlTable.'` VALUES (:id, :name, :intro, :description, :type, :operation, :time, :weight, :power, :energy, :load, :fuel, :techs, :speed, :shield, :search, :attack, :weapons, :defense, :costEnergy, :costTechs, :costFuel)');
         $args = array(
             ':id' => $this->_id,
             ':name' => $this->_name,
@@ -279,6 +290,7 @@ class Module extends Fly
             ':description' => $this->_description,
             ':type' => $this->_type,
             ':operation' => $this->_operation,
+            ':time' => $this->_time,
             ':weight' => $this->_weight,
             ':power' => $this->_power,
             ':energy' => $this->_energy,
@@ -307,7 +319,7 @@ class Module extends Fly
     protected function _update()
     {
         $sql = FlyPDO::get();
-        $req = $sql->prepare('UPDATE `'.static::$_sqlTable.'` SET `name` = :name, `intro` = :intro, `description` = :description, `type` = :type, `operation` = :operation, `weight` = :weight, `power` = :power, `energy` = :energy, `load` = :load, `fuel` = :fuel, `techs` = :techs, `speed` = :speed, `shield` = :shield, `search` = :search, `attack` = :attack, `weapons` = :weapons, `defense` = :defense, `costEnergy` = :costEnergy, `costTechs` = :costTechs, `costFuel` = :costFuel WHERE id = :id');
+        $req = $sql->prepare('UPDATE `'.static::$_sqlTable.'` SET `name` = :name, `intro` = :intro, `description` = :description, `type` = :type, `operation` = :operation, `time` = :time, `weight` = :weight, `power` = :power, `energy` = :energy, `load` = :load, `fuel` = :fuel, `techs` = :techs, `speed` = :speed, `shield` = :shield, `search` = :search, `attack` = :attack, `weapons` = :weapons, `defense` = :defense, `costEnergy` = :costEnergy, `costTechs` = :costTechs, `costFuel` = :costFuel WHERE id = :id');
         $args = array(
             ':id' => $this->_id,
             ':name' => $this->_name,
@@ -315,6 +327,7 @@ class Module extends Fly
             ':description' => $this->_description,
             ':type' => $this->_type,
             ':operation' => $this->_operation,
+            ':time' => $this->_time,
             ':weight' => $this->_weight,
             ':power' => $this->_power,
             ':energy' => $this->_energy,

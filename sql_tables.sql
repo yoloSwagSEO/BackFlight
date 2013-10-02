@@ -136,4 +136,6 @@ CREATE TABLE IF NOT EXISTS `builds` (
     `end` INT(11) NOT NULL,
     `state` varchar(25) NULL,
     PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE  `modules` ADD  `time` INT NOT NULL AFTER  `operation` ;

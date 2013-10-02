@@ -65,10 +65,13 @@ head();
                         }
                         ?>
                     <div class='large-4 columns'>
-                        <a href='#' data-tooltip data-width=250 class="has-tip tip-top" title="<?php echo $Module->getDescription()?>" style="display: block">
+                        <a href='#' data-tooltip data-width=250 class="has-tip tip-top module_link" data-module-id="<?php echo $Module->getId()?>" title="<?php echo $Module->getDescription()?>" style="display: block">
                             <div class='panel'>
                                 <div class='module_type'>
                                     <span data-icon="<?php echo $icon?>"></span>
+                                </div>
+                                <div class='module_time'>
+                                    <?php echo countDown($Module->getTime())?>
                                 </div>
                                 <span class="icon_big" data-icon="&#xe091;"></span>
                                 <strong><?php echo $Module->getName()?></strong>
