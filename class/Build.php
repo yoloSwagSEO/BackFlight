@@ -212,7 +212,7 @@ class Build extends Fly
             } else {
                 $where .= ' AND ';
             }
-            $where .= '`'.static::$_sqlTable.'`.state NOT LIKE "end"';
+            $where .= '`'.static::$_sqlTable.'`.`state` IS NULL OR `'.static::$_sqlTable.'`.`state` NOT LIKE "%end%"';
         }
 
         $array = array();

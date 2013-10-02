@@ -877,6 +877,10 @@ class Ship extends Model
             ':moduleId' => $moduleId,
             ':moduleOrder' => 1
         ))) {
+            if (empty($this->_modules[$moduleId])) {
+                $this->_modules[$moduleId] = 0;
+            }
+            $this->_modules[$moduleId]++;
             return true;
         } else {
             var_dump($req->errorInfo());
