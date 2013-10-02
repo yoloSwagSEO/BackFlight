@@ -816,4 +816,25 @@ class Ship extends Model
     {
         return count($this->_modules);
     }
+
+    /**
+     * Add a module to the ship
+     * @param int $moduleId
+     * @return boolean
+     */
+    public function addModule($moduleId)
+    {
+        $sql = FlyPDO::get();
+        $req = $sql->prepare('INSERT INTO `'.TABLE_SHIPS_MODULES.'` VALUES("", :shipId, :moduleId, :moduleOrder, "")');
+        if ($req->execute(array(
+            ':shipId' => $this->_id,
+            ':moduleId' => $moduleId,
+            ':moduleOrder' => 1
+        ))) {
+            return true;
+        } else {
+            var_dump($req->errorInfo());
+            trigger_error('Unable to add module to ship', E_USER_ERROR);
+        }
+    }
 }

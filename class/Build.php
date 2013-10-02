@@ -176,7 +176,14 @@ class Build extends Fly
         return array_shift($array);
     }
 
-    public static function getAll($id = null, $to_array = false)
+    /**
+     *
+     * @param type $id
+     * @param type $to_array
+     * @param type $userId
+     * @return \class
+     */
+    public static function getAll($id = null, $to_array = false, $userId = null, $state = null)
     {
         $where = '';
         $args = array();
@@ -187,6 +194,25 @@ class Build extends Fly
             }
             $where .= '`'.static::$_sqlTable.'`.id = :id';
             $args[':id'] = $id;
+        }
+        
+        if ($userId) {
+            if (empty($where)) {
+                $where = ' WHERE ';
+            } else {
+                $where .= ' AND ';
+            }
+            $where .= '`'.static::$_sqlTable.'`.userId = :userId';
+            $args[':userId'] = $userId;
+        }
+
+        if (!$state) {
+            if (empty($where)) {
+                $where = ' WHERE ';
+            } else {
+                $where .= ' AND ';
+            }
+            $where .= '`'.static::$_sqlTable.'`.state NOT LIKE "end"';
         }
 
         $array = array();

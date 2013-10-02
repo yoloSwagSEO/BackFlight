@@ -107,4 +107,16 @@ if (!empty($array_ships)) {
     }
 }
 
+$array_builds = Build::getAll('', '', $User->getId());
+foreach ($array_builds as $Build)
+{
+    if ($Build->getType() == 'module') {
+        if ($Build->getEnd() <= time()) {
+            $Build->setState('end');
+            $MasterShipPlayer->addModule($Build->getTypeId());
+            $Build->save();
+        }
+    }
+}
+
 ?>

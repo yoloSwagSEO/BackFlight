@@ -93,9 +93,12 @@ CREATE TABLE IF NOT EXISTS `users_positions` (
 
 
 CREATE TABLE IF NOT EXISTS `ships_modules` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `shipId` int(11) NOT NULL,
   `moduleId` int(11) NOT NULL,
-  `moduleOrder` int(11) DEFAULT NULL
+  `moduleOrder` int(11) DEFAULT NULL,
+  `moduleEnabled` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `modules` (
