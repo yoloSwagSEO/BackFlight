@@ -22,4 +22,9 @@ $ModuleBuild->setStart(time());
 $ModuleBuild->setEnd(time() + $Module->getTime());
 $ModuleBuild->save();
 
+$MasterShipPlayer->removeTechs($Module->getCostTechs());
+$MasterShipPlayer->removeEnergy($Module->getCostEnergy());
+$MasterShipPlayer->removeFuel($Module->getCostFuel());
+$MasterShipPlayer->save();
+
 ?>

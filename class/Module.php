@@ -396,7 +396,8 @@ class Module extends Fly
                         FROM `'.static::$_sqlTable.'`
                 LEFT JOIN `'.TABLE_BUILDS.'` builds
                     ON builds.type = "module" AND builds.typeId = `'.static::$_sqlTable.'`.id
-                '.$where);
+                '.$where.'
+                    ORDER BY id');
 
         if ($req->execute($args)) {
             $current = 0;

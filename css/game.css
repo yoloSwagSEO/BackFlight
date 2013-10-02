@@ -29,17 +29,17 @@
     font-size: 12px;
 }
 
-#modules .panel
+.modules .panel
 {
     position: relative;
 }
 
-#modules .panel [data-icon]
+.modules .panel [data-icon]
 {
     font-size: 1.8em;
 }
 
-#modules .panel .icon_big
+.modules .panel .icon_big
 {
     font-size: 5em;
     padding: 5px;
@@ -53,7 +53,7 @@
     border: 1px solid #8e8e8e;
 }
 
-#modules .panel strong
+.modules .panel strong
 {
     text-align: center;
     display: block;
@@ -62,7 +62,7 @@
     min-height: 32px;
 }
 
-#modules .modules_ressources
+.modules .modules_ressources
 {
     width: 100%;
     background: black;
@@ -73,7 +73,7 @@
     height: 30px;
 }
 
-#modules .modules_ressources span
+.modules .modules_ressources span
 {
     font-size: 14px !important;
     color: white;
@@ -86,7 +86,7 @@
     border-top: 1px solid rgba(0,0,0,.5);
 }
 
-#modules .modules_ressources span:before
+.modules .modules_ressources span:before
 {
     margin-right: 5px;
 }

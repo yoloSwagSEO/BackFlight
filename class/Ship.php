@@ -81,6 +81,8 @@ class Ship extends Model
 
     protected $_modules = array();
 
+    protected $_modulesEnabled = array();
+
     /**
      *
      * @var int
@@ -225,6 +227,11 @@ class Ship extends Model
     public function getLastUpdateDiff()
     {
         return time() - $this->_lastUpdate;
+    }
+
+    public function getModules()
+    {
+        return $this->_modules;
     }
 
 
@@ -568,6 +575,14 @@ class Ship extends Model
 
             $this->_modulesMaxNumber = $param['modulesMax'];
 
+            if (!empty($param['modules'])) {
+                $this->_modules = $param['modules'];
+            }
+
+            if (!empty($param['modulesEnabled'])) {
+                $this->_modulesEnabled = $param['modulesEnabled'];
+            }
+
 
             $this->_lastUpdate = $param['lastUpdate'];
             $this->_state = $param['state'];
@@ -700,7 +715,7 @@ class Ship extends Model
         $sql = FlyPDO::get();
         $req = $sql->prepare('SELECT `'.self::$_sqlTable.'`.*, pos.x, pos.y, res.quantity ressourceQuantity, res.type ressourceType,
                 mod.name modelName, mod.type modelType, mod.category modelCategory, mod.loadMax, mod.energyMax, mod.energyGain, mod.fuelMax, mod.powerMax, mod.speed, mod.modulesMax,
-                smodu.moduleId
+                smodu.moduleId, smodu.moduleEnabled, smodu.id shipModuleId
             FROM `'.self::$_sqlTable.'`
             LEFT JOIN `'.TABLE_POSITIONS.'` pos
                 ON `'.self::$_sqlTable.'`.positionId =  pos.id
@@ -744,6 +759,22 @@ class Ship extends Model
                 // A partir d'ici, on charge les paramètres supplémentaires (par exemple conversion pour les médias)
                 if (!empty($row['ressourceType'])) {
                     $param[$row['ressourceType']] = $row['ressourceQuantity'];
+                }
+
+                if (!empty($row['moduleId'])) {
+                    if (empty($param['shipModule'][$row['shipModuleId']])) {
+                        if (empty($param['modules'][$row['moduleId']])) {
+                            $param['modules'][$row['moduleId']] = 0;
+                        }
+                        if (!empty($row['moduleEnabled'])) {
+                            if (empty($param['moduleEnabled'][$row['moduleId']])) {
+                                $param['moduleEnabled'][$row['moduleId']] = 0;
+                            }
+                            $param['moduleEnabled'][$row['moduleId']]++;
+                        }
+                        $param['modules'][$row['moduleId']]++;
+                        $param['shipModule'][$row['shipModuleId']] = true;
+                    }
                 }
 
             }
@@ -812,9 +843,24 @@ class Ship extends Model
         return $this->_modulesMaxNumber;
     }
 
+    public function getModulesEnabledNumber()
+    {
+        $number = 0;
+        foreach ($this->_modulesEnabled as $quantity)
+        {
+            $number += $quantity;
+        }
+        return $number;
+    }
+
     public function getModulesNumber()
     {
-        return count($this->_modules);
+        $number = 0;
+        foreach ($this->_modules as $quantity)
+        {
+            $number += $quantity;
+        }
+        return $number;
     }
 
     /**
