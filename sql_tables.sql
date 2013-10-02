@@ -124,3 +124,16 @@ CREATE TABLE IF NOT EXISTS `modules` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 ALTER TABLE  `modules` CHANGE  `name`  `name` VARCHAR( 40 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ;
+
+CREATE TABLE IF NOT EXISTS `builds` (
+    `id` INT(11) NOT NULL AUTO_INCREMENT,
+    `type` varchar(25) NOT NULL,
+    `typeId` INT(11) NOT NULL,
+    `userId` INT(11) NOT NULL,
+    `destination` varchar(25) NOT NULL,
+    `destinationId` INT(11) NOT NULL,
+    `start` INT(11) NOT NULL,
+    `end` INT(11) NOT NULL,
+    `state` varchar(25) NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
