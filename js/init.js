@@ -54,4 +54,16 @@ $(function () {
     setTimeout(function () {
         updateCompteurs();
     }, 1000);
+
+    $('.module_link').on('click', function () {
+        var link = $(this);
+        $.post('modules/build', {moduleId: $(this).data('module-id')}, function(data) {
+            if (data === 'ok') {
+                link.find('.icon_big').data('icon', '&#xe077;');
+            } else {
+                console.log(data);
+            }
+        });
+        return false;
+    });
 });

@@ -16,7 +16,7 @@ class Build extends Fly
      * La table par défaut utilisée par la classe.
      * @var string
      */
-    protected static $_sqlTable = TABLE_S;
+    protected static $_sqlTable = TABLE_BUILDS;
 
 
     public function getType()
@@ -39,7 +39,7 @@ class Build extends Fly
         return $this->_destination;
     }
 
-    public function getPositionId()
+    public function getDestinationId()
     {
         return $this->_destinationId;
     }
@@ -81,7 +81,7 @@ class Build extends Fly
         $this->_destination = $destination;
     }
 
-    public function setPositionId($destinationId)
+    public function setDestinationId($destinationId)
     {
         $this->_destinationId = $destinationId;
     }

@@ -43,12 +43,15 @@ head();
         <?php
         }
         ?>
-            <div class="panel" id="modules">
+            <div class="panel">
                 <h4>Modules actifs (<?php echo $MasterShipPlayer->getModulesNumber() ?>/<?php echo $MasterShipPlayer->getModulesMaxNumber() ?>)</h4>
                 <p>
                 Il n'y a aucun module activé pour le moment !
                 </p>
-                <hr /><br />
+                <hr />
+                <h4>Modules à utiliser</h4>
+            </div>
+            <div class="panel" id="modules">
                 <h4>Modules à fabriquer</h4>
                 <p>Les modules doivent être fabriqués avant d'être activés</p>
                 <div class="row">
@@ -63,6 +66,10 @@ head();
                         } else {
                             $icon = '&#xe0f6;';
                         }
+                        $bigIcon = '&#xe091;';
+                        if ($Module->isBuilding()) {
+                            $bigIcon = '&#xe077;';
+                        }
                         ?>
                     <div class='large-4 columns'>
                         <a href='#' data-tooltip data-width=250 class="has-tip tip-top module_link" data-module-id="<?php echo $Module->getId()?>" title="<?php echo $Module->getDescription()?>" style="display: block">
@@ -71,9 +78,15 @@ head();
                                     <span data-icon="<?php echo $icon?>"></span>
                                 </div>
                                 <div class='module_time'>
-                                    <?php echo countDown($Module->getTime())?>
+                                    <?php
+                                    if ($Module->isBuilding()) {
+                                        echo renderCountDown($Module->getBuildEnd() - time());
+                                    } else {
+                                        echo countDown($Module->getTime());
+                                    }
+                                    ?>
                                 </div>
-                                <span class="icon_big" data-icon="&#xe091;"></span>
+                                <span class="icon_big" data-icon="<?php echo $bigIcon?>"></span>
                                 <strong><?php echo $Module->getName()?></strong>
                                 <P>
                                     <?php echo $Module->getIntro()?>

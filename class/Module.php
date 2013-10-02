@@ -26,6 +26,8 @@ class Module extends Fly
     protected $_operation;
     protected $_type;
 
+    protected $_buildEnd;
+
     /**
      * La table par défaut utilisée par la classe.
      * @var string
@@ -138,6 +140,11 @@ class Module extends Fly
         return $this->_time;
     }
 
+    public function getBuildEnd()
+    {
+        return $this->_buildEnd;
+    }
+
 
 
     public function setIntro($intro)
@@ -245,6 +252,13 @@ class Module extends Fly
         $this->_time = $time;
     }
 
+    public function isBuilding()
+    {
+        if ($this->_buildEnd > time()) {
+            return true;
+        }
+    }
+
 
     /*
      * Charge les valeurs de l'objet
@@ -275,6 +289,10 @@ class Module extends Fly
             $this->_type = $param['type'];
             $this->_operation = $param['operation'];
             $this->_time = $param['time'];
+
+            if (!empty($param['buildEnd'])) {
+                $this->_buildEnd = $param['buildEnd'];
+            }
             $this->_sql = true;
         }
     }
@@ -374,7 +392,11 @@ class Module extends Fly
         $array = array();
         $sql = FlyPDO::get();
         $req = $sql->prepare('
-                    SELECT `'.static::$_sqlTable.'`.* FROM `'.static::$_sqlTable.'`'.$where);
+                    SELECT `'.static::$_sqlTable.'`.*, builds.end buildEnd
+                        FROM `'.static::$_sqlTable.'`
+                LEFT JOIN `'.TABLE_BUILDS.'` builds
+                    ON builds.type = "module" AND builds.typeId = `'.static::$_sqlTable.'`.id
+                '.$where);
 
         if ($req->execute($args)) {
             $current = 0;

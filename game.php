@@ -35,6 +35,8 @@ if (!empty($_GET['module'])) {
         } else {
         include_once 'modules/game/ship/ship_overview.php';
         }
+    } else if ($module == 'modules') {
+        include_once 'modules/game/modules/module_build.php';
     }
 }
 
