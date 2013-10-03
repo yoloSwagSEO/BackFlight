@@ -395,7 +395,7 @@ class Module extends Fly
                     SELECT `'.static::$_sqlTable.'`.*, builds.end buildEnd
                         FROM `'.static::$_sqlTable.'`
                 LEFT JOIN `'.TABLE_BUILDS.'` builds
-                    ON builds.type = "module" AND builds.typeId = `'.static::$_sqlTable.'`.id
+                    ON builds.type = "module" AND builds.typeId = `'.static::$_sqlTable.'`.id AND builds.state IS NULL OR builds.state NOT LIKE "%end%"
                 '.$where.'
                     ORDER BY id');
 
