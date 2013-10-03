@@ -2,6 +2,11 @@
 // Start engine...
 require_once 'includes/init.php';
 
+if (!isConnected()) {
+    header('location: '.PATH);
+    exit;
+}
+
 if (!empty($_GET['module'])) {
     $module = $_GET['module'];
 
