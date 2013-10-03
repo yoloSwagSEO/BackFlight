@@ -85,38 +85,40 @@ head();
                 <div class="row">
                     <?php foreach ($MasterShipPlayer->getModules() as $moduleId => $quantity)
                     {
-                        $Module = $array_modules[$moduleId];
-                        if ($Module->getType() == 'load') {
-                            $icon = '&#xe0a1;';
-                        } else if ($Module->getType() == 'power') {
-                            $icon = '&#xe0d1;';
-                        } else if ($Module->getType() == 'energy') {
-                            $icon = '&#xe0b0;';
-                        } else {
-                            $icon = '&#xe0f6;';
+                        if ($quantity != 0) {
+                            $Module = $array_modules[$moduleId];
+                            if ($Module->getType() == 'load') {
+                                $icon = '&#xe0a1;';
+                            } else if ($Module->getType() == 'power') {
+                                $icon = '&#xe0d1;';
+                            } else if ($Module->getType() == 'energy') {
+                                $icon = '&#xe0b0;';
+                            } else {
+                                $icon = '&#xe0f6;';
+                            }
+                            $bigIcon = '&#xe09f;';
+                            ?>
+                        <div class='large-4 columns'>
+                            <a href='#' data-tooltip data-width=250 class="has-tip tip-top module_enable" data-module-id="<?php echo $Module->getId()?>" title="<?php echo $Module->getDescription()?>" style="display: block">
+                                <div class='panel'>
+                                    <div class='module_type'>
+                                        <span data-icon="<?php echo $icon?>"></span>
+                                    </div>
+                                    <div class='module_time'>
+                                        <?php
+                                        echo $quantity;
+                                        ?>
+                                    </div>
+                                    <span class="icon_big" data-icon="<?php echo $bigIcon?>"></span>
+                                    <strong><?php echo $Module->getName()?></strong>
+                                    <P>
+                                        <?php echo $Module->getIntro()?>
+                                    </P>
+                                </div>
+                            </a>
+                        </div>
+                        <?php
                         }
-                        $bigIcon = '&#xe09f;';
-                        ?>
-                    <div class='large-4 columns'>
-                        <a href='#' data-tooltip data-width=250 class="has-tip tip-top module_enable" data-module-id="<?php echo $Module->getId()?>" title="<?php echo $Module->getDescription()?>" style="display: block">
-                            <div class='panel'>
-                                <div class='module_type'>
-                                    <span data-icon="<?php echo $icon?>"></span>
-                                </div>
-                                <div class='module_time'>
-                                    <?php
-                                    echo $quantity;
-                                    ?>
-                                </div>
-                                <span class="icon_big" data-icon="<?php echo $bigIcon?>"></span>
-                                <strong><?php echo $Module->getName()?></strong>
-                                <P>
-                                    <?php echo $Module->getIntro()?>
-                                </P>
-                            </div>
-                        </a>
-                    </div>
-                    <?php
                     }
 ?>
 
