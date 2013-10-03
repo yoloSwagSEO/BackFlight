@@ -66,7 +66,7 @@ head();
                         $bigIcon = '&#xe09f;';
                         ?>
                     <div class='large-4 columns'>
-                        <a href='#' data-tooltip data-width=250 class="has-tip tip-top module_link" data-module-id="<?php echo $Module->getId()?>" title="<?php echo $Module->getDescription()?>" style="display: block">
+                        <a href='#' data-tooltip data-width=250 class="has-tip tip-top module_enable" data-module-id="<?php echo $Module->getId()?>" title="<?php echo $Module->getDescription()?>" style="display: block">
                             <div class='panel'>
                                 <div class='module_type'>
                                     <span data-icon="<?php echo $icon?>"></span>

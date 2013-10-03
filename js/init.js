@@ -57,6 +57,7 @@ $(function () {
         updateCompteurs();
     }, 1000);
 
+    // Module building
     $('.module_link').on('click', function () {
         var link = $(this);
         $.post('modules/build', {moduleId: $(this).data('module-id')}, function(data) {
@@ -64,6 +65,16 @@ $(function () {
                 console.log(link.find('.icon_big'));
                 link.find('.icon_big').attr('data-icon', '');
                 link.find('.module_time').html(data);
+            }
+        });
+        return false;
+    });
+
+    // Module enabling
+    $('.module_enable').on('click', function () {
+        $.post('modules/enable', {moduleId: $(this).data('module-id')}, function (data) {
+            if (data !== 'err') {
+                
             }
         });
         return false;
