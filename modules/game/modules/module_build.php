@@ -27,4 +27,6 @@ $MasterShipPlayer->removeEnergy($Module->getCostEnergy());
 $MasterShipPlayer->removeFuel($Module->getCostFuel());
 $MasterShipPlayer->save();
 
+exit(renderCountDown($Module->getTime()));
+
 ?>
