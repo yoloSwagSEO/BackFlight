@@ -234,6 +234,11 @@ class Ship extends Model
         return $this->_modules;
     }
 
+    public function getModulesEnabled()
+    {
+        return $this->_modulesEnabled;
+    }
+
 
     /**
      * User ID
@@ -767,12 +772,13 @@ class Ship extends Model
                             $param['modules'][$row['moduleId']] = 0;
                         }
                         if (!empty($row['moduleEnabled'])) {
-                            if (empty($param['moduleEnabled'][$row['moduleId']])) {
-                                $param['moduleEnabled'][$row['moduleId']] = 0;
+                            if (empty($param['modulesEnabled'][$row['moduleId']])) {
+                                $param['modulesEnabled'][$row['moduleId']] = 0;
                             }
-                            $param['moduleEnabled'][$row['moduleId']]++;
+                            $param['modulesEnabled'][$row['moduleId']]++;
+                        } else {
+                            $param['modules'][$row['moduleId']]++;
                         }
-                        $param['modules'][$row['moduleId']]++;
                         $param['shipModule'][$row['shipModuleId']] = true;
                     }
                 }
@@ -885,6 +891,28 @@ class Ship extends Model
         } else {
             var_dump($req->errorInfo());
             trigger_error('Unable to add module to ship', E_USER_ERROR);
+        }
+    }
+
+    public function hasModuleAvailable($moduleId)
+    {
+        if (!empty($this->_modules[$moduleId])) {
+            return true;
+        }
+    }
+
+    public function enableModule($moduleId)
+    {
+        if ($this->hasModuleAvailable($moduleId)) {
+            $ShipModule = array_shift(ShipModule::getAll('', '', $this->_id, $moduleId, '0'));
+            var_dump($ShipModule);
+            $ShipModule->setModuleEnabled(1);
+            $ShipModule->save();
+            $this->_modules[$moduleId]--;
+            if (empty($this->_modulesEnabled[$moduleId])) {
+                $this->_modulesEnabled[$moduleId] = 0;
+            }
+            $this->_modulesEnabled[$moduleId]++;
         }
     }
 }

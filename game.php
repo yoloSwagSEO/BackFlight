@@ -41,7 +41,14 @@ if (!empty($_GET['module'])) {
         include_once 'modules/game/ship/ship_overview.php';
         }
     } else if ($module == 'modules') {
-        include_once 'modules/game/modules/module_build.php';
+        if (!empty($_GET['action'])) {
+            $action = $_GET['action'];
+            if ($action == 'build') {
+                include_once 'modules/game/modules/module_build.php';
+            } else if ($action == 'enable') {
+                include_once 'modules/game/modules/module_enable.php';
+            }
+        }
     }
 }
 
