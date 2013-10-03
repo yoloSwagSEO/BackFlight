@@ -74,7 +74,7 @@ $(function () {
     $('.module_enable').on('click', function () {
         $.post('modules/enable', {moduleId: $(this).data('module-id')}, function (data) {
             if (data !== 'err') {
-                
+                window.location.reload();
             }
         });
         return false;
