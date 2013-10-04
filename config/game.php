@@ -195,7 +195,7 @@ define('POSITION_SEARCH_FUEL_QUANTITY', 30);
 /**
  * Minimal quantity of techs found during sucessful search
  */
-define('POSITION_SEARCH_TECHS_QUANTITY', 80);
+define('POSITION_SEARCH_TECHS_QUANTITY', 150);
 
 
 /**
