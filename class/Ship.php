@@ -83,6 +83,8 @@ class Ship extends Model
 
     protected $_modulesEnabled = array();
 
+    protected $_modulesEffects = array();
+
     /**
      *
      * @var int
@@ -586,6 +588,8 @@ class Ship extends Model
 
             if (!empty($param['modulesEnabled'])) {
                 $this->_modulesEnabled = $param['modulesEnabled'];
+                $this->_modulesEffects = $param['modulesEffects'];
+                $this->_calculateBonuses();
             }
 
 
@@ -675,11 +679,11 @@ class Ship extends Model
 
     /**
      *
-     * @param type $id
-     * @param type $toArray
-     * @param type $playerId
-     * @param type $type
-     * @param type $position
+     * @param int $id
+     * @param boolean $toArray
+     * @param int $playerId
+     * @param string $type
+     * @param int $position
      */
     public static function getAll($id, $toArray=false, $userId=null, $type=null, $position=null)
     {
@@ -720,7 +724,9 @@ class Ship extends Model
         $sql = FlyPDO::get();
         $req = $sql->prepare('SELECT `'.self::$_sqlTable.'`.*, pos.x, pos.y, res.quantity ressourceQuantity, res.type ressourceType,
                 mod.name modelName, mod.type modelType, mod.category modelCategory, mod.loadMax, mod.energyMax, mod.energyGain, mod.fuelMax, mod.powerMax, mod.speed, mod.modulesMax,
-                smodu.moduleId, smodu.moduleEnabled, smodu.id shipModuleId
+                smodu.moduleId, smodu.moduleEnabled, smodu.id shipModuleId, modu.operation moduleOperation,
+                modu.weight moduleWeight, modu.power modulePower, modu.energy moduleEnergy, modu.load moduleLoad, modu.fuel moduleFuel, modu.techs moduleTechs,
+                modu.speed moduleSpeed, modu.shield moduleShield, modu.search moduleSearch, modu.attack moduleAttack, modu.weapons moduleWeapon, modu.defense moduleDefense
             FROM `'.self::$_sqlTable.'`
             LEFT JOIN `'.TABLE_POSITIONS.'` pos
                 ON `'.self::$_sqlTable.'`.positionId =  pos.id
@@ -780,6 +786,24 @@ class Ship extends Model
                             $param['modules'][$row['moduleId']]++;
                         }
                         $param['shipModule'][$row['shipModuleId']] = true;
+
+                        // Loading module effects
+                        if (empty($param['modulesEffects'])) {
+                            $param['modulesEffects'] = array();
+                        }
+                        $param['modulesEffects'][$row['moduleId']]['weight'] = $row['moduleWeight'];
+                        $param['modulesEffects'][$row['moduleId']]['operation'] = $row['moduleOperation'];
+                        $param['modulesEffects'][$row['moduleId']]['power'] = $row['modulePower'];
+                        $param['modulesEffects'][$row['moduleId']]['energy'] = $row['moduleEnergy'];
+                        $param['modulesEffects'][$row['moduleId']]['load'] = $row['moduleLoad'];
+                        $param['modulesEffects'][$row['moduleId']]['fuel'] = $row['moduleFuel'];
+                        $param['modulesEffects'][$row['moduleId']]['techs'] = $row['moduleTechs'];
+                        $param['modulesEffects'][$row['moduleId']]['speed'] = $row['moduleSpeed'];
+                        $param['modulesEffects'][$row['moduleId']]['shield'] = $row['moduleShield'];
+                        $param['modulesEffects'][$row['moduleId']]['search'] = $row['moduleSearch'];
+                        $param['modulesEffects'][$row['moduleId']]['attack'] = $row['moduleAttack'];
+                        $param['modulesEffects'][$row['moduleId']]['weapons'] = $row['moduleWeapon'];
+                        $param['modulesEffects'][$row['moduleId']]['defense'] = $row['moduleDefense'];
                     }
                 }
 
@@ -933,6 +957,34 @@ class Ship extends Model
                 $this->_modules[$moduleId] = 0;
             }
             $this->_modules[$moduleId]++;
+        }
+    }
+
+    protected function _calculateBonuses()
+    {
+        foreach ($this->_modulesEnabled as $moduleId => $quantity)
+        {
+            $moduleEffects = $this->_modulesEffects[$moduleId];
+            $operation = $moduleEffects['operation'];
+            for ($i = 0; $i < $quantity; $i++)
+            {
+                foreach ($moduleEffects as $effect => $value)
+                {
+                    if ($effect != 'operation' && $effect != 'weight') {
+                        if (!empty($value)) {
+                            $propertyName = '_'.$effect;
+                            if ($effect != 'speed') {
+                                $propertyName .= 'Max';
+                            }
+                            if ($operation == 'multiply') {
+                                $this->$propertyName *= $value;
+                            }
+                        }
+                    } else if ($effect == 'weight') {
+                        $this->_load += $value;
+                    }
+                }
+            }
         }
     }
 }
