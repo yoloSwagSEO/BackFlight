@@ -901,11 +901,17 @@ class Ship extends Model
         }
     }
 
+    public function hasModuleEnabled($moduleId)
+    {
+        if (!empty($this->_modulesEnabled[$moduleId])) {
+            return true;
+        }
+    }
+
     public function enableModule($moduleId)
     {
         if ($this->hasModuleAvailable($moduleId)) {
             $ShipModule = array_shift(ShipModule::getAll('', '', $this->_id, $moduleId, '0'));
-            var_dump($ShipModule);
             $ShipModule->setModuleEnabled(1);
             $ShipModule->save();
             $this->_modules[$moduleId]--;
@@ -913,6 +919,20 @@ class Ship extends Model
                 $this->_modulesEnabled[$moduleId] = 0;
             }
             $this->_modulesEnabled[$moduleId]++;
+        }
+    }
+    
+    public function disableModule($moduleId)
+    {
+        if ($this->hasModuleEnabled($moduleId)) {
+            $ShipModule = array_shift(ShipModule::getAll('', '', $this->_id, $moduleId, 1));
+            $ShipModule->setModuleEnabled('0');
+            $ShipModule->save();
+            $this->_modulesEnabled[$moduleId]--;
+            if (empty($this->_modules[$moduleId])) {
+                $this->_modules[$moduleId] = 0;
+            }
+            $this->_modules[$moduleId]++;
         }
     }
 }

@@ -47,6 +47,8 @@ if (!empty($_GET['module'])) {
                 include_once 'modules/game/modules/module_build.php';
             } else if ($action == 'enable') {
                 include_once 'modules/game/modules/module_enable.php';
+            } else if ($action == 'disable') {
+                include_once 'modules/game/modules/module_disable.php';
             }
         }
     }

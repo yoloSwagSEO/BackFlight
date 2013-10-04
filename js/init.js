@@ -70,7 +70,7 @@ $(function () {
         return false;
     });
 
-    // Module enabling
+    // Module activation
     $('.module_enable').on('click', function () {
         $.post('modules/enable', {moduleId: $(this).data('module-id')}, function (data) {
             if (data !== 'err') {
@@ -79,4 +79,15 @@ $(function () {
         });
         return false;
     });
+
+    // Module disactivation
+    $('.module_disable').on('click', function () {
+        $.post('modules/disable', {moduleId: $(this).data('module-id')}, function (data) {
+            if (data !== 'err') {
+                window.location.reload();
+            }
+        });
+        return false;
+    });
+
 });

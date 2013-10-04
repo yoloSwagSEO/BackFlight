@@ -24,4 +24,4 @@ RewriteRule ^search/(fast|probes)$ game.php?module=search&speed=$1
 RewriteRule ^ship$ game.php?module=ship
 RewriteRule ^ship/([a-z]+)$ game.php?module=ship&action=$1
 
-RewriteRule ^modules/(build|enable)$ game.php?module=modules&action=$1
+RewriteRule ^modules/(build|enable|disable)$ game.php?module=modules&action=$1
