@@ -38,6 +38,27 @@ $position_category = $MasterShipPosition->getCategory();
         </div>
 
         <?php
+        if (!empty($_SESSION['errors']['search']['fuel_missing'])) {
+            ?>
+            <div data-alert class="alert-box alert radius">
+                Fuel insuffisant pour lancer la recherche ! <br />Effectuez une recherche avec les sondes, qui ne consomment pas de fuel...
+            </div>
+            <?php
+            unset($_SESSION['errors']['search']['fuel_missing']);
+        }
+        ?>
+        <?php
+        if (!empty($_SESSION['errors']['search']['energy_missing'])) {
+            ?>
+            <div data-alert class="alert-box alert radius">
+                Energie insuffisante pour lancer la recherche ! <br />Patientez jusqu'à ce que les batteries soient suffisamment chargées.
+            </div>
+            <?php
+            unset($_SESSION['errors']['search']['energy_missing']);
+        }
+        ?>
+
+        <?php
         include_once 'modules/game/observatory/observatory_'.$position_category.'.php';
         ?>
 

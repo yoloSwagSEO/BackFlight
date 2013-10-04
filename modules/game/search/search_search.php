@@ -18,6 +18,20 @@ if ($MasterShipPlayer->getState() == 'flying') {
     exit('Ship already flying !');
 }
 
+if ($fuel > $MasterShipPlayer->getFuel())
+{
+    $_SESSION['errors']['search']['fuel_missing'] = true;
+    header('location: '.PATH.'observatory');
+    exit;
+}
+
+if ($energy > $MasterShipPlayer->getEnergy()) {
+    $_SESSION['errors']['search']['energy_missing'] = true;
+    header('location: '.PATH.'observatory');
+    exit;
+}
+
+
 $PositionCurrent = new Position($MasterShipPlayer->getPositionId());
 
 $Action = new Action();
