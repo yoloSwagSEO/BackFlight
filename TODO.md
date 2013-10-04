@@ -5,7 +5,7 @@
    * [Done] Modules preview
    * [Partial] Modules build / queue
    * [Done] Modules attachment to ships
-   * Ship bonus calculation
+   * [Done] Ship bonus calculation
 * Handle shield for ship (with energy)
 
 ## Later
