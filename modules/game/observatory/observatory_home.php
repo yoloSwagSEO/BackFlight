@@ -37,6 +37,31 @@ $position_category = $MasterShipPosition->getCategory();
             ?>
         </div>
 
+        <div class="alert-box success radius" data-alert>
+            Présence de Fuel :
+            <?php
+            $qualityFuel = $MasterShipPosition->getSearchProbability('fuel');
+            $qualityTechs = $MasterShipPosition->getSearchProbability('techs');
+            if ($qualityFuel == POSITION_SEARCH_POOR_PROBA) {
+                echo 'faible';
+            } else if ($qualityFuel == POSITION_SEARCH_NORMAL_PROBA) {
+                echo 'normale';
+            } else {
+                echo 'élevée';
+            }
+            ?>
+            / Présence de techs :
+            <?php
+            if ($qualityTechs == POSITION_SEARCH_POOR_PROBA) {
+                echo 'faible';
+            } else if ($qualityTechs == POSITION_SEARCH_NORMAL_PROBA) {
+                echo 'normale';
+            } else {
+                echo 'élevée';
+            }
+            ?>
+        </div>
+
         <?php
         if (!empty($_SESSION['errors']['search']['fuel_missing'])) {
             ?>

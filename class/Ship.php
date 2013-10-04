@@ -241,6 +241,30 @@ class Ship extends Model
         return $this->_modulesEnabled;
     }
 
+    public function getSearchTime($type)
+    {
+        if ($type == 'probes') {
+            return 4 * 30 / GAME_SPEED;
+        }
+        return 30 / GAME_SPEED;
+    }
+
+    public function getSearchEnergy($type)
+    {
+        if ($type == 'probes') {
+            return 6;
+        }
+        return 3;
+    }
+
+    public function getSearchFuel($type)
+    {
+        if ($type == 'probes') {
+            return 0;
+        }
+        return 1;
+    }
+
 
     /**
      * User ID
