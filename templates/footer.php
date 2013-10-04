@@ -16,7 +16,6 @@
     <script src="js/foundation/foundation.tooltips.js"></script>
     <script src="js/foundation/foundation.topbar.js"></script>
 
-    <script src="js/vendor/jquery.kkcountdown.js"></script>
     <script src="js/init.js"></script>
 
     <script>
