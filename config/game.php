@@ -180,12 +180,12 @@ define('POSITION_SEARCH_NORMAL', 3);
 /**
  * Probability to find something on "poor" positions
  */
-define('POSITION_SEARCH_POOR_PROBA', .2);
+define('POSITION_SEARCH_POOR_PROBA', .3);
 
 /**
  * Probability to find something on "normal" position
  */
-define('POSITION_SEARCH_NORMAL_PROBA', .5);
+define('POSITION_SEARCH_NORMAL_PROBA', .6);
 
 /**
  * Minimal quantity of fuel found during sucessful search
