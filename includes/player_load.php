@@ -102,6 +102,9 @@ if (!empty($array_ships)) {
         }
         $Ship->updateEnergy();
         $Ship->updatePower();
+        if ($Ship->isOverloaded()) {
+            $Ship->setSpeed($Ship->getSpeed() / SHIP_SPEED_OVERLOADED);
+        }
         $Ship->setLastUpdate(time());
         $Ship->save();
     }

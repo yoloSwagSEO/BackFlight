@@ -380,6 +380,9 @@ class Ship extends Model
     {
         $time = time();
         $diff = $time - $this->_lastUpdate;
+        if ($this->_energy > $this->_energyMax) {
+            $this->_energy = $this->_energyMax;
+        }
         if ($diff > 0) {
             $gain = $this->_energyGain / 3600 * $diff * GAME_SPEED;
             $this->addEnergy($gain);
