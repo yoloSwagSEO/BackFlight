@@ -12,12 +12,18 @@ This roadmap is not significant for the real developpment effort. It's just a ro
 ## Ship
 
 ### Upgrades
- - **4/10** : Add possibility to build modules (for more energy, loading, etc)
+ - **10/11** : Add more modules
+ - **10/11** : Add possibility to enable more modules
 
 ## Planets
-- **11/10** : Add ability to settle
-- **18/10** : Add ability to build ressources-extractors / emergency station / ship factory
+- (?) **10/11** : Add ability to settle
+- (?) **10/18** : Add ability to build ressources-extractors / emergency station / ship factory
 
 ## Design
-- **4/10**  : Creation
-- **11/10** : Integration
+- **10/11**  : Creation
+- **10/18** : Integration
+ 
+
+
+
+(?) : Not sure to keep this functionnalities for now
