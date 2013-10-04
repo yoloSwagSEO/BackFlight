@@ -176,14 +176,20 @@ class Build extends Fly
         return array_shift($array);
     }
 
+
     /**
      *
      * @param type $id
      * @param type $to_array
      * @param type $userId
+     * @param type $state
+     * @param type $type
+     * @param type $destination
+     * @param type $destinationId
+     * @param type $typeId
      * @return \class
      */
-    public static function getAll($id = null, $to_array = false, $userId = null, $state = null)
+    public static function getAll($id = null, $to_array = false, $userId = null, $state = null, $type = null, $destination = null, $destinationId = null, $typeId = null)
     {
         $where = '';
         $args = array();
@@ -212,7 +218,56 @@ class Build extends Fly
             } else {
                 $where .= ' AND ';
             }
-            $where .= '`'.static::$_sqlTable.'`.`state` IS NULL OR `'.static::$_sqlTable.'`.`state` NOT LIKE "%end%"';
+            $where .= '(`'.static::$_sqlTable.'`.`state` IS NULL OR `'.static::$_sqlTable.'`.`state` NOT LIKE "%end%")';
+        } else {
+            if (empty($where)) {
+                $where = ' WHERE ';
+            } else {
+                $where .= ' AND ';
+            }
+            $where .= '`'.static::$_sqlTable.'`.`state` = :state';
+            $args[':state'] = $state;
+        }
+
+
+        if ($type) {
+            if (empty($where)) {
+                $where = ' WHERE ';
+            } else {
+                $where .= ' AND ';
+            }
+            $where .= '`'.static::$_sqlTable.'`.type = :type';
+            $args[':type'] = $type;
+        }
+
+        if ($typeId) {
+            if (empty($where)) {
+                $where = ' WHERE ';
+            } else {
+                $where .= ' AND ';
+            }
+            $where .= '`'.static::$_sqlTable.'`.typeId = :typeId';
+            $args[':typeId'] = $typeId;
+        }
+
+        if ($destination) {
+            if (empty($where)) {
+                $where = ' WHERE ';
+            } else {
+                $where .= ' AND ';
+            }
+            $where .= '`'.static::$_sqlTable.'`.destination = :destination';
+            $args[':destination'] = $destination;
+        }
+
+        if ($destinationId) {
+            if (empty($where)) {
+                $where = ' WHERE ';
+            } else {
+                $where .= ' AND ';
+            }
+            $where .= '`'.static::$_sqlTable.'`.destinationId = :destinationId';
+            $args[':destinationId'] = $destinationId;
         }
 
         $array = array();
@@ -259,5 +314,41 @@ class Build extends Fly
             var_dump($req->errorInfo());
             trigger_error('Chargement impossible', E_USER_ERROR);
         }
+    }
+
+    /**
+     *
+     * @param type $type
+     * @param type $userId
+     * @param type $destination
+     * @param type $destinationId
+     * @return type
+     */
+    public static function getTimeEndBuild($type, $userId, $destination, $destinationId)
+    {
+        $end = 0;
+        $array_builds = self::getAll('', '', $userId, '', $type, $destination, $destinationId);
+        foreach ($array_builds as $Build)
+        {
+            if ($Build->getEnd() > $end) {
+                $end = $Build->getEnd();
+            }
+        }
+        return $end;
+    }
+
+    /**
+     *
+     * @param type $type
+     * @param type $typeId
+     * @param type $userId
+     * @param type $destination
+     * @param type $destinationId
+     * @return type
+     */
+    public static function getQueueFor($type, $typeId, $userId, $destination, $destinationId)
+    {
+        $array_builds = self::getAll('', '', $userId, '', $type, $destination, $destinationId, $typeId);
+        return count($array_builds);
     }
 }

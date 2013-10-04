@@ -6,11 +6,20 @@ if (!empty($_POST['moduleId'])) {
     }
 }
 
-
 // Check for ressources
 if ($Module->getCostEnergy() > $MasterShipPlayer->getEnergy() || $Module->getCostFuel() > $MasterShipPlayer->getFuel() || $Module->getCostTechs() > $MasterShipPlayer->getTechs()) {
     exit('Unsuffisant ressources');
 }
+
+// Get current modules build on ship
+$end = Build::getTimeEndBuild('module', $User->getId(), 'ship', $MasterShipPlayer->getId());
+if (!$end) {
+    $end = time();
+}
+
+$queue = Build::getQueueFor('module', $Module->getId(), $User->getId(), 'ship', $MasterShipPlayer->getId());
+$queue += 1;
+
 
 $ModuleBuild = new Build();
 $ModuleBuild->setType('module');
@@ -19,7 +28,8 @@ $ModuleBuild->setUserId($User->getId());
 $ModuleBuild->setDestination('ship');
 $ModuleBuild->setDestinationId($MasterShipPlayer->getId());
 $ModuleBuild->setStart(time());
-$ModuleBuild->setEnd(time() + $Module->getTime());
+$ModuleBuild->setEnd($end + $Module->getTime());
+
 $ModuleBuild->save();
 
 $MasterShipPlayer->removeTechs($Module->getCostTechs());
@@ -27,6 +37,12 @@ $MasterShipPlayer->removeEnergy($Module->getCostEnergy());
 $MasterShipPlayer->removeFuel($Module->getCostFuel());
 $MasterShipPlayer->save();
 
-exit(renderCountDown($Module->getTime()));
+if ($queue > 1) {
+    $queue = '('.$queue.') ';
+} else {
+    $queue = '';
+}
+
+exit($queue.renderCountDown($end - time() + $Module->getTime()));
 
 ?>

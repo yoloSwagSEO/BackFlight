@@ -151,6 +151,8 @@ head();
                         if ($Module->isBuilding()) {
                             $bigIcon = '&#xe077;';
                         }
+
+                        $quantity = $Module->getBuildQuantity();
                         ?>
                     <div class='large-4 columns'>
                         <a href='#' data-tooltip data-width=250 class="has-tip tip-top module_link" data-module-id="<?php echo $Module->getId()?>" title="<?php echo $Module->getDescription()?>" style="display: block">
@@ -161,6 +163,9 @@ head();
                                 <div class='module_time'>
                                     <?php
                                     if ($Module->isBuilding()) {
+                                        if ($quantity > 1) {
+                                            echo '('.$quantity.') ';
+                                        }
                                         echo renderCountDown($Module->getBuildEnd() - time());
                                     } else {
                                         echo countDown($Module->getTime());

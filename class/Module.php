@@ -27,6 +27,7 @@ class Module extends Fly
     protected $_type;
 
     protected $_buildEnd;
+    protected $_buildQuantity;
 
     /**
      * La table par défaut utilisée par la classe.
@@ -143,6 +144,11 @@ class Module extends Fly
     public function getBuildEnd()
     {
         return $this->_buildEnd;
+    }
+
+    public function getBuildQuantity()
+    {
+        return $this->_buildQuantity;
     }
 
 
@@ -292,6 +298,7 @@ class Module extends Fly
 
             if (!empty($param['buildEnd'])) {
                 $this->_buildEnd = $param['buildEnd'];
+                $this->_buildQuantity = $param['buildQuantity'];
             }
             $this->_sql = true;
         }
@@ -425,6 +432,18 @@ class Module extends Fly
 
                 // A partir d'ici, on charge les paramètres supplémentaires (par exemple conversion pour les médias)
 
+                if (empty($param['buildEndSeen'][$row['buildEnd']])) {
+                    if (!empty($row['buildEnd'])) {
+                        if ($row['buildEnd'] > $param['buildEnd']) {
+                            $param['buildEnd'] = $row['buildEnd'];
+                        }
+                    }
+                    if (empty($param['buildQuantity'])) {
+                        $param['buildQuantity'] = 0;
+                    }
+                    $param['buildQuantity']++;
+                    $param['buildEndSeen'][$row['buildEnd']] = true;
+                }
             }
             if (!empty($param)) {
                 if ($to_array) {
