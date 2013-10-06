@@ -151,6 +151,7 @@ class Model extends Fly
             $this->_user = $param['user'];
             $this->_category = $param['category'];
             $this->_type = $param['type'];
+            $this->_modulesMax = $param['modulesMax'];
             $this->_loadMax = $param['loadMax'];
             $this->_energyMax = $param['energyMax'];
             $this->_energyMax = $param['energyGain'];
@@ -164,13 +165,14 @@ class Model extends Fly
     protected function _create()
     {
         $sql = FlyPDO::get();
-        $req = $sql->prepare('INSERT INTO `'.static::$_sqlTable.'` VALUES (:id, :name, :user, :category, :type, :loadMax, :energyMax, :energyGain, :fuelMax, :powerMax, :speed)');
+        $req = $sql->prepare('INSERT INTO `'.static::$_sqlTable.'` VALUES (:id, :name, :user, :category, :type, :modulesMax, :loadMax, :energyMax, :energyGain, :fuelMax, :powerMax, :speed)');
         $args = array(
             ':id' => $this->_id,
             ':name' => $this->_name,
             ':user' => $this->_user,
             ':category' => $this->_category,
             ':type' => $this->_type,
+            ':modulesMax' => $this->_modulesMax,
             ':loadMax' => $this->_loadMax,
             ':energyMax' => $this->_energyMax,
             ':energyGain' => $this->_energyGain,
@@ -190,13 +192,14 @@ class Model extends Fly
     protected function _update()
     {
         $sql = FlyPDO::get();
-        $req = $sql->prepare('UPDATE `'.static::$_sqlTable.'` SET `name` = :name, `user` = :user, `category` = :category, `type` = :type, `loadMax` = :loadMax, `energyMax` = :energyMax, `energyGain` = :energyGain, `fuelMax` = :fuelMax, `powerMax` = :powerMax, `speed` = :speed WHERE id = :id');
+        $req = $sql->prepare('UPDATE `'.static::$_sqlTable.'` SET `name` = :name, `user` = :user, `category` = :category, `type` = :type, `modulesMax` = :modulesMax, `loadMax` = :loadMax, `energyMax` = :energyMax, `energyGain` = :energyGain, `fuelMax` = :fuelMax, `powerMax` = :powerMax, `speed` = :speed WHERE id = :id');
         $args = array(
             ':id' => $this->_id,
             ':name' => $this->_name,
             ':user' => $this->_user,
             ':category' => $this->_category,
             ':type' => $this->_type,
+            ':modulesMax' => $this->_modulesMax,
             ':loadMax' => $this->_loadMax,
             ':energyMax' => $this->_energyMax,
             ':energyGain' => $this->_energyGain,
