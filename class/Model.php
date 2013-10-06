@@ -12,6 +12,7 @@ class Model extends Fly
     protected $_fuelMax;
     protected $_powerMax;
     protected $_speed;
+    protected $_modulesMax;
 
 
     /**
@@ -73,6 +74,11 @@ class Model extends Fly
         }
         return $this->_speed;
     }
+    
+    public function getModulesMax()
+    {
+        return $this->_modulesMax;
+    }
 
 
 
@@ -124,6 +130,11 @@ class Model extends Fly
     public function setSpeed($speed)
     {
         $this->_speed = $speed;
+    }
+    
+    public function setModulesMax($modulesMax)
+    {
+        $this->_modulesMax = $modulesMax;
     }
 
 

@@ -9,7 +9,7 @@ if (!empty($_POST['moduleId'])) {
 }
 
 // Is this module available on ship ?
-if ($MasterShipPlayer->getModulesEnabledNumber() >= $MasterShipPlayer->getModulesMaxNumber()) {
+if ($MasterShipPlayer->getModulesEnabledNumber() >= $MasterShipPlayer->getModulesMax()) {
     exit('Already max module number enabled');
 }
 

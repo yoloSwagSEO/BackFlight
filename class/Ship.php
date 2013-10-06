@@ -607,7 +607,7 @@ class Ship extends Model
                 $this->_positionY = $param['y'];
             }
 
-            $this->_modulesMaxNumber = $param['modulesMax'];
+            $this->_modulesMax = $param['modulesMax'];
 
             if (!empty($param['modules'])) {
                 $this->_modules = $param['modules'];
@@ -893,11 +893,6 @@ class Ship extends Model
             return false;
         }
         return true;
-    }
-
-    public function getModulesMaxNumber()
-    {
-        return $this->_modulesMaxNumber;
     }
 
     public function getModulesEnabledNumber()
