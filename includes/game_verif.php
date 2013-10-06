@@ -46,6 +46,25 @@ if (empty($array_modules)) {
     $BatteryBasicModule->setCostTechs(100);
     $BatteryBasicModule->setTime(70);
     $BatteryBasicModule->save();
+
+}
+
+$array_models = Model::getAll();
+
+// If there's no model, we have to create one
+if (empty($array_models)) {
+    $Model = new Model();
+    $Model->setName('Survivor');
+    $Model->setCategory('mastership');
+    $Model->setType('');
+    $Model->setModulesMax(3);
+    $Model->setLoadMax(1000);
+    $Model->setEnergyMax(100);
+    $Model->setEnergyGain(100);
+    $Model->setFuelMax(100);
+    $Model->setPowerMax(100);
+    $Model->setSpeed(10);
+    $Model->save();
 }
 
 ?>
