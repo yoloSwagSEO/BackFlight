@@ -30,13 +30,12 @@ if (!empty($array_actions)) {
 
                         $MasterShipPlayer->save();
                     }
-
+                    
+                    Position::addPositionSearch($Action->getTo(), $User->getId(), $Action->getEnd(), $search_result);
                     $_SESSION['infos']['search'] = $result;
                 } else {
                     $_SESSION['infos']['search'] = 'empty';
                 }
-
-                Position::addPositionSearch($Action->getTo(), $User->getId(), $Action->getEnd(), $search_result);
 
             } else if ($Action->getType() == 'repair') {
                 $repair_diff = $MasterShipPlayer->getLastUpdateDiff();
