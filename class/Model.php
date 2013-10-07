@@ -13,6 +13,8 @@ class Model extends Fly
     protected $_powerMax;
     protected $_speed;
     protected $_modulesMax;
+    protected $_shieldMax;
+    protected $_shieldGain;
 
 
     /**
@@ -80,6 +82,16 @@ class Model extends Fly
         return $this->_modulesMax;
     }
 
+    public function getShieldMax()
+    {
+        return $this->_shieldMax;
+    }
+
+    public function getShieldGain()
+    {
+        return $this->_shieldGain;
+    }
+
 
 
     public function setName($name)
@@ -137,6 +149,16 @@ class Model extends Fly
         $this->_modulesMax = $modulesMax;
     }
 
+    public function setShieldMax($shieldMax)
+    {
+        $this->_shieldMax = $shieldMax;
+    }
+
+    public function setShieldGain($shieldGain)
+    {
+        $this->_shieldGain = $shieldGain;
+    }
+
 
 
     /*
@@ -158,6 +180,8 @@ class Model extends Fly
             $this->_fuelMax = $param['fuelMax'];
             $this->_powerMax = $param['powerMax'];
             $this->_speed = $param['speed'];
+            $this->_shieldMax = $param['shieldMax'];
+            $this->_shieldGain = $param['shieldGain'];
             $this->_sql = true;
         }
     }
@@ -165,7 +189,7 @@ class Model extends Fly
     protected function _create()
     {
         $sql = FlyPDO::get();
-        $req = $sql->prepare('INSERT INTO `'.static::$_sqlTable.'` VALUES (:id, :name, :user, :category, :type, :modulesMax, :loadMax, :energyMax, :energyGain, :fuelMax, :powerMax, :speed)');
+        $req = $sql->prepare('INSERT INTO `'.static::$_sqlTable.'` VALUES (:id, :name, :user, :category, :type, :modulesMax, :loadMax, :energyMax, :energyGain, :shieldMax, :shieldGain, :fuelMax, :powerMax, :speed)');
         $args = array(
             ':id' => $this->_id,
             ':name' => $this->_name,
@@ -176,6 +200,8 @@ class Model extends Fly
             ':loadMax' => $this->_loadMax,
             ':energyMax' => $this->_energyMax,
             ':energyGain' => $this->_energyGain,
+            ':shieldMax' => $this->_shieldMax,
+            ':shieldGain' => $this->_shieldGain,
             ':fuelMax' => $this->_fuelMax,
             ':powerMax' => $this->_powerMax,
             ':speed' => $this->_speed
@@ -192,7 +218,7 @@ class Model extends Fly
     protected function _update()
     {
         $sql = FlyPDO::get();
-        $req = $sql->prepare('UPDATE `'.static::$_sqlTable.'` SET `name` = :name, `user` = :user, `category` = :category, `type` = :type, `modulesMax` = :modulesMax, `loadMax` = :loadMax, `energyMax` = :energyMax, `energyGain` = :energyGain, `fuelMax` = :fuelMax, `powerMax` = :powerMax, `speed` = :speed WHERE id = :id');
+        $req = $sql->prepare('UPDATE `'.static::$_sqlTable.'` SET `name` = :name, `user` = :user, `category` = :category, `type` = :type, `modulesMax` = :modulesMax, `loadMax` = :loadMax, `energyMax` = :energyMax, `energyGain` = :energyGain, `shieldMax` = :shieldMax, `shieldGain` = :shieldGain,`fuelMax` = :fuelMax, `powerMax` = :powerMax, `speed` = :speed WHERE id = :id');
         $args = array(
             ':id' => $this->_id,
             ':name' => $this->_name,
@@ -203,6 +229,8 @@ class Model extends Fly
             ':loadMax' => $this->_loadMax,
             ':energyMax' => $this->_energyMax,
             ':energyGain' => $this->_energyGain,
+            ':energyGain' => $this->_energyGain,
+            ':shieldMax' => $this->_shieldMax,
             ':fuelMax' => $this->_fuelMax,
             ':powerMax' => $this->_powerMax,
             ':speed' => $this->_speed

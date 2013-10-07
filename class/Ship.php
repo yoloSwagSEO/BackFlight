@@ -67,6 +67,8 @@ class Ship extends Model
      */
     protected $_energy;
 
+    protected $_shield;
+
     /**
      *
      * @var int
@@ -205,6 +207,11 @@ class Ship extends Model
         return $this->_energy;
     }
 
+    public function getShield()
+    {
+        return $this->_shield;
+    }
+
     public function getFuel()
     {
         return $this->_fuel;
@@ -335,6 +342,16 @@ class Ship extends Model
         return $this->_energy = $energy;
     }
 
+    public function setShield($shield)
+    {
+        if ($this->_shieldMax) {
+            if ($shield > $this->_shieldMax) {
+                return $this->_shield = $this->_shieldMax;
+            }
+        }
+        return $this->_shield = $shield;
+    }
+
     /**
      * Set fuel level 
      * @param int $fuel fuel level
@@ -414,6 +431,22 @@ class Ship extends Model
     }
     
     /**
+     * Update ship energy
+     */
+    public function updateShield()
+    {
+        $time = time();
+        $diff = $time - $this->_lastUpdate;
+        if ($this->_shield > $this->_shieldMax) {
+            $this->_shield = $this->_shieldMax;
+        }
+        if ($diff > 0) {
+            $gain = $this->_shieldGain / 3600 * $diff * GAME_SPEED;
+            $this->addShield($gain);
+        }
+    }
+    
+    /**
      * Update ship power
      */
     public function updatePower()
@@ -433,13 +466,45 @@ class Ship extends Model
 
 
     /**
-     *
+     * Remove energy
      * @param int $energy
-     * @return type
+     * @param boolean $shield false to disable shield
+     * @return int
      */
-    public function removeEnergy($energy)
+    public function removeEnergy($energy, $shield = true)
     {
+        // If shield is enabled, we use it to absorb energy loss
+        if ($this->_shield && $shield) {
+            $energy = $this->removeShield($energy);
+        }
         return $this->setEnergy($this->_energy - $energy);
+    }
+
+    /**
+     * 
+     * @param type $shield
+     * @return type Energy to remove because shield is empty
+     */
+    public function removeShield($shield)
+    {
+        $energy = $shield;
+        if ($shield > $this->_shield) {
+            $shield = $this->_shield;
+        }
+        $this->setShield($this->_shield - $shield);
+        if ($energy - $shield > 0) {
+            return $energy - $shield;
+        }
+    }
+
+    public function emptyShield()
+    {
+        $this->_shield = 0;
+    }
+
+    public function addShield($shield)
+    {
+        return $this->setShield($this->_shield + $shield);
     }
 
     /**
@@ -585,6 +650,10 @@ class Ship extends Model
             $this->_energyMax = $param['energyMax'];
             $this->_energyGain = $param['energyGain'];
 
+            $this->_shield = $param['shield'];
+            $this->_shieldGain = $param['shieldGain'];
+            $this->_shieldMax = $param['shieldMax'];
+
             $this->_fuelMax = $param['fuelMax'];
 
             if (!empty($param['fuel'])) {
@@ -635,7 +704,7 @@ class Ship extends Model
 
 
         $sql = FlyPDo::get();
-        $req = $sql->prepare('INSERT INTO `'.self::$_sqlTable.'` VALUES("", :userId, :type, :model, :positionId, :load, :energy, :power, :lastUpdate, :state)');
+        $req = $sql->prepare('INSERT INTO `'.self::$_sqlTable.'` VALUES("", :userId, :type, :model, :positionId, :load, :energy, :shield, :power, :lastUpdate, :state)');
         if ($req->execute(array(
             ':userId' => $this->_userId,
             ':type' => $this->_type,
@@ -643,6 +712,7 @@ class Ship extends Model
             ':positionId' => $this->_positionId,
             ':load' => $this->_load,
             ':energy' => $this->_energy,
+            ':shield' => $this->_shield,
             ':lastUpdate' => $this->_lastUpdate,
             ':power' => $this->_power,
             ':state' => $this->_state
@@ -672,7 +742,7 @@ class Ship extends Model
 
         $sql = FlyPDo::get();
         $req = $sql->prepare('UPDATE `'.self::$_sqlTable.'` 
-            SET `userId` = :userId, `type` = :type, `model` = :model, `positionId` = :positionId, `load` = :load, `energy` = :energy, `power` = :power, `lastUpdate` = :lastUpdate, `state` = :state');
+            SET `userId` = :userId, `type` = :type, `model` = :model, `positionId` = :positionId, `load` = :load, `energy` = :energy, `shield` = :shield, `power` = :power, `lastUpdate` = :lastUpdate, `state` = :state');
         if ($req->execute(array(
             ':userId' => $this->_userId,
             ':type' => $this->_type,
@@ -680,6 +750,7 @@ class Ship extends Model
             ':positionId' => $this->_positionId,
             ':load' => $this->_load,
             ':energy' => $this->_energy,
+            ':shield' => $this->_shield,
             ':power' => $this->_power,
             ':lastUpdate' => $this->_lastUpdate,
             ':state' => $this->_state
@@ -750,7 +821,7 @@ class Ship extends Model
         
         $sql = FlyPDO::get();
         $req = $sql->prepare('SELECT `'.self::$_sqlTable.'`.*, pos.x, pos.y, res.quantity ressourceQuantity, res.type ressourceType,
-                mod.name modelName, mod.type modelType, mod.category modelCategory, mod.loadMax, mod.energyMax, mod.energyGain, mod.fuelMax, mod.powerMax, mod.speed, mod.modulesMax,
+                mod.name modelName, mod.type modelType, mod.category modelCategory, mod.loadMax, mod.energyMax, mod.energyGain, mod.fuelMax, mod.powerMax, mod.speed, mod.modulesMax, mod.shieldMax, mod.shieldGain,
                 smodu.moduleId, smodu.moduleEnabled, smodu.id shipModuleId, modu.operation moduleOperation,
                 modu.weight moduleWeight, modu.power modulePower, modu.energy moduleEnergy, modu.load moduleLoad, modu.fuel moduleFuel, modu.techs moduleTechs,
                 modu.speed moduleSpeed, modu.shield moduleShield, modu.search moduleSearch, modu.attack moduleAttack, modu.weapons moduleWeapon, modu.defense moduleDefense

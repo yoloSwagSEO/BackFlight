@@ -64,6 +64,8 @@ if (empty($array_models)) {
     $Model->setFuelMax(100);
     $Model->setPowerMax(100);
     $Model->setSpeed(10);
+    $Model->setShieldGain(300);
+    $Model->setShieldMax(80);
     $Model->save();
 }
 

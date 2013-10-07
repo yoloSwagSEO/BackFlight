@@ -3,6 +3,7 @@ $array_fleets = Fleet::getAll('', '', $User->getId());
 $array_actions = Action::getAll('', '', $User->getId(), 'current');
 
 
+
 $CurrentPosition = new Position($MasterShipPlayer->getPositionId());
 
 if (!empty($array_actions)) {
@@ -104,6 +105,7 @@ if (!empty($array_ships)) {
         if ($Ship->isOverloaded()) {
             $Ship->setSpeed($Ship->getSpeed() / SHIP_SPEED_OVERLOADED);
         }
+        $Ship->updateShield();
         $Ship->setLastUpdate(time());
         $Ship->save();
     }

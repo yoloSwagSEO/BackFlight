@@ -142,3 +142,7 @@ CREATE TABLE IF NOT EXISTS `builds` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 ALTER TABLE  `modules` ADD  `time` INT NOT NULL AFTER  `operation` ;
+
+ALTER TABLE  `models` ADD  `shieldMax` INT NOT NULL AFTER  `energyGain` ,
+ADD  `shieldGain` INT NOT NULL AFTER  `shieldMax` ;
+ALTER TABLE  `ships` ADD  `shield` INT NOT NULL AFTER  `energy` ;

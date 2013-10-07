@@ -5,6 +5,9 @@
     Power <small>(<?php echo round($MasterShipPlayer->getPower())?> / <?php echo $MasterShipPlayer->getPowerMax()?>)</small>
     <div class="progress success radius "><span class="meter" style="width: <?php echo round($MasterShipPlayer->getPower() / $MasterShipPlayer->getPowerMax() * 100)?>%"></span></div>
 
+    Shield <small>(<?php echo round($MasterShipPlayer->getShield())?> / <?php echo $MasterShipPlayer->getShieldMax()?>)</small>
+    <div class="progress radius "><span class="meter" style="width: <?php echo round($MasterShipPlayer->getShield() / $MasterShipPlayer->getShieldMax() * 100)?>%"></span></div>
+
     Energy <small>(<?php echo round($MasterShipPlayer->getEnergy())?> / <?php echo $MasterShipPlayer->getEnergyMax()?>)</small>
     <div class="progress radius "><span class="meter" style="width: <?php echo round($MasterShipPlayer->getEnergy() / $MasterShipPlayer->getEnergyMax() * 100)?>%"></span></div>
 
