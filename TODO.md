@@ -1,7 +1,6 @@
 # Todo
 
 ## 10/11/13 
-* Handle shield for ship (with energy)
 * Add searches on asteroids and planets
 * Prepare quests
 * Start / End quests
