@@ -1,5 +1,5 @@
 # RoadMap
-This roadmap is not significant for the real developpment effort. It's just a road-map. :)
+This roadmap is not significant of the real developpment effort. It's just a road-map. :)
 
 ***First alpha : 18/10*** (includes some functionnalities only)
 
@@ -16,14 +16,16 @@ This roadmap is not significant for the real developpment effort. It's just a ro
  - **10/11** : Add possibility to enable more modules
 
 ## Planets
-- (?) **10/11** : Add ability to settle
-- (?) **10/18** : Add ability to build ressources-extractors / emergency station / ship factory
+- **10/11** : Add quests on planets
+- **10/11** : Add searchs on planets
+
+## Asteroids 
+- **10/11** : Add searchs on asteroids
+
+## Quests
+- **10/11** : Create, launch and finish quests
 
 ## Design
 - **10/11**  : Creation
 - **10/18** : Integration
  
-
-
-
-(?) : Not sure to keep this functionnalities for now
