@@ -596,6 +596,19 @@ class Ship extends Model
     public function calculateLoad()
     {
         $this->_load = $this->_fuel * FUEL_WEIGHT + $this->_techs * TECHS_WEIGHT;
+
+        foreach ($this->_modulesEnabled as $moduleId => $quantity)
+        {
+            $weight = $this->_modulesEffects[$moduleId]['weight'];
+            $this->_load += $weight*$quantity;
+        }
+        
+        foreach ($this->_modules as $moduleId => $quantity)
+        {
+            $weight = $this->_modulesEffects[$moduleId]['weight'];
+            $this->_load += $weight*$quantity;
+        }
+        
         return $this->_load;
     }
 
