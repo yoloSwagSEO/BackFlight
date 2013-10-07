@@ -5,7 +5,6 @@
 * Prepare quests
 * Start / End quests
 * Create 3 quests
-* Create 3 more modules
 * Add possibility to enable more modules
 
 ## 10/18/13
