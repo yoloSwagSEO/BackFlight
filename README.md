@@ -1,14 +1,16 @@
 # BackFlight
+A simple game in a complexe space.
+
 http://back-flight.fr - not yet
 
-A simple game in a a complexe space.
+[French] More about this game : http://fr.openclassrooms.com/forum/sujet/jeu-navigateur-backflight
 
 
 ##Notes
 **Actually on heavy WIP**
 This project is just beginning. One day it will be playable, another day for multiplayers.
 
-**Closed beta begins on** 11/18/13
+**Closed alpha begins on** 11/18/13
 
 
 ## Work
@@ -16,10 +18,6 @@ This project is just beginning. One day it will be playable, another day for mul
 - Ship
 - Positions
 - Moves & Fleets
-
-### In progress
-- Ship improvements
-- Moves improvements
 
 ### Soon
 - See [roadmap](https://github.com/In4matik/BackFlight/blob/experimental/roadmap.md) and [todo](https://github.com/In4matik/BackFlight/blob/experimental/TODO.md).
