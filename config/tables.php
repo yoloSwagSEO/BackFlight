@@ -25,4 +25,12 @@ define('TABLE_SHIPS_MODULES', 'ships_modules');
 define('TABLE_MODULES', 'modules');
 
 define('TABLE_BUILDS', 'builds');
+
+define('TABLE_QUESTS', 'quests');
+
+define('TABLE_QUESTSTEPS', 'quest_steps');
+
+define('TABLE_QUESTREQUIREMENTS', 'quests_requirements');
+
+define('TABLE_QUESTGAINS', 'quests_gains');
 ?>

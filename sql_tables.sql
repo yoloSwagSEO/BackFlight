@@ -149,3 +149,41 @@ ALTER TABLE  `ships` ADD  `shield` INT NOT NULL AFTER  `energy` ;
 
 ALTER TABLE  `modules` ADD  `energyGain` FLOAT NULL AFTER  `energy` ;
 ALTER TABLE  `modules` ADD  `shieldGain` FLOAT NULL AFTER  `shield` ;
+
+CREATE TABLE IF NOT EXISTS `quests` (
+    `id` INT(11) NOT NULL AUTO_INCREMENT,
+    `name` varchar(30) NOT NULL,
+    `intro` varchar(100) NOT NULL,
+    `description` text NOT NULL,
+    `positionId` INT(11) NOT NULL,
+    `questType` INT(11) NOT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `quests_steps` (
+    `id` INT(11) NOT NULL AUTO_INCREMENT,
+    `questId` INT(11) NOT NULL,
+    `stepName` varchar(30) NOT NULL,
+    `stepDescription` text NOT NULL,
+    `stepPositionId` INT(11) NOT NULL,
+    `stepNb` INT(11) NOT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `quests_requirements` (
+    `id` INT(11) NOT NULL AUTO_INCREMENT,
+    `questId` INT(11) NOT NULL,
+    `stepId` INT(11) NOT NULL,
+    `requirementType` varchar(15) NOT NULL,
+    `requirementValue` INT(11) NOT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `quests_gains` (
+    `id` INT(11) NOT NULL AUTO_INCREMENT,
+    `questId` INT(11) NOT NULL,
+    `stepId` INT(11) NOT NULL,
+    `gainType` varchar(25) NOT NULL,
+    `gainQuantity` INT(11) NOT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
