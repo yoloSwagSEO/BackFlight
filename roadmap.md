@@ -11,7 +11,6 @@ This roadmap is not significant of the real developpment effort. It's just a roa
 
 ## Ship
 
-### Upgrades
  - **10/11** : Add more modules
  - **10/11** : Add possibility to enable more modules
 
@@ -24,6 +23,9 @@ This roadmap is not significant of the real developpment effort. It's just a roa
 
 ## Quests
 - **10/11** : Create, launch and finish quests
+ 
+## Fights
+- **10/18** :  Add mines, bombs and rockets
 
 ## Design
 - **10/11**  : Creation
