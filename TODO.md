@@ -2,7 +2,6 @@
 
 ## 10/11/13 
 * Add searches on asteroids and planets
-* Prepare quests
 * Start / End quests
 * Create 3 quests
 * Add possibility to enable more modules
