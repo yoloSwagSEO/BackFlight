@@ -44,7 +44,7 @@ head();
         }
         ?>
             <div class="panel modules">
-                <h4>Modules actifs (<?php echo $MasterShipPlayer->getModulesEnabledNumber() ?>/<?php echo $MasterShipPlayer->getModulesMaxNumber() ?>)</h4>
+                <h4>Modules actifs (<?php echo $MasterShipPlayer->getModulesEnabledNumber() ?>/<?php echo $MasterShipPlayer->getModulesMax() ?>)</h4>
                 <?php
                 if (!$MasterShipPlayer->getModulesEnabled()) {
                     ?>

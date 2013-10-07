@@ -47,6 +47,49 @@ if (empty($array_modules)) {
     $BatteryBasicModule->setTime(70);
     $BatteryBasicModule->save();
 
+
+    $ReactorBoostBasicModule = new Module();
+    $ReactorBoostBasicModule->setName('Boost du réacteur');
+    $ReactorBoostBasicModule->setIntro('+35% vitesse');
+    $ReactorBoostBasicModule->setDescription('En augmentant la condensation du réacteur, la vitesse du vaisseau sera augmentée.');
+    $ReactorBoostBasicModule->setType('speed');
+    $ReactorBoostBasicModule->setWeight(20);
+    $ReactorBoostBasicModule->setSpeed(1.35);
+    $ReactorBoostBasicModule->setOperation('multiply');
+    $ReactorBoostBasicModule->setCostEnergy(25);
+    $ReactorBoostBasicModule->setCostFuel(40);
+    $ReactorBoostBasicModule->setCostTechs(90);
+    $ReactorBoostBasicModule->setTime(220);
+    $ReactorBoostBasicModule->save();
+
+    $ShieldBasicModule = new Module();
+    $ShieldBasicModule->setName('Renforcement du bouclier');
+    $ShieldBasicModule->setIntro('+60% bouclier');
+    $ShieldBasicModule->setDescription('Une meilleure protection des émetteurs de champs éléctromagnétiques du bouclier augmentera fortement son efficacité.');
+    $ShieldBasicModule->setType('shield');
+    $ShieldBasicModule->setWeight(20);
+    $ShieldBasicModule->setShield(1.6);
+    $ShieldBasicModule->setOperation('multiply');
+    $ShieldBasicModule->setCostEnergy(80);
+    $ShieldBasicModule->setCostFuel(50);
+    $ShieldBasicModule->setCostTechs(300);
+    $ShieldBasicModule->setTime(300);
+    $ShieldBasicModule->save();
+    
+    $SolarBasicModule = new Module();
+    $SolarBasicModule->setName('Capteurs solaires');
+    $SolarBasicModule->setIntro('+40% gain énergie');
+    $SolarBasicModule->setDescription('En recouvrant une plus grande partie du vaisseau de capteurs solaires, celui-ci récupérera plus vite son énergie');
+    $SolarBasicModule->setType('energyGain');
+    $SolarBasicModule->setWeight(20);
+    $SolarBasicModule->setEnergyGain(1.4);
+    $SolarBasicModule->setOperation('multiply');
+    $SolarBasicModule->setCostEnergy(20);
+    $SolarBasicModule->setCostFuel(40);
+    $SolarBasicModule->setCostTechs(400);
+    $SolarBasicModule->setTime(280);
+    $SolarBasicModule->save();
+
 }
 
 $array_models = Model::getAll();

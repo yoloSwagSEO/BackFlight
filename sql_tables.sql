@@ -146,3 +146,6 @@ ALTER TABLE  `modules` ADD  `time` INT NOT NULL AFTER  `operation` ;
 ALTER TABLE  `models` ADD  `shieldMax` INT NOT NULL AFTER  `energyGain` ,
 ADD  `shieldGain` INT NOT NULL AFTER  `shieldMax` ;
 ALTER TABLE  `ships` ADD  `shield` INT NOT NULL AFTER  `energy` ;
+
+ALTER TABLE  `modules` ADD  `energyGain` FLOAT NULL AFTER  `energy` ;
+ALTER TABLE  `modules` ADD  `shieldGain` FLOAT NULL AFTER  `shield` ;
