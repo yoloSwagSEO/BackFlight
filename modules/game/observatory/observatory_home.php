@@ -2,9 +2,10 @@
 title('Observatory');
 head();
 
-
 $MasterShipPosition = new Position($MasterShipPlayer->getPositionId());
 $position_category = $MasterShipPosition->getCategory();
+
+$array_quests = Quest::getAll('', '', $MasterShipPosition->getId());
 
 ?>
 <div class="row">
@@ -87,7 +88,30 @@ $position_category = $MasterShipPosition->getCategory();
         include_once 'modules/game/observatory/observatory_'.$position_category.'.php';
         ?>
 
-
+        <?php
+        if (!empty($array_quests)) {
+            ?>
+        <h3>Quêtes</h3>
+        <div data-alert class="alert-box success radius">
+        <?php echo count($array_quests); ?> quête(s) se déroule ici.
+        </div>
+        <ul class="ul_blocs">
+            <?php
+            foreach ($array_quests as $Quest)
+            {
+                ?>
+            <li>
+                <a href="quests/<?php echo $Quest->getId()?>" class="full"><?php echo $Quest->getName()?></a>
+            </li>
+                <?php
+            }
+            ?>
+        </ul>
+            <?php
+        }
+        ?>
+    </div>
+</div>
 <?php
 foot();
 ?>

@@ -105,3 +105,26 @@
 {
     background: #5da423;
 }
+
+.ul_blocs li
+{
+    list-style: none;
+    border: 1px solid #cccccc;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.ul_blocs li:hover
+{
+    list-style: none;
+    border: 1px solid #cccccc;
+    background: rgba(0,0,0,.1);
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.ul_blocs li .full
+{
+    display: block;
+}

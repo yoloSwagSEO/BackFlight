@@ -153,7 +153,7 @@ class Quest extends Fly
             } else {
                 $where .= ' AND ';
             }
-            $where .= '`'.static::$_sqlTable.'`.positionId = :id';
+            $where .= '`'.static::$_sqlTable.'`.positionId = :positionId';
             $args[':positionId'] = $positionId;
         }
 
