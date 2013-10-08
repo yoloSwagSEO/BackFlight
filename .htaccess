@@ -19,9 +19,11 @@ RewriteRule ^fly/([0-9]+)-([-]{0,1}[0-9]+)/(jump)$ game.php?module=fly&x=$1&y=$2
 RewriteRule ^fly/([a-z]+)$ game.php?module=fly&to=$1 [L]
 RewriteRule ^fly/([a-z]+)/(jump)$ game.php?module=fly&to=$1&speed=$2 [L]
 
-RewriteRule ^search/(fast|probes)$ game.php?module=search&speed=$1
+RewriteRule ^search/(fast|probes)$ game.php?module=search&speed=$1 [L]
 
-RewriteRule ^ship$ game.php?module=ship
-RewriteRule ^ship/([a-z]+)$ game.php?module=ship&action=$1
+RewriteRule ^ship$ game.php?module=ship [L]
+RewriteRule ^ship/([a-z]+)$ game.php?module=ship&action=$1 [L]
 
-RewriteRule ^modules/(build|enable|disable)$ game.php?module=modules&action=$1
+RewriteRule ^modules/(build|enable|disable)$ game.php?module=modules&action=$1 [L]
+
+RewriteRule ^quests/([0-9]+)$ game.php?module=quests&questId=$1 [L]

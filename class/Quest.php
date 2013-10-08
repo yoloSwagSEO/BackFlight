@@ -7,6 +7,9 @@ class Quest extends Fly
     protected $_description;
     protected $_positionId;
     protected $_questType;
+    protected $_state;
+    protected $_userQuestId;
+    protected $_steps = array();
 
 
     /**
@@ -41,6 +44,11 @@ class Quest extends Fly
         return $this->_questType;
     }
 
+    public function getSteps()
+    {
+        return $this->_steps;
+    }
+
 
 
     public function setName($name)
@@ -68,6 +76,30 @@ class Quest extends Fly
         $this->_questType = $questType;
     }
 
+    /**
+     * Check if player has started this quest
+     * @return boolean
+     */
+    public function isStartedByPlayer()
+    {
+        if ($this->_userQuestId) {
+            if ($this->_state != 'end') {
+                return true;
+            }
+        }
+    }
+
+    public function start($userId)
+    {
+        $sql = FlyPDO::get();
+        $req = $sql->prepare('INSERT INTO `'.TABLE_USERS_QUESTS.'` VALUES("", :userId, :questId, "")');
+        if ($req->execute(array(
+            ':userId' => $userId,
+            ':questId' => $this->_id
+        ))) {
+            return true;
+        }
+    }
 
 
     /*
@@ -84,6 +116,14 @@ class Quest extends Fly
             $this->_positionId = $param['positionId'];
             $this->_questType = $param['questType'];
             $this->_sql = true;
+            if (!empty($param['userQuestId'])) {
+                $this->_state = $param['state'];
+                $this->_userQuestId = $param['userQuestId'];
+            }
+
+            if (!empty($param['steps'])) {
+                $this->_steps = $param['steps'];
+            }
         }
     }
 
@@ -128,16 +168,23 @@ class Quest extends Fly
         }
     }
 
-    public static function get($id)
+    public static function get($id, $args)
     {
-        $array = static::getAll($id, true);
+        // $args[1] is userId
+        if (!empty($args[1])) {
+            $array = static::getAll($id, true, '', $args[1]);
+        } else {
+            $array = static::getAll($id, true);
+        }
         return array_shift($array);
     }
 
-    public static function getAll($id = null, $to_array = false, $positionId = null)
+    public static function getAll($id = null, $to_array = false, $positionId = null, $userId = null)
     {
         $where = '';
         $args = array();
+        $join_req = '';
+        $join_select = '';
 
         if ($id) {
             if (empty($where)) {
@@ -157,10 +204,37 @@ class Quest extends Fly
             $args[':positionId'] = $positionId;
         }
 
+        if ($userId) {
+            // User quests
+            $args[':userId'] = $userId;            
+            $join_req .= ' LEFT JOIN `'.TABLE_USERS_QUESTS.'` uQuest ON uQuest.userId = :userId AND uQuest.questId = `'.static::$_sqlTable.'`.id';
+            $join_select .= ', uQuest.id userQuestId, uQuest.questState userQuestState';
+            
+            // User steps
+            $args[':userId2'] = $userId;
+            $join_req .= ' LEFT JOIN `'.TABLE_USERS_QUESTS_STEPS.'` uQuestStep ON uQuestStep.stepId = qStep.id AND uQuestStep.userId = :userId';
+            $join_select .= ', uQuestStep.stepId userQuestStepId, uQuestStep.date userQuestStepDate';
+        }
+
         $array = array();
         $sql = FlyPDO::get();
         $req = $sql->prepare('
-                    SELECT `'.static::$_sqlTable.'`.* FROM `'.static::$_sqlTable.'`'.$where);
+                    SELECT `'.static::$_sqlTable.'`.*, qStep.stepName, qStep.stepNb, qStep.stepDescription, 
+                        qRequirement.requirementType, qRequirement.requirementValue, qRequirement.stepId qRequirementStepId,
+                        qGain.gainOperation, qGain.gainType, qGain.gainQuantity, qGain.stepId qGainStepId
+                        '.$join_select.'
+                    FROM `'.static::$_sqlTable.'`
+                    INNER JOIN `'.TABLE_QUESTSTEPS.'` qStep
+                        ON qStep.questId = `'.static::$_sqlTable.'`.id
+
+                    INNER JOIN `'.TABLE_QUESTREQUIREMENTS.'` qRequirement
+                        ON qRequirement.stepId = qStep.id
+
+                    LEFT JOIN `'.TABLE_QUESTGAINS.'` qGain
+                        ON qGain.stepId = qStep.id
+                '.$join_req.'
+                '.$where);
+
 
         if ($req->execute($args)) {
             $current = 0;
@@ -187,6 +261,27 @@ class Quest extends Fly
                 }
 
                 // A partir d'ici, on charge les paramètres supplémentaires (par exemple conversion pour les médias)
+                if (!empty($row['userQuestId'])) {
+                    $param['state'] = $row['userQuestState'];
+                }
+
+                if (!empty($row['stepNb'])) {
+                    if (empty($param['steps_seen'][$row['stepNb']])) {
+                        $param['steps'][$row['stepNb']] = array('name' => $row['stepName'], 'description' => $row['stepDescription']);
+                        if (!empty($row['userQuestStepId'])) {
+                            $param['steps'][$row['stepNb']]['done'] = $row['userQuestStepDate'];
+                        }
+                        $param['steps_seen'][$row['stepNb']] = true;
+                    }
+                }
+
+                if (!empty($row['qRequirementStepId'])) {
+                    $param['steps'][$row['stepNb']]['requirements'][$row['requirementType']] = $row['requirementValue'];
+                }
+
+                if (!empty($row['qGainStepId'])) {
+                    $param['steps'][$row['stepNb']]['gains'][$row['gainType']] = array('operation' => $row['gainOperation'], 'quantity' => $row['gainQuantity']);
+                }
 
             }
             if (!empty($param)) {

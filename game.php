@@ -51,6 +51,12 @@ if (!empty($_GET['module'])) {
                 include_once 'modules/game/modules/module_disable.php';
             }
         }
+    } else if ($module == 'quests') {
+        if (empty($_POST)) {
+            include_once 'modules/game/quests/quest_view.php';
+        } else {
+            include_once 'modules/game/quests/quest_start.php';
+        }
     }
 }
 

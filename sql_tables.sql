@@ -194,25 +194,28 @@ ALTER TABLE  `quests_gains` ADD  `gainOperation` VARCHAR( 10 ) NOT NULL AFTER  `
 CREATE TABLE IF NOT EXISTS `users_positions` (
   `userId` int(11) NOT NULL,
   `positionId` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `users_quests` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `userId` int(11) NOT NULL,
   `questId` int(11) NOT NULL,
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `users_quests_requirements` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `userId` int(11) NOT NULL,
   `requirementId` int(11) NOT NULL,
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `users_quests_steps` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `stepId` int(11) NOT NULL,
   `date` int(11) NOT NULL,
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE  `users_quests` ADD  `questState` VARCHAR( 5 ) NULL AFTER  `questId` ;
+ALTER TABLE  `users_quests_steps` ADD  `userId` INT NOT NULL AFTER  `id` ;
