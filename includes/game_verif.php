@@ -1,4 +1,5 @@
 <?php
+// Modules
 $array_modules = Module::getAll();
 
 // If there's no module, we have to create them
@@ -92,6 +93,8 @@ if (empty($array_modules)) {
 
 }
 
+
+// Models
 $array_models = Model::getAll();
 
 // If there's no model, we have to create one
@@ -112,4 +115,10 @@ if (empty($array_models)) {
     $Model->save();
 }
 
+
+// Quests
+$array_quests = Quest::getAll();
+if (empty($array_quests)) {
+    include_once 'includes/datas/datas_quests.php';
+}
 ?>

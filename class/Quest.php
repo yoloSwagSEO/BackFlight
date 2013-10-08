@@ -134,7 +134,7 @@ class Quest extends Fly
         return array_shift($array);
     }
 
-    public static function getAll($id = null, $to_array = false)
+    public static function getAll($id = null, $to_array = false, $positionId = null)
     {
         $where = '';
         $args = array();
@@ -145,6 +145,16 @@ class Quest extends Fly
             }
             $where .= '`'.static::$_sqlTable.'`.id = :id';
             $args[':id'] = $id;
+        }
+
+        if ($positionId) {
+            if (empty($where)) {
+                $where = ' WHERE ';
+            } else {
+                $where .= ' AND ';
+            }
+            $where .= '`'.static::$_sqlTable.'`.positionId = :id';
+            $args[':positionId'] = $positionId;
         }
 
         $array = array();
@@ -191,5 +201,19 @@ class Quest extends Fly
             var_dump($req->errorInfo());
             trigger_error('Chargement impossible', E_USER_ERROR);
         }
+    }
+
+    /**
+     * Check if anybody is at given position
+     * @param int $positionId
+     * @return boolean
+     */
+    public static function isOn($positionId)
+    {
+        $array = self::getAll('', true, $positionId);
+        if (!empty($array)) {
+            return true;
+        }
+        return false;
     }
 }

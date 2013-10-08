@@ -28,7 +28,7 @@ define('TABLE_BUILDS', 'builds');
 
 define('TABLE_QUESTS', 'quests');
 
-define('TABLE_QUESTSTEPS', 'quest_steps');
+define('TABLE_QUESTSTEPS', 'quests_steps');
 
 define('TABLE_QUESTREQUIREMENTS', 'quests_requirements');
 

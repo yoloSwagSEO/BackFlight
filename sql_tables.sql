@@ -187,3 +187,32 @@ CREATE TABLE IF NOT EXISTS `quests_gains` (
     `gainQuantity` INT(11) NOT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE  `quests_steps` CHANGE  `stepPositionId`  `stepPositionId` INT( 11 ) NULL ;
+ALTER TABLE  `quests_gains` ADD  `gainOperation` VARCHAR( 10 ) NOT NULL AFTER  `stepId` ;
+
+CREATE TABLE IF NOT EXISTS `users_positions` (
+  `userId` int(11) NOT NULL,
+  `positionId` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `users_quests` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `userId` int(11) NOT NULL,
+  `questId` int(11) NOT NULL,
+  UNIQUE KEY `id` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `users_quests_requirements` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `userId` int(11) NOT NULL,
+  `requirementId` int(11) NOT NULL,
+  UNIQUE KEY `id` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `users_quests_steps` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `stepId` int(11) NOT NULL,
+  `date` int(11) NOT NULL,
+  UNIQUE KEY `id` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;

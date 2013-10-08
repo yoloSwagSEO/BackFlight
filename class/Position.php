@@ -290,7 +290,6 @@ class Position extends Fly
                     // Detect if ship will move forward
                     $move_forward = rand(1,100);
                     if ($move_forward < $probaActionForward * 100) {
-                    var_dump('avance');
                     $max_forward--;
                         break;
                     }
@@ -329,7 +328,10 @@ class Position extends Fly
         ))) {
             while ($row = $req->fetch())
             {
-                return !Ship::isOn($row['id']);
+                if (Ship::isOn($row['id']) || Quest::isOn()) {
+                    return false;
+                }
+                return true;
             }
         } else {
             var_dump($req->errorInfo());
