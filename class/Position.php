@@ -297,6 +297,7 @@ class Position extends Fly
                 if (($x != $startX) || ($y != $startY)) {
                     if (Position::isEmpty($x, $y)) {
                         $Position = new Position($x, $y);
+
                         if (!$Position->isSql()) {
                             $Position->setX($x);
                             $Position->setY($y);
@@ -342,7 +343,7 @@ class Position extends Fly
     protected static function get($id, $param=null)
     {
         // Position is instancied with X and Y values
-        if (!empty($param[1])) {
+        if (isset($param[1])) {
             $array = self::getAll(true, '', $param[0], $param[1]);
 
         // Position is instancied with ID value
