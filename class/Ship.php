@@ -468,15 +468,10 @@ class Ship extends Model
     /**
      * Remove energy
      * @param int $energy
-     * @param boolean $shield false to disable shield
      * @return int
      */
-    public function removeEnergy($energy, $shield = true)
+    public function removeEnergy($energy)
     {
-        // If shield is enabled, we use it to absorb energy loss
-        if ($this->_shield && $shield) {
-            $energy = $this->removeShield($energy);
-        }
         return $this->setEnergy($this->_energy - $energy);
     }
 
@@ -619,8 +614,18 @@ class Ship extends Model
         return $this->_power - $previous_power;
     }
 
-    public function removePower($power)
+    /**
+     * Remove power
+     * @param type $power
+     * @param boolean $shield false to disable shield
+     * @return type
+     */
+    public function removePower($power, $shield = true)
     {
+        // If shield is enabled, we use it to absorb energy loss
+        if ($this->_shield && $shield) {
+            $power = $this->removeShield($power);
+        }
         return $this->setPower($this->_power - $power);
         
     }
