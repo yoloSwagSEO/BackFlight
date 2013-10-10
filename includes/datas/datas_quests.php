@@ -4,13 +4,14 @@ $FirstQuest = new Quest();
 $FirstQuest->setName('A la recherche des techs perdues');
 $FirstQuest->setIntro('Qui cherche des techs récolte des techs !');
 $FirstQuest->setDescription('Effectuez trois recherches réussies et doublez vos gains !');
-$FirstQuest->setPositionId(Position::getClearPosition()->getId());
+$PositionQuest = Position::getClearPosition();
+$FirstQuest->setPositionId($PositionQuest->getId());
 $FirstQuest->setQuestType('resources');
 $FirstQuest->save();
 
 $FirstQuestStep1 = new QuestStep();
 $FirstQuestStep1->setQuestId($FirstQuest->getId());
-$FirstQuestStep1->setStepDescription('Effectuer trois recherches réussies');
+$FirstQuestStep1->setStepDescription('Effectuer trois recherches réussies. <br />Puis revenez en '.$PositionQuest->getX().':'.$PositionQuest->getY().' pour obtenir votre récompense.');
 $FirstQuestStep1->setStepName('Trois recherches');
 $FirstQuestStep1->setStepNb(1);
 $FirstQuestStep1->save();
