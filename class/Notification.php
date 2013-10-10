@@ -301,4 +301,9 @@ class Notification extends Fly
             trigger_error('Chargement impossible', E_USER_ERROR);
         }
     }
+
+    public function renderTitle()
+    {
+        return $this->_type.' : '.$this->_typeId.'('.$this->_actionType.' '.$this->_action.')';
+    }
 }

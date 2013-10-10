@@ -237,3 +237,4 @@ CREATE TABLE IF NOT EXISTS `notifications` (
     `actionSub` INT(11) NULL,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+ALTER TABLE  `notifications` CHANGE  `type`  `type` VARCHAR( 25 ) NOT NULL ;

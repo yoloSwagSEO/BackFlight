@@ -61,6 +61,8 @@ if (!empty($_GET['module'])) {
                 include_once 'modules/game/quests/quest_start.php';
             }
         }
+    } else if ($module == 'notifications') {
+        include_once 'modules/game/notifications/notifications_home.php';
     }
 }
 
