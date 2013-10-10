@@ -160,6 +160,12 @@ class Notification extends Fly
 
     protected function _create()
     {
+        if (empty($this->_userId)) {
+            $this->_userId = $_SESSION['User'];
+        }
+        if (empty($this->_date)) {
+            $this->_date = time();
+        }
         $sql = FlyPDO::get();
         $req = $sql->prepare('INSERT INTO `'.static::$_sqlTable.'` VALUES (:id, :userId, :date, :importance, :into, :intoId, :type, :typeId, :action, :actionType, :actionId, :actionSub)');
         $args = array(
@@ -187,6 +193,12 @@ class Notification extends Fly
 
     protected function _update()
     {
+        if (empty($this->_userId)) {
+            $this->_userId = $_SESSION['User'];
+        }
+        if (empty($this->_date)) {
+            $this->_date = time();
+        }
         $sql = FlyPDO::get();
         $req = $sql->prepare('UPDATE `'.static::$_sqlTable.'` SET `userId` = :userId, `date` = :date, `importance` = :importance, `into` = :into, `intoId` = :intoId, `type` = :type, `typeId` = :typeId, `action` = :action, `actionType` = :actionType, `actionId` = :actionId, `actionSub` = :actionSub WHERE id = :id');
         $args = array(

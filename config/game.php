@@ -223,3 +223,12 @@ define('FUEL_WEIGHT', 3);
  * Weight of one unit of tech
  */
 define('TECHS_WEIGHT', 1.4);
+
+
+                    //
+                    // RESSOURCES
+                    //
+define('NOTIFICATION_IMPORTANCE_LOW', 0);
+define('NOTIFICATION_IMPORTANCE_MEDIUM', 1);
+define('NOTIFICATION_IMPORTANCE_HIGH', 2);
+define('NOTIFICATION_IMPORTANCE_EXTREME', 3);

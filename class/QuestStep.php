@@ -234,7 +234,22 @@ class QuestStep extends Fly
         if (empty($this->_userRequirements[$requirementId])) {
             $this->_createUserStepRequirement($requirementId, $requirementQuantity, $userId);
         } else {
+            $requirementQuantity = $this->_userRequirements[$requirementId] + $requirementQuantity;
             $this->_updateUserStepRequirement($requirementId, $requirementQuantity, $userId);
+        }
+
+        $this->_usersRequirements[$requirementId] = $requirementQuantity;
+
+        // If requirement is OK
+        if ($this->_usersRequirements[$requirementId] >= $this->_requirements[$requirementId]->getRequirementValue()) {
+            $Notification = new Notification();
+            $Notification->setType(TABLE_QUESTS);
+            $Notification->setTypeId($this->getQuestId());
+            $Notification->setImportance('NOTIFICATION_IMPORTANCE_LOW');
+            $Notification->setAction('requirement_ok');
+            $Notification->setActionId($requirementId);
+            $Notification->setActionType($this->_id);
+            $Notification->save();
         }
     }
 
@@ -254,7 +269,7 @@ class QuestStep extends Fly
     protected function _updateUserStepRequirement($requirementId, $requirementQuantity, $userId)
     {
         $sql = FlyPDO::get();
-        $req = $sql->prepare('UPDATE `'.TABLE_USERS_QUESTS_REQUIREMENTS.'` SET requirementQuantity = requirementQuantity + :requirementQuantity WHERE userId = :userId AND requirementId = :requirementId');
+        $req = $sql->prepare('UPDATE `'.TABLE_USERS_QUESTS_REQUIREMENTS.'` SET requirementQuantity = :requirementQuantity WHERE userId = :userId AND requirementId = :requirementId');
         if (!$req->execute(array(
             ':userId' => $userId,
             ':requirementId' => $requirementId,
