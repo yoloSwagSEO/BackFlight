@@ -7,6 +7,8 @@ class QuestStep extends Fly
     protected $_stepDescription;
     protected $_stepPositionId;
     protected $_stepNb;
+    protected $_stepRequirements;
+    protected $_userRequirements;
 
 
     /**
@@ -41,6 +43,16 @@ class QuestStep extends Fly
         return $this->_stepNb;
     }
 
+    public function getRequirements()
+    {
+        return $this->_requirements;
+    }
+
+    public function getUserRequirements()
+    {
+        return $this->_userRequirements;
+    }
+
 
 
     public function setQuestId($questId)
@@ -69,7 +81,6 @@ class QuestStep extends Fly
     }
 
 
-
     /*
      * Charge les valeurs de l'objet
      * @param array $param Le tableau avec les valeurs nécessaire à l'instanciation de l'objet
@@ -84,6 +95,15 @@ class QuestStep extends Fly
             $this->_stepPositionId = $param['stepPositionId'];
             $this->_stepNb = $param['stepNb'];
             $this->_sql = true;
+            if (!empty($param['requirements'])) {
+                foreach ($param['requirements'] as $id => $param_requirement)
+                {
+                    $this->_requirements[$id] = new QuestRequirement($param_requirement);
+                }
+            }
+            if (!empty($param['user_requirements'])) {
+                $this->_userRequirements = $param['user_requirements'];
+            }
         }
     }
 
@@ -190,6 +210,58 @@ class QuestStep extends Fly
         } else {
             var_dump($req->errorInfo());
             trigger_error('Chargement impossible', E_USER_ERROR);
+        }
+    }
+
+    public function hasRequirement($requirement)
+    {
+        foreach ($this->_requirements as $QuestRequirement)
+        {
+            if ($QuestRequirement->getRequirementType() == $requirement) {
+                return $QuestRequirement->getId();
+            }
+        }
+    }
+
+    /**
+     *
+     * @param type $requirementId
+     * @param type $requirementQuantity
+     * @param type $userId
+     */
+    public function addUserStepRequirement($requirementId, $requirementQuantity, $userId)
+    {
+        if (empty($this->_userRequirements[$requirementId])) {
+            $this->_createUserStepRequirement($requirementId, $requirementQuantity, $userId);
+        } else {
+            $this->_updateUserStepRequirement($requirementId, $requirementQuantity, $userId);
+        }
+    }
+
+    protected function _createUserStepRequirement($requirementId, $requirementQuantity, $userId)
+    {
+        $sql = FlyPDO::get();
+        $req = $sql->prepare('INSERT INTO `'.TABLE_USERS_QUESTS_REQUIREMENTS.'` VALUES("", :userId, :requirementId, :requirementQuantity)');
+        if (!$req->execute(array(
+            ':userId' => $userId,
+            ':requirementId' => $requirementId,
+            ':requirementQuantity' => $requirementQuantity
+        ))) {
+            var_dump($req->errorInfo());
+            trigger_error('Unable to save userStepRequirement', E_USER_ERROR);
+        }
+    }
+    protected function _updateUserStepRequirement($requirementId, $requirementQuantity, $userId)
+    {
+        $sql = FlyPDO::get();
+        $req = $sql->prepare('UPDATE `'.TABLE_USERS_QUESTS_REQUIREMENTS.'` SET requirementQuantity = requirementQuantity + :requirementQuantity WHERE userId = :userId AND requirementId = :requirementId');
+        if (!$req->execute(array(
+            ':userId' => $userId,
+            ':requirementId' => $requirementId,
+            ':requirementQuantity' => $requirementQuantity
+        ))) {
+            var_dump($req->errorInfo());
+            trigger_error('Unable to save userStepRequirement', E_USER_ERROR);
         }
     }
 }

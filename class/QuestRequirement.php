@@ -5,7 +5,7 @@ class QuestRequirement extends Fly
     protected $_questId;
     protected $_stepId;
     protected $_requirementType;
-    protected $_requirementQuantity;
+    protected $_requirementValue;
 
 
     /**
@@ -30,9 +30,9 @@ class QuestRequirement extends Fly
         return $this->_requirementType;
     }
 
-    public function getRequirementQuantity()
+    public function getRequirementValue()
     {
-        return $this->_requirementQuantity;
+        return $this->_requirementValue;
     }
 
 
@@ -52,9 +52,9 @@ class QuestRequirement extends Fly
         $this->_requirementType = $requirementType;
     }
 
-    public function setRequirementQuantity($requirementQuantity)
+    public function setRequirementValue($requirementValue)
     {
-        $this->_requirementQuantity = $requirementQuantity;
+        $this->_requirementValue = $requirementValue;
     }
 
 
@@ -70,7 +70,7 @@ class QuestRequirement extends Fly
             $this->_questId = $param['questId'];
             $this->_stepId = $param['stepId'];
             $this->_requirementType = $param['requirementType'];
-            $this->_requirementQuantity = $param['requirementQuantity'];
+            $this->_requirementValue = $param['requirementValue'];
             $this->_sql = true;
         }
     }
@@ -78,13 +78,13 @@ class QuestRequirement extends Fly
     protected function _create()
     {
         $sql = FlyPDO::get();
-        $req = $sql->prepare('INSERT INTO `'.static::$_sqlTable.'` VALUES (:id, :questId, :stepId, :requirementType, :requirementQuantity)');
+        $req = $sql->prepare('INSERT INTO `'.static::$_sqlTable.'` VALUES (:id, :questId, :stepId, :requirementType, :requirementValue)');
         $args = array(
             ':id' => $this->_id,
             ':questId' => $this->_questId,
             ':stepId' => $this->_stepId,
             ':requirementType' => $this->_requirementType,
-            ':requirementQuantity' => $this->_requirementQuantity
+            ':requirementValue' => $this->_requirementValue
         );
         if ($req->execute($args)) {
             return $sql->lastInsertId();
@@ -98,13 +98,13 @@ class QuestRequirement extends Fly
     protected function _update()
     {
         $sql = FlyPDO::get();
-        $req = $sql->prepare('UPDATE `'.static::$_sqlTable.'` SET `questId` = :questId, `stepId` = :stepId, `requirementType` = :requirementType, `requirementQuantity` = :requirementQuantity WHERE id = :id');
+        $req = $sql->prepare('UPDATE `'.static::$_sqlTable.'` SET `questId` = :questId, `stepId` = :stepId, `requirementType` = :requirementType, `requirementValue` = :requirementValue WHERE id = :id');
         $args = array(
             ':id' => $this->_id,
             ':questId' => $this->_questId,
             ':stepId' => $this->_stepId,
             ':requirementType' => $this->_requirementType,
-            ':requirementQuantity' => $this->_requirementQuantity
+            ':requirementValue' => $this->_requirementValue
         );
         if ($req->execute($args)) {
             return $this->_id;

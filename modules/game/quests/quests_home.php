@@ -2,11 +2,7 @@
 title('Quests');
 head();
 
-
-$MasterShipPosition = new Position($MasterShipPlayer->getPositionId());
-$position_category = $MasterShipPosition->getCategory();
-
-$array_quests[0] = Quest::getAll('', '', '', $User->getId());
+$array_quests[0] = $array_quests_player;
 $array_quests[1] = array();
 
 ksort($array_quests);

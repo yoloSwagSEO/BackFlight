@@ -219,3 +219,5 @@ CREATE TABLE IF NOT EXISTS `users_quests_steps` (
 
 ALTER TABLE  `users_quests` ADD  `questState` VARCHAR( 5 ) NULL AFTER  `questId` ;
 ALTER TABLE  `users_quests_steps` ADD  `userId` INT NOT NULL AFTER  `id` ;
+ALTER TABLE  `users_quests_requirements` ADD  `quantity` INT NULL ;
+ALTER TABLE  `users_quests_requirements` CHANGE  `quantity`  `requirementQuantity` INT( 11 ) NULL DEFAULT NULL ;

@@ -2,6 +2,9 @@
 $array_fleets = Fleet::getAll('', '', $User->getId());
 $array_actions = Action::getAll('', '', $User->getId(), 'current');
 
+// Load quests
+$array_quests_player = Quest::getAll('', '', '', $User->getId());
+
 
 
 $CurrentPosition = new Position($MasterShipPlayer->getPositionId());
@@ -22,18 +25,24 @@ if (!empty($array_actions)) {
                         if ($fuel_added != $result[1]) {
                             $_SESSION['errors']['fuel']['lost'] = round($result[1] - $fuel_added);
                         }
-                        $MasterShipPlayer->save();
+//                        $MasterShipPlayer->save();
                     } else {
                         $techs_added = $MasterShipPlayer->addTechs($result[1]);
                         if ($techs_added != $result[1]) {
                             $_SESSION['errors']['techs']['lost'] = round($result[1] - $techs_added);
                         }
 
-                        $MasterShipPlayer->save();
+//                        $MasterShipPlayer->save();
                     }
                     
                     Position::addPositionSearch($Action->getTo(), $User->getId(), $Action->getEnd(), $search_result);
                     $_SESSION['infos']['search'] = $result;
+
+                    // For quests
+                    Quest::addAction($array_quests_player, 'searches', 1, $User->getId());
+
+
+
                 } else {
                     $_SESSION['infos']['search'] = 'empty';
                 }
@@ -70,7 +79,7 @@ if (!empty($array_actions)) {
                 }
             }
 
-            $Action->land();
+//            $Action->land();
 
 
             unset($array_actions[$i]);
@@ -122,5 +131,15 @@ foreach ($array_builds as $Build)
         }
     }
 }
+
+
+
+
+// Check for quests
+foreach ($array_quests_player as $Quest)
+{
+    
+}
+
 
 ?>
