@@ -38,5 +38,7 @@ define('TABLE_USERS_QUESTS', 'users_quests');
 
 define('TABLE_USERS_QUESTS_STEPS', 'users_quests_steps');
 
-define('TABLE_USERS_QUESTS_REQUIREMENTS', 'users_quests_requirements')
+define('TABLE_USERS_QUESTS_REQUIREMENTS', 'users_quests_requirements');
+
+define('TABLE_NOTIFICATIONS', 'notifications');
 ?>

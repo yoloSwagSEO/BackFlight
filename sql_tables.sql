@@ -221,3 +221,19 @@ ALTER TABLE  `users_quests` ADD  `questState` VARCHAR( 5 ) NULL AFTER  `questId`
 ALTER TABLE  `users_quests_steps` ADD  `userId` INT NOT NULL AFTER  `id` ;
 ALTER TABLE  `users_quests_requirements` ADD  `quantity` INT NULL ;
 ALTER TABLE  `users_quests_requirements` CHANGE  `quantity`  `requirementQuantity` INT( 11 ) NULL DEFAULT NULL ;
+
+CREATE TABLE IF NOT EXISTS `notifications` (
+    `id` INT(11) NOT NULL AUTO_INCREMENT,
+    `userId` INT(11) NOT NULL,
+    `date` INT(11) NOT NULL,
+    `importance` INT(11) NOT NULL,
+    `into` varchar(10) NOT NULL,
+    `intoId` INT(11) NOT NULL,
+    `type` INT(11) NOT NULL,
+    `typeId` INT(11) NOT NULL,
+    `action` varchar(20) NOT NULL,
+    `actionType` varchar(25) NULL,
+    `actionId` INT(11) NULL,
+    `actionSub` INT(11) NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
