@@ -5,16 +5,12 @@ head();
 $MasterShipPosition = new Position($MasterShipPlayer->getPositionId());
 $position_category = $MasterShipPosition->getCategory();
 
-$array_quests = Quest::getAll('', '', $MasterShipPosition->getId());
+$array_quests = Quest::getAll('', '', $MasterShipPosition->getId(), $User->getId());
 
 ?>
 <div class="row">
     <div class="column large-3">
-        <ul class="side-nav">
-            <li><a href="overview">Ma position</a></li>
-            <li><a href="observatory">Observatoire</a></li>
-            <li><a href="ship">Vaisseau</a></li>
-        </ul>
+        <?php include_once 'includes/menu.php';?>
         <?php include_once 'modules/game/ship/ship_details.php';?>
         <?php include_once 'modules/game/earth/earth_details.php';?>
     </div>
@@ -99,9 +95,13 @@ $array_quests = Quest::getAll('', '', $MasterShipPosition->getId());
             <?php
             foreach ($array_quests as $Quest)
             {
+                $status = '';
+                if ($Quest->isStartedByPlayer()) {
+                    $status = '[En cours] ';
+                }
                 ?>
             <li>
-                <a href="quests/<?php echo $Quest->getId()?>" class="full"><?php echo $Quest->getName()?></a>
+                <a href="quests/<?php echo $Quest->getId()?>" class="full"><?php echo $status.$Quest->getName()?></a>
             </li>
                 <?php
             }
