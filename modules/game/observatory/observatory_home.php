@@ -89,7 +89,7 @@ $array_quests = Quest::getAll('', '', $MasterShipPosition->getId(), $User->getId
             ?>
         <h3>Quêtes</h3>
         <div data-alert class="alert-box success radius">
-        <?php echo count($array_quests); ?> quête(s) se déroule ici.
+        <?php echo count($array_quests); ?> quête(s) se déroule(nt) ici.
         </div>
         <ul class="ul_blocs">
             <?php

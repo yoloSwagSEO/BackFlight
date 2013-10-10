@@ -49,6 +49,11 @@ class Quest extends Fly
         return $this->_steps;
     }
 
+    public function getState()
+    {
+        return $this->_state;
+    }
+
 
 
     public function setName($name)
@@ -207,7 +212,7 @@ class Quest extends Fly
         if ($userId) {
             // User quests
             $args[':userId'] = $userId;            
-            $join_req .= ' LEFT JOIN `'.TABLE_USERS_QUESTS.'` uQuest ON uQuest.userId = :userId AND uQuest.questId = `'.static::$_sqlTable.'`.id';
+            $join_req .= ' INNER JOIN `'.TABLE_USERS_QUESTS.'` uQuest ON uQuest.userId = :userId AND uQuest.questId = `'.static::$_sqlTable.'`.id';
             $join_select .= ', uQuest.id userQuestId, uQuest.questState userQuestState';
             
             // User steps

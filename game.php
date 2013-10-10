@@ -52,10 +52,14 @@ if (!empty($_GET['module'])) {
             }
         }
     } else if ($module == 'quests') {
-        if (empty($_POST)) {
-            include_once 'modules/game/quests/quest_view.php';
+        if (empty($_GET['questId'])) {
+            include_once 'modules/game/quests/quests_home.php';
         } else {
-            include_once 'modules/game/quests/quest_start.php';
+            if (empty($_POST)) {
+                include_once 'modules/game/quests/quest_view.php';
+            } else {
+                include_once 'modules/game/quests/quest_start.php';
+            }
         }
     }
 }
