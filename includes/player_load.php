@@ -25,14 +25,14 @@ if (!empty($array_actions)) {
                         if ($fuel_added != $result[1]) {
                             $_SESSION['errors']['fuel']['lost'] = round($result[1] - $fuel_added);
                         }
-//                        $MasterShipPlayer->save();
+                        $MasterShipPlayer->save();
                     } else {
                         $techs_added = $MasterShipPlayer->addTechs($result[1]);
                         if ($techs_added != $result[1]) {
                             $_SESSION['errors']['techs']['lost'] = round($result[1] - $techs_added);
                         }
 
-//                        $MasterShipPlayer->save();
+                        $MasterShipPlayer->save();
                     }
                     
                     Position::addPositionSearch($Action->getTo(), $User->getId(), $Action->getEnd(), $search_result);
@@ -71,7 +71,6 @@ if (!empty($array_actions)) {
                 if ($MasterShipPlayer->hasTouchAsteroids($Action->getType())) {
                     $damages = $MasterShipPlayer->getAsteroidsDamages($Action->getType());
 
-                    // TODO : shield
                     $MasterShipPlayer->removePower($damages);
                     $MasterShipPlayer->save();
 
@@ -79,7 +78,7 @@ if (!empty($array_actions)) {
                 }
             }
 
-//            $Action->land();
+            $Action->land();
 
 
             unset($array_actions[$i]);
