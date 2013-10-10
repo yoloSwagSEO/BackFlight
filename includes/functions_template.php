@@ -1,7 +1,7 @@
 <?php
 function head($file = false)
 {
-    global $User;
+    global $User, $array_fleets, $array_actions, $array_notifications_unread;
     return FlyTemplate::head($file);
 }
 

@@ -24,13 +24,21 @@
             <h1><a href="#">BackFlight</a></h1>
         </div>
         <div class="large-3 columns">
+            <p>
             <?php
             if (isConnected()) {
-                echo 'Connecté en tant que '.$User->getPseudo().'<br /><a href="connexion/out">Déconnexion</a>';
+                echo $User->getPseudo().' - <a href="connexion/out">Déconnexion</a>';
             } else {
                 echo '<a href="connexion">Connexion</a>';
             }
             ?>
+            </p>
+                <?php
+                if (!empty($array_notifications_unread)) {
+                    $nb = count($array_notifications_unread);
+                    echo '<a href="notifications" class="tiny button alert">'.$nb.' notification(s)</a>';
+                }
+                ?>
         </div>
         <hr />
     </div>

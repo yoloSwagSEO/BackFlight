@@ -133,6 +133,7 @@ foreach ($array_builds as $Build)
 }
 
 
+$array_notifications_unread = Notification::getAll('', '', NOTIFICATION_UNREAD);
 
 
 // Check for quests

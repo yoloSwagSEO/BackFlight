@@ -13,6 +13,7 @@ class Notification extends Fly
     protected $_actionType;
     protected $_actionId;
     protected $_actionSub;
+    protected $_read = NOTIFICATION_UNREAD;
 
 
     /**
@@ -154,6 +155,7 @@ class Notification extends Fly
             $this->_actionType = $param['actionType'];
             $this->_actionId = $param['actionId'];
             $this->_actionSub = $param['actionSub'];
+            $this->_read = $param['read'];
             $this->_sql = true;
         }
     }
@@ -167,7 +169,7 @@ class Notification extends Fly
             $this->_date = time();
         }
         $sql = FlyPDO::get();
-        $req = $sql->prepare('INSERT INTO `'.static::$_sqlTable.'` VALUES (:id, :userId, :date, :importance, :into, :intoId, :type, :typeId, :action, :actionType, :actionId, :actionSub)');
+        $req = $sql->prepare('INSERT INTO `'.static::$_sqlTable.'` VALUES (:id, :userId, :date, :importance, :into, :intoId, :type, :typeId, :action, :actionType, :actionId, :actionSub, :read)');
         $args = array(
             ':id' => $this->_id,
             ':userId' => $this->_userId,
@@ -180,7 +182,8 @@ class Notification extends Fly
             ':action' => $this->_action,
             ':actionType' => $this->_actionType,
             ':actionId' => $this->_actionId,
-            ':actionSub' => $this->_actionSub
+            ':actionSub' => $this->_actionSub,
+            ':read' => $this->_read,
         );
         if ($req->execute($args)) {
             return $sql->lastInsertId();
@@ -200,7 +203,7 @@ class Notification extends Fly
             $this->_date = time();
         }
         $sql = FlyPDO::get();
-        $req = $sql->prepare('UPDATE `'.static::$_sqlTable.'` SET `userId` = :userId, `date` = :date, `importance` = :importance, `into` = :into, `intoId` = :intoId, `type` = :type, `typeId` = :typeId, `action` = :action, `actionType` = :actionType, `actionId` = :actionId, `actionSub` = :actionSub WHERE id = :id');
+        $req = $sql->prepare('UPDATE `'.static::$_sqlTable.'` SET `userId` = :userId, `date` = :date, `importance` = :importance, `into` = :into, `intoId` = :intoId, `type` = :type, `typeId` = :typeId, `action` = :action, `actionType` = :actionType, `actionId` = :actionId, `actionSub` = :actionSub, `read` = :read WHERE id = :id');
         $args = array(
             ':id' => $this->_id,
             ':userId' => $this->_userId,
@@ -213,7 +216,8 @@ class Notification extends Fly
             ':action' => $this->_action,
             ':actionType' => $this->_actionType,
             ':actionId' => $this->_actionId,
-            ':actionSub' => $this->_actionSub
+            ':actionSub' => $this->_actionSub,
+            ':read' => $this->_read
         );
         if ($req->execute($args)) {
             return $this->_id;
@@ -229,7 +233,7 @@ class Notification extends Fly
         return array_shift($array);
     }
 
-    public static function getAll($id = null, $to_array = false)
+    public static function getAll($id = null, $to_array = false, $read = null)
     {
         $where = '';
         $args = array();
@@ -240,6 +244,16 @@ class Notification extends Fly
             }
             $where .= '`'.static::$_sqlTable.'`.id = :id';
             $args[':id'] = $id;
+        }
+
+        if ($read) {
+            if (empty($where)) {
+                $where = ' WHERE ';
+            } else {
+                $where = ' AND ';
+            }
+            $where .= '`'.static::$_sqlTable.'`.read = :read';
+            $args[':read'] = $read;
         }
 
         $array = array();
