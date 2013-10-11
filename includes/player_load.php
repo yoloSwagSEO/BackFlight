@@ -132,7 +132,7 @@ foreach ($array_builds as $Build)
 }
 
 
-$array_notifications_unread = Notification::getAll('', '', NOTIFICATION_UNREAD);
+$array_notifications_unread = Notification::getAll('', '', NOTIFICATION_UNREAD, $User->getId());
 
 
 // Check for quests

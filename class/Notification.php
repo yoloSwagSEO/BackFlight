@@ -233,7 +233,7 @@ class Notification extends Fly
         return array_shift($array);
     }
 
-    public static function getAll($id = null, $to_array = false, $read = null)
+    public static function getAll($id = null, $to_array = false, $read = null, $userId = null)
     {
         $where = '';
         $args = array();
@@ -254,6 +254,16 @@ class Notification extends Fly
             }
             $where .= '`'.static::$_sqlTable.'`.read = :read';
             $args[':read'] = $read;
+        }
+
+        if ($userId) {
+            if (empty($where)) {
+                $where = ' WHERE ';
+            } else {
+                $where = ' AND ';
+            }
+            $where .= '`'.static::$_sqlTable.'`.userId = :userId';
+            $args[':userId'] = $userId;
         }
 
         $array = array();
