@@ -30,3 +30,4 @@ RewriteRule ^quests$ game.php?module=quests [L]
 RewriteRule ^quests/([0-9]+)$ game.php?module=quests&questId=$1 [L]
 
 RewriteRule ^notifications$ game.php?module=notifications [L]
+RewriteRule ^notifications/all$ game.php?module=notifications&all [L]

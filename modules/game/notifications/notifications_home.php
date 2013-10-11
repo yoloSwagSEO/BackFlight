@@ -2,6 +2,11 @@
 title('Notifications');
 head();
 
+$array_notifications = $array_notifications_unread;
+if (isset($_GET['all'])) {
+    $array_notifications = Notification::getAll();
+}
+
 
 ?>
 <div class="row">
@@ -19,8 +24,8 @@ head();
 
         <dl class="sub-nav">
             <dt>Type de vol : </dt>
-            <dd><a href="positions/fly/jump">Toutes</a></dd>
-            <dd class="active"><a href="positions/fly">Non lues</a></dd>
+            <dd<?php if (isset($_GET['all'])) {?> class="active"<?php } ?>><a href="notifications/all">Toutes</a></dd>
+            <dd<?php if (!isset($_GET['all'])) {?> class="active"<?php } ?>><a href="notifications">Non lues</a></dd>
         </dl>
 
         <table width="100%">
@@ -38,7 +43,7 @@ head();
                 </tr>
             </thead>
         <?php
-        foreach ($array_notifications_unread as $Notification)
+        foreach ($array_notifications as $Notification)
         {
             ?>
             <tr>
