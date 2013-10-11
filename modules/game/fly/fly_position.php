@@ -22,9 +22,6 @@ if (!$PositionDestination->isKnownBy($User->getId())) {
     exit('You have never visited this position');
 }
 
-var_dump($PositionDestination);
-exit;
-
 $distance = Position::calculateDistance($PositionCurrent->getX(), $PositionCurrent->getY(), $PositionDestination->getX(), $PositionDestination->getY());
 $time = $MasterShipPlayer->calculateTravelTime($distance, $type);
 

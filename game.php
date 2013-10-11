@@ -7,6 +7,7 @@ if (!isConnected()) {
     exit;
 }
 
+
 if (!empty($_GET['module'])) {
     $module = $_GET['module'];
 
@@ -24,7 +25,7 @@ if (!empty($_GET['module'])) {
             if ($to == 'space') {
                 include_once 'modules/game/fly/fly_space.php';
             } 
-        } else if (!empty($_GET['x']) && !empty($_GET['y'])) {
+        } else if (isset($_GET['x']) && isset($_GET['y'])) {
             include_once 'modules/game/fly/fly_position.php';
         }
     } else if ($module == 'positions') {

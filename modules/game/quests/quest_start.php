@@ -9,3 +9,5 @@ if ($Quest->isStartedByPlayer()) {
 }
 
 $Quest->start($User->getId());
+
+header('location: '.PATH.'observatory');

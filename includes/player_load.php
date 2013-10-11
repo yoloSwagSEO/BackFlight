@@ -138,7 +138,23 @@ $array_notifications_unread = Notification::getAll('', '', NOTIFICATION_UNREAD, 
 // Check for quests
 foreach ($array_quests_player as $Quest)
 {
-    
+    $QuestStep = $Quest->getCurrentStep();
+    if ($QuestStep->hasAllRequirementsDone()) {
+        $QuestStep->addUserStep($User->getId());
+        $gains = $QuestStep->getStepGains();
+        if ($gains) {
+            Quest::earnGains($gains, $array_ressources);
+        }
+    }
+
+    // If quest is complete
+    if ($Quest->hasAllStepsDone())
+    {
+        // Get gains
+
+        $Quest->setUserState($User->getId(), 'done');
+//        $Quest->save();
+    }
 }
 
 

@@ -30,15 +30,34 @@ if (!$Quest->isSql()) {
         </p>
         <ul class="ul_blocs">
             <?php
-            foreach ($Quest->getSteps() as $array_step)
+            foreach ($Quest->getSteps() as $QuestStep)
             {
+                $requirements = $QuestStep->getStepRequirements();
                 ?>
-            <li><strong><?php echo $array_step['name']?></strong>
-                <br /><?php echo $array_step['description']?>
+            <li><strong><?php echo $QuestStep->getStepName()?></strong>
+                <br /><?php echo $QuestStep->getStepDescription()?>
+                <?php
+                if ($requirements) {
+                    ?>
+                <hr />
+                <?php
+                foreach ($requirements as $QuestRequirement)
+                {
+                    ?>
+                <strong><?php echo $QuestRequirement->getRequirementType()?></strong> : <?php echo $QuestRequirement->getRequirementValueUser()?>/<?php echo $QuestRequirement->getRequirementValue()?>
+                    <br />
+                    <?php
+                }
+                ?>
+                <hr />
+                    <?php
+                }
+
+                ?>
                 <br /><i>
                     Gains :
                     <?php
-                    foreach ($array_step['gains'] as $type => $gain)
+                    foreach ($QuestStep->getStepGains() as $type => $gain)
                     {
                         echo '<kbd>';
                         if ($gain['operation'] == 'multiply') {

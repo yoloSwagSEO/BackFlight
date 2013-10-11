@@ -196,7 +196,7 @@ class Quest extends Fly
         return array_shift($array);
     }
 
-    public static function getAll($id = null, $to_array = false, $positionId = null, $userId = null)
+    public static function getAll($id = null, $to_array = false, $positionId = null, $userId = null, $state = null)
     {
         $where = '';
         $args = array();
@@ -224,7 +224,7 @@ class Quest extends Fly
         if ($userId) {
             // User quests
             $args[':userId'] = $userId;            
-            $join_req .= ' INNER JOIN `'.TABLE_USERS_QUESTS.'` uQuest ON uQuest.userId = :userId AND uQuest.questId = `'.static::$_sqlTable.'`.id';
+            $join_req .= ' LEFT JOIN `'.TABLE_USERS_QUESTS.'` uQuest ON uQuest.userId = :userId AND uQuest.questId = `'.static::$_sqlTable.'`.id';
             $join_select .= ', uQuest.id userQuestId, uQuest.questState userQuestState';
 
             // User steps
@@ -236,7 +236,18 @@ class Quest extends Fly
             $args[':userId2'] = $userId;
             $join_req .= ' LEFT JOIN `'.TABLE_USERS_QUESTS_REQUIREMENTS.'` uQuestRequirement ON uQuestRequirement.requirementId = qRequirement.id AND uQuestRequirement.userId = :userId';
             $join_select .= ', uQuestRequirement.requirementId uQuestRequirementId, uQuestRequirement.requirementQuantity uQuestRequirementQuantity ';
+
+
+            if ($state === null) {
+                if (empty($where)) {
+                    $where = ' WHERE ';
+                } else {
+                    $where .= ' AND ';
+                }
+                $where .= ' (uQuest.questState NOT LIKE "%done%" OR uQuest.questState IS NULL)';
+            }
         }
+
 
         $array = array();
         $sql = FlyPDO::get();
@@ -256,7 +267,6 @@ class Quest extends Fly
                         ON qGain.stepId = qStep.id
                 '.$join_req.'
                 '.$where);
-
 
         if ($req->execute($args)) {
             $current = 0;
@@ -304,13 +314,16 @@ class Quest extends Fly
                 }
 
                 if (!empty($row['qRequirementStepId'])) {
-                    $param['steps'][$row['stepId']]['requirements'][$row['qRequirementId']] = array('id' => $row['qRequirementId'], 'questId' => $row['id'], 'stepId' => $row['stepId'], 'requirementType' => $row['requirementType'], 'requirementValue' => 'requirementValue');
+                    if (empty($param['requirements_seen'][$row['qRequirementId']])) {
+                        $param['steps'][$row['stepId']]['requirements'][$row['qRequirementId']] = array('id' => $row['qRequirementId'], 'questId' => $row['id'], 'stepId' => $row['stepId'], 'requirementType' => $row['requirementType'], 'requirementValue' => $row['requirementValue']);
+                        $param['requirements_seen'][$row['qRequirementId']] = true;
+                    }
                 }
 
                 // User requirements
                 if (!empty($row['uQuestRequirementId'])) {
                     if (empty($param['uRequirements_seen'][$row['uQuestRequirementId']])) {
-                        $param['steps'][$row['stepId']]['user_requirements'][$row['uQuestRequirementId']] = $row['uQuestRequirementQuantity'];
+                        $param['steps'][$row['stepId']]['requirements'][$row['qRequirementId']]['userRequirement'] = $row['uQuestRequirementQuantity'];
                         $param['uRequirements_seen'][$row['uQuestRequirementId']] = true;
                     }
                 }
@@ -348,12 +361,16 @@ class Quest extends Fly
         return false;
     }
 
+    /**
+     *  Return current quest step
+     * @return QuestStep
+     */
     public function getCurrentStep()
     {
         if (!$this->_userStepId) {
-            return key($this->_steps);
+            return reset($this->_steps);
         } else {
-            return $this->_userStepId;
+            return $this->_steps[$this->_userStepId];
         }
     }
 
@@ -361,10 +378,58 @@ class Quest extends Fly
     {
         foreach ($array_quests_player as $Quest)
         {
-            $QuestStep = $Quest->getStep($Quest->getCurrentStep());
+            $QuestStep = $Quest->getCurrentStep();
             $requirementId = $QuestStep->hasRequirement($type);
+            // Has quest this requirement ?
             if ($requirementId) {
-                $QuestStep->addUserStepRequirement($requirementId, $quantity, $userId);
+            // Don't do anything if requirement is done
+                if (!$QuestStep->isRequirementDone($requirementId)) {
+                    $QuestRequirement = $QuestStep->getRequirement($requirementId);
+                    $QuestRequirement->addUserStepRequirement($requirementId, $quantity, $userId);
+                }
+            }
+        }
+    }
+
+    public function hasAllStepsDone()
+    {
+        foreach ($this->_steps as $QuestStep)
+        {
+            if (!$QuestStep->hasAllRequirementsDone()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public function setUserState($userId, $state)
+    {
+        $sql = FlyPDO::get();
+        $req = $sql->prepare('UPDATE `'.TABLE_USERS_QUESTS.'` SET questState = :state WHERE questId = :questId AND userId = :userId');
+        if (!$req->execute(array(
+            ':state' => $state,
+            ':questId' => $this->_id,
+            ':userId' => $userId
+        ))) {
+            
+        }
+    }
+
+    public static function earnGains($gains, &$array_ressources)
+    {
+        foreach ($gains as $type => $value)
+        {
+            if ($type == 'techs' || $type == 'fuel') {
+                foreach ($array_ressources as $Ressource)
+                {
+                    if ($Ressource->getType() == $type)
+                    {
+                        if ($value['operation'] == 'multiply') {
+                            $Ressource->setQuantity($Ressource->getQuantity() * $value['quantity']);
+                            $Ressource->save();
+                        }
+                    }
+                }
             }
         }
     }

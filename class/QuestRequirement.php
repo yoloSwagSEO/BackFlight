@@ -6,6 +6,7 @@ class QuestRequirement extends Fly
     protected $_stepId;
     protected $_requirementType;
     protected $_requirementValue;
+    protected $_requirementValueUser;
 
 
     /**
@@ -33,6 +34,11 @@ class QuestRequirement extends Fly
     public function getRequirementValue()
     {
         return $this->_requirementValue;
+    }
+
+    public function getRequirementValueUser()
+    {
+        return $this->_requirementValueUser;
     }
 
 
@@ -71,6 +77,9 @@ class QuestRequirement extends Fly
             $this->_stepId = $param['stepId'];
             $this->_requirementType = $param['requirementType'];
             $this->_requirementValue = $param['requirementValue'];
+            if (!empty($param['userRequirement'])) {
+                $this->_requirementValueUser = $param['userRequirement'];
+            }
             $this->_sql = true;
         }
     }
@@ -176,6 +185,85 @@ class QuestRequirement extends Fly
         } else {
             var_dump($req->errorInfo());
             trigger_error('Chargement impossible', E_USER_ERROR);
+        }
+    }
+
+    /**
+     * Check if user has complete this requirement
+     * @return boolean
+     */
+    public function isDone()
+    {
+        if ($this->_requirementValue <= $this->_requirementValueUser) {
+            return true;
+        }
+    }
+
+
+    /**
+     *
+     * @param int $requirementQuantity
+     * @param int $userId
+     */
+    public function addUserStepRequirement($requirementQuantity, $userId)
+    {
+        if (empty($this->_requirementValueUser)) {
+            $this->_createUserStepRequirement($requirementQuantity, $userId);
+        } else {
+            $requirementQuantity = $this->_requirementValueUser + $requirementQuantity;
+            $this->_updateUserStepRequirement($requirementQuantity, $userId);
+        }
+
+        $this->_requirementValueUser = $requirementQuantity;
+
+        // If requirement is OK
+        if ($this->isDone()) {
+            $Notification = new Notification();
+            $Notification->setType(TABLE_QUESTS);
+            $Notification->setTypeId($this->getQuestId());
+            $Notification->setImportance('NOTIFICATION_IMPORTANCE_LOW');
+            $Notification->setAction('requirement_ok');
+            $Notification->setActionId($this->_id);
+            $Notification->setActionType($this->_id);
+            $Notification->save();
+        }
+    }
+
+    /**
+     * Create a requirement step for an user
+     * @param int $requirementQuantity
+     * @param int $userId
+     */
+    protected function _createUserStepRequirement($requirementQuantity, $userId)
+    {
+        $sql = FlyPDO::get();
+        $req = $sql->prepare('INSERT INTO `'.TABLE_USERS_QUESTS_REQUIREMENTS.'` VALUES("", :userId, :requirementId, :requirementQuantity)');
+        if (!$req->execute(array(
+            ':userId' => $userId,
+            ':requirementId' => $this->_id,
+            ':requirementQuantity' => $requirementQuantity
+        ))) {
+            var_dump($req->errorInfo());
+            trigger_error('Unable to save userStepRequirement', E_USER_ERROR);
+        }
+    }
+
+    /**
+     * Update an existing requirement step for an user
+     * @param int $requirementQuantity
+     * @param int $userId
+     */
+    protected function _updateUserStepRequirement($requirementQuantity, $userId)
+    {
+        $sql = FlyPDO::get();
+        $req = $sql->prepare('UPDATE `'.TABLE_USERS_QUESTS_REQUIREMENTS.'` SET requirementQuantity = :requirementQuantity WHERE userId = :userId AND requirementId = :requirementId');
+        if (!$req->execute(array(
+            ':userId' => $userId,
+            ':requirementId' => $this->_id,
+            ':requirementQuantity' => $requirementQuantity
+        ))) {
+            var_dump($req->errorInfo());
+            trigger_error('Unable to save userStepRequirement', E_USER_ERROR);
         }
     }
 }

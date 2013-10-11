@@ -8,7 +8,7 @@ class QuestStep extends Fly
     protected $_stepPositionId;
     protected $_stepNb;
     protected $_stepRequirements;
-    protected $_userRequirements;
+    protected $_stepGains;
 
 
     /**
@@ -43,14 +43,26 @@ class QuestStep extends Fly
         return $this->_stepNb;
     }
 
-    public function getRequirements()
+    public function getStepRequirements()
     {
-        return $this->_requirements;
+        return $this->_stepRequirements;
     }
 
     public function getUserRequirements()
     {
         return $this->_userRequirements;
+    }
+
+    public function getStepGains()
+    {
+        return $this->_stepGains;
+    }
+
+    public function getRequirement($requirementId)
+    {
+        if (!empty($this->_stepRequirements[$requirementId])) {
+            return $this->_stepRequirements[$requirementId];
+        }
     }
 
 
@@ -98,14 +110,16 @@ class QuestStep extends Fly
             if (!empty($param['requirements'])) {
                 foreach ($param['requirements'] as $id => $param_requirement)
                 {
-                    $this->_requirements[$id] = new QuestRequirement($param_requirement);
+                    $this->_stepRequirements[$id] = new QuestRequirement($param_requirement);
                 }
             }
-            if (!empty($param['user_requirements'])) {
-                $this->_userRequirements = $param['user_requirements'];
+
+            if (!empty($param['gains'])) {
+                $this->_stepGains = $param['gains'];
             }
         }
     }
+
 
     protected function _create()
     {
@@ -213,9 +227,14 @@ class QuestStep extends Fly
         }
     }
 
+    /**
+     * Check if this quest step has a requirement
+     * @param string $requirement requirement type
+     * @return int
+     */
     public function hasRequirement($requirement)
     {
-        foreach ($this->_requirements as $QuestRequirement)
+        foreach ($this->_stepRequirements as $QuestRequirement)
         {
             if ($QuestRequirement->getRequirementType() == $requirement) {
                 return $QuestRequirement->getId();
@@ -224,59 +243,46 @@ class QuestStep extends Fly
     }
 
     /**
-     *
-     * @param type $requirementId
-     * @param type $requirementQuantity
-     * @param type $userId
+     * Check if a requirement is done
+     * @param int $requirementId
+     * @return boolean
      */
-    public function addUserStepRequirement($requirementId, $requirementQuantity, $userId)
+    public function isRequirementDone($requirementId)
     {
-        if (empty($this->_userRequirements[$requirementId])) {
-            $this->_createUserStepRequirement($requirementId, $requirementQuantity, $userId);
-        } else {
-            $requirementQuantity = $this->_userRequirements[$requirementId] + $requirementQuantity;
-            $this->_updateUserStepRequirement($requirementId, $requirementQuantity, $userId);
-        }
-
-        $this->_usersRequirements[$requirementId] = $requirementQuantity;
-
-        // If requirement is OK
-        if ($this->_usersRequirements[$requirementId] >= $this->_requirements[$requirementId]->getRequirementValue()) {
-            $Notification = new Notification();
-            $Notification->setType(TABLE_QUESTS);
-            $Notification->setTypeId($this->getQuestId());
-            $Notification->setImportance('NOTIFICATION_IMPORTANCE_LOW');
-            $Notification->setAction('requirement_ok');
-            $Notification->setActionId($requirementId);
-            $Notification->setActionType($this->_id);
-            $Notification->save();
-        }
+        $QuestRequirement = $this->_stepRequirements[$requirementId];
+        return $QuestRequirement->isDone();
     }
 
-    protected function _createUserStepRequirement($requirementId, $requirementQuantity, $userId)
+    /**
+     * Check if all requirements are done
+     * @return boolean
+     */
+    public function hasAllRequirementsDone()
     {
-        $sql = FlyPDO::get();
-        $req = $sql->prepare('INSERT INTO `'.TABLE_USERS_QUESTS_REQUIREMENTS.'` VALUES("", :userId, :requirementId, :requirementQuantity)');
-        if (!$req->execute(array(
-            ':userId' => $userId,
-            ':requirementId' => $requirementId,
-            ':requirementQuantity' => $requirementQuantity
-        ))) {
-            var_dump($req->errorInfo());
-            trigger_error('Unable to save userStepRequirement', E_USER_ERROR);
+        foreach ($this->_stepRequirements as $QuestRequirement)
+        {
+            if (!$QuestRequirement->isDone()) {
+                return false;
+            }
         }
+        return true;
     }
-    protected function _updateUserStepRequirement($requirementId, $requirementQuantity, $userId)
+
+    /**
+     * Create an user step
+     * @param int $userId
+     */
+    public function addUserStep($userId)
     {
         $sql = FlyPDO::get();
-        $req = $sql->prepare('UPDATE `'.TABLE_USERS_QUESTS_REQUIREMENTS.'` SET requirementQuantity = :requirementQuantity WHERE userId = :userId AND requirementId = :requirementId');
+        $req = $sql->prepare('INSERT INTO `'.TABLE_USERS_QUESTS_STEPS.'` VALUES("", :userId, :stepId, :date)');
         if (!$req->execute(array(
             ':userId' => $userId,
-            ':requirementId' => $requirementId,
-            ':requirementQuantity' => $requirementQuantity
+            ':stepId' => $this->_id,
+            ':date' => time()
         ))) {
             var_dump($req->errorInfo());
-            trigger_error('Unable to save userStepRequirement', E_USER_ERROR);
+            trigger_error('Unable to save userStep', E_USER_ERROR);
         }
     }
 }

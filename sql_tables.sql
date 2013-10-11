@@ -238,3 +238,5 @@ CREATE TABLE IF NOT EXISTS `notifications` (
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ALTER TABLE  `notifications` CHANGE  `type`  `type` VARCHAR( 25 ) NOT NULL ;
+
+ALTER TABLE  `quests_gains` CHANGE  `stepId`  `stepId` INT( 11 ) NULL ;
