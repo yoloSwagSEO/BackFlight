@@ -78,6 +78,11 @@ class Notification extends Fly
         return $this->_actionSub;
     }
 
+    public function getRead()
+    {
+        return $this->_read;
+    }
+
 
     public function setUserId($userId)
     {
@@ -132,6 +137,11 @@ class Notification extends Fly
     public function setActionSub($actionSub)
     {
         $this->_actionSub = $actionSub;
+    }
+
+    public function setRead($read)
+    {
+        $this->_read = $read;
     }
 
 
@@ -246,11 +256,11 @@ class Notification extends Fly
             $args[':id'] = $id;
         }
 
-        if ($read) {
+        if ($read !== null) {
             if (empty($where)) {
                 $where = ' WHERE ';
             } else {
-                $where = ' AND ';
+                $where .= ' AND ';
             }
             $where .= '`'.static::$_sqlTable.'`.read = :read';
             $args[':read'] = $read;
@@ -260,7 +270,7 @@ class Notification extends Fly
             if (empty($where)) {
                 $where = ' WHERE ';
             } else {
-                $where = ' AND ';
+                $where .= ' AND ';
             }
             $where .= '`'.static::$_sqlTable.'`.userId = :userId';
             $args[':userId'] = $userId;
@@ -315,5 +325,10 @@ class Notification extends Fly
     public function renderTitle()
     {
         return $this->_type.' : '.$this->_typeId.'('.$this->_actionType.' '.$this->_action.')';
+    }
+
+    public function isRead()
+    {
+        return ($this->_read == NOTIFICATION_READ);
     }
 }

@@ -23,39 +23,53 @@ if (isset($_GET['all'])) {
         </div>
 
         <dl class="sub-nav">
-            <dt>Type de vol : </dt>
+            <dt>Afficher les notifications : </dt>
             <dd<?php if (isset($_GET['all'])) {?> class="active"<?php } ?>><a href="notifications/all">Toutes</a></dd>
             <dd<?php if (!isset($_GET['all'])) {?> class="active"<?php } ?>><a href="notifications">Non lues</a></dd>
         </dl>
-
-        <table width="100%">
-            <thead>
-                <tr>
-                    <th>
-                        Titre
-                    </th>
-                    <th>
-                        Date
-                    </th>
-                    <th>
-                        Position
-                    </th>
-                </tr>
-            </thead>
         <?php
-        foreach ($array_notifications as $Notification)
-        {
+        if(!empty($array_notifications)) {
             ?>
-            <tr>
-                <td><?php echo $Notification->renderTitle()?></td>
-                <td><?php echo date('d/m - h:i', $Notification->getDate())?></td>
-                <td>n:n</td>
-            </tr>
+            <table width="100%">
+                <thead>
+                    <tr>
+                        <th>
+                            Titre
+                        </th>
+                        <th>
+                            Date
+                        </th>
+                        <th>
+                            Position
+                        </th>
+                    </tr>
+                </thead>
+            <?php
+            foreach ($array_notifications as $Notification)
+            {
+                $class = '';
+                if (!$Notification->isRead()) {
+                    $class = ' class="notification_unread"';
+                }
+                ?>
+                <tr<?php echo $class?>>
+                    <td><a href="notifications/read/<?php echo $Notification->getid()?>"><?php echo $Notification->renderTitle()?></a></td>
+                    <td><a href="notifications/read/<?php echo $Notification->getid()?>"><?php echo date('d/m - h:i', $Notification->getDate())?></a></td>
+                    <td><a href="notifications/read/<?php echo $Notification->getid()?>">n:n</a></td>
+                </tr>
+                <?php
+            }
+            ?>
+            </table>
+        <?php
+        } else {
+            ?>
+        <p>
+            Aucune notification
+        </p>
             <?php
         }
         ?>
-        </table>
-
 
 <?php
 foot();

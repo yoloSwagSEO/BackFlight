@@ -128,3 +128,8 @@
 {
     display: block;
 }
+
+.notification_unread
+{
+    font-weight: bold;
+}

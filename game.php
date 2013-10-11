@@ -62,7 +62,11 @@ if (!empty($_GET['module'])) {
             }
         }
     } else if ($module == 'notifications') {
-        include_once 'modules/game/notifications/notifications_home.php';
+        if (!empty($_GET['read'])) {
+            include_once 'modules/game/notifications/notification_read.php';
+        } else {
+            include_once 'modules/game/notifications/notifications_home.php';
+        }
     }
 }
 
