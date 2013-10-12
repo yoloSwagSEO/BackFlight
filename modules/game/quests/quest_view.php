@@ -39,17 +39,16 @@ if (!$Quest->isSql()) {
                 <?php
                 if ($requirements) {
                     ?>
-                <hr />
                 <?php
                 foreach ($requirements as $QuestRequirement)
                 {
                     ?>
+                <hr />
                 <strong><?php echo $QuestRequirement->getRequirementType()?></strong> : <?php echo $QuestRequirement->getRequirementValueUser()?>/<?php echo $QuestRequirement->getRequirementValue()?>
                     <br />
                     <?php
                 }
                 ?>
-                <hr />
                     <?php
                 }
 
@@ -86,6 +85,25 @@ if (!$Quest->isSql()) {
             ?>
         </ul>
         <?php
+        if ($Quest->getGains()) {
+        ?>
+        <p>
+            Gains : <br />
+            <?php
+            foreach ($Quest->getGains() as $type => $gain)
+            {
+                echo '<kbd>';
+                if ($gain['operation'] == 'multiply') {
+                    echo $type.' x'.$gain['quantity'];
+                } else {
+                    echo ' +'.$gain['quantity'].' '.$type;
+                }
+                echo '</kbd>';
+            }
+            ?>
+        </p>
+        <?php
+        }
         if (!$Quest->isStartedByPlayer()) {
         ?>
         <form action="" method="post">

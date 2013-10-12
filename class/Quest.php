@@ -10,6 +10,7 @@ class Quest extends Fly
     protected $_state;
     protected $_userQuestId;
     protected $_userStepId;
+    protected $_gains;
     protected $_steps = array();
 
 
@@ -62,6 +63,11 @@ class Quest extends Fly
         return $this->_state;
     }
 
+    public function getGains()
+    {
+        return $this->_gains;
+    }
+
 
 
     public function setName($name)
@@ -88,6 +94,7 @@ class Quest extends Fly
     {
         $this->_questType = $questType;
     }
+    
 
     /**
      * Check if player has started this quest
@@ -140,6 +147,10 @@ class Quest extends Fly
                     $array_step['id'] = $stepId;
                     $this->_steps[$stepId] = new QuestStep($array_step);
                 }
+            }
+
+            if (!empty($param['gains'])) {
+                $this->_gains = $param['gains'];
             }
         }
     }
@@ -254,7 +265,8 @@ class Quest extends Fly
         $req = $sql->prepare('
                     SELECT `'.static::$_sqlTable.'`.*, qStep.id stepId, qStep.stepName, qStep.stepPositionId, qStep.stepNb, qStep.stepDescription,
                         qRequirement.requirementType, qRequirement.requirementValue, qRequirement.stepId qRequirementStepId, qRequirement.id qRequirementId,
-                        qGain.gainOperation, qGain.gainType, qGain.gainQuantity, qGain.stepId qGainStepId
+                        qStepGain.gainOperation, qStepGain.gainType, qStepGain.gainQuantity, qStepGain.gainValue, qStepGain.stepId qStepGainStepId,
+                        qGain.gainOperation questGainOperation, qGain.gainType questGainType, qGain.gainQuantity questGainQuantity, qGain.gainValue questGainValue, qGain.id questGainId
                         '.$join_select.'
                     FROM `'.static::$_sqlTable.'`
                     INNER JOIN `'.TABLE_QUESTSTEPS.'` qStep
@@ -263,8 +275,11 @@ class Quest extends Fly
                     INNER JOIN `'.TABLE_QUESTREQUIREMENTS.'` qRequirement
                         ON qRequirement.stepId = qStep.id
 
+                    LEFT JOIN `'.TABLE_QUESTGAINS.'` qStepGain
+                        ON qStepGain.stepId = qStep.id
+
                     LEFT JOIN `'.TABLE_QUESTGAINS.'` qGain
-                        ON qGain.stepId = qStep.id
+                        ON qGain.questId = `'.static::$_sqlTable.'`.id AND qGain.stepId IS NULL
                 '.$join_req.'
                 '.$where);
 
@@ -328,8 +343,12 @@ class Quest extends Fly
                     }
                 }
 
-                if (!empty($row['qGainStepId'])) {
-                    $param['steps'][$row['stepId']]['gains'][$row['gainType']] = array('operation' => $row['gainOperation'], 'quantity' => $row['gainQuantity']);
+                if (!empty($row['qStepGainStepId'])) {
+                    $param['steps'][$row['stepId']]['gains'][$row['gainType']] = array('operation' => $row['gainOperation'], 'quantity' => $row['gainQuantity'], 'value' => $row['gainValue']);
+                }
+
+                if (!empty($row['questGainId'])) {
+                    $param['gains'][$row['questGainType']] = array('operation' => $row['questGainOperation'], 'quantity' => $row['questGainQuantity'], 'value' => $row['questGainValue']);
                 }
 
             }
