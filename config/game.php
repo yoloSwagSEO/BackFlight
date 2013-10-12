@@ -9,7 +9,7 @@
  */
 define('GAME_SPEED', 20);
 
-define('GAME_AUTOCREATE_DATAS', false);
+define('GAME_AUTOCREATE_DATAS', true);
 
 /**
  * Position distance

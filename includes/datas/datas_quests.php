@@ -20,7 +20,7 @@ $FirstQuestStep1Requirement = new QuestRequirement();
 $FirstQuestStep1Requirement->setQuestId($FirstQuest->getId());
 $FirstQuestStep1Requirement->setStepId($FirstQuestStep1->getId());
 $FirstQuestStep1Requirement->setRequirementType('searches');
-$FirstQuestStep1Requirement->setRequirementQuantity(3);
+$FirstQuestStep1Requirement->setRequirementValue(3);
 $FirstQuestStep1Requirement->save();
 
 $FirstQuestStep1RequirementGainTechs = new QuestGain();
@@ -34,4 +34,63 @@ $FirstQuestStep1RequirementGainTechs->setGainType('techs');
 $FirstQuestStep1RequirementGainFuel->setGainType('fuel');
 $FirstQuestStep1RequirementGainTechs->save();
 $FirstQuestStep1RequirementGainFuel->save();
+
+
+$ModuleQuest = new Quest();
+$ModuleQuest->setName('Le roi du boost');
+$ModuleQuest->setIntro('Améliorez votre vaisseau pour gagner bien plus que de la vitesse !');
+$ModuleQuest->setDescription('En construisant et activant trois modules, obtenez deux emplacements supplémentaires pour ajouter des modules.');
+$ModuleQuest->setQuestType('modules');
+$ModuleQuest->save();
+
+$ModuleQuestStep1 = new QuestStep();
+$ModuleQuestStep1->setQuestId($ModuleQuest->getId());
+
+$ModuleQuestStep2 = clone($ModuleQuestStep1);
+$ModuleQuestStep3 = clone($ModuleQuestStep1);
+
+$ModuleQuestStep1->setStepDescription('Fabriquez et activez le module "Bloc de soute"');
+$ModuleQuestStep1->setStepName('Bloc de soute');
+$ModuleQuestStep1->setStepNb(1);
+$ModuleQuestStep1->save();
+
+$ModuleQuestStep2->setStepDescription('Fabriquez et activez le module "Boost du réacteur"');
+$ModuleQuestStep2->setStepName('Boost du réacteur');
+$ModuleQuestStep2->setStepNb(2);
+$ModuleQuestStep2->save();
+
+$ModuleQuestStep3->setStepDescription('Fabriquez et activez le module "Batteries supplémentaires"');
+$ModuleQuestStep3->setStepName('Batteries supplémentaires');
+$ModuleQuestStep3->setStepNb(3);
+$ModuleQuestStep3->save();
+
+$ModuleQuestStep1Requirement = new QuestRequirement();
+$ModuleQuestStep1Requirement->setQuestId($ModuleQuest->getId());
+$ModuleQuestStep1Requirement->setRequirementType('module_enabled');
+
+$ModuleQuestStep2Requirement = clone($ModuleQuestStep1Requirement);
+$ModuleQuestStep3Requirement = clone($ModuleQuestStep1Requirement);
+
+$ModuleQuestStep1Requirement->setRequirementValue(1);
+$ModuleQuestStep1Requirement->setStepId($ModuleQuestStep1->getId());
+$ModuleQuestStep1Requirement->save();
+
+$ModuleQuestStep2Requirement->setRequirementValue(2);
+$ModuleQuestStep2Requirement->setStepId($ModuleQuestStep2->getId());
+$ModuleQuestStep2Requirement->save();
+
+$ModuleQuestStep3Requirement->setRequirementValue(3);
+$ModuleQuestStep3Requirement->setStepId($ModuleQuestStep3->getId());
+$ModuleQuestStep3Requirement->save();
+
+$ModuleQuestRequirementGainModule = new QuestGain();
+$ModuleQuestRequirementGainModule->setQuestId($ModuleQuest->getId());
+$ModuleQuestRequirementGainModule->setGainOperation('obtain');
+$ModuleQuestRequirementGainModule->setGainType('module');
+$ModuleQuestRequirementGainModule->setGainValue(7);
+$ModuleQuestRequirementGainModule->setGainQuantity(1);
+$ModuleQuestRequirementGainModule->save();
+
+
+
 

@@ -6,6 +6,7 @@ class QuestGain extends Fly
     protected $_stepId;
     protected $_gainOperation;
     protected $_gainType;
+    protected $_gainValue;
     protected $_gainQuantity;
 
 
@@ -41,6 +42,11 @@ class QuestGain extends Fly
         return $this->_gainOperation;
     }
 
+    public function getGainValue()
+    {
+        return $this->_gainValue;
+    }
+
 
 
     public function setQuestId($questId)
@@ -68,6 +74,11 @@ class QuestGain extends Fly
         $this->_gainOperation = $gainOperation;
     }
 
+    public function setGainValue($gainValue)
+    {
+        $this->_gainValue = $gainValue;
+    }
+
 
 
     /*
@@ -83,6 +94,7 @@ class QuestGain extends Fly
             $this->_gainOperation = $param['gainOperation'];
             $this->_gainType = $param['gainType'];
             $this->_gainQuantity = $param['gainQuantity'];
+            $this->_gainValue = $param['gainValue'];
             $this->_sql = true;
         }
     }
@@ -90,13 +102,14 @@ class QuestGain extends Fly
     protected function _create()
     {
         $sql = FlyPDO::get();
-        $req = $sql->prepare('INSERT INTO `'.static::$_sqlTable.'` VALUES (:id, :questId, :stepId, :gainOperation, :gainType, :gainQuantity)');
+        $req = $sql->prepare('INSERT INTO `'.static::$_sqlTable.'` VALUES (:id, :questId, :stepId, :gainOperation, :gainType, :gainValue, :gainQuantity)');
         $args = array(
             ':id' => $this->_id,
             ':questId' => $this->_questId,
             ':stepId' => $this->_stepId,
             ':gainOperation' => $this->_gainOperation,
             ':gainType' => $this->_gainType,
+            ':gainValue' => $this->_gainValue,
             ':gainQuantity' => $this->_gainQuantity
         );
         if ($req->execute($args)) {
@@ -111,13 +124,14 @@ class QuestGain extends Fly
     protected function _update()
     {
         $sql = FlyPDO::get();
-        $req = $sql->prepare('UPDATE `'.static::$_sqlTable.'` SET `questId` = :questId, `stepId` = :stepId, `gainOperation` = :gainOperation, `gainType` = :gainType, `gainQuantity` = :gainQuantity WHERE id = :id');
+        $req = $sql->prepare('UPDATE `'.static::$_sqlTable.'` SET `questId` = :questId, `stepId` = :stepId, `gainOperation` = :gainOperation, `gainType` = :gainType, `gainValue` = :gainValue, `gainQuantity` = :gainQuantity WHERE id = :id');
         $args = array(
             ':id' => $this->_id,
             ':questId' => $this->_questId,
             ':stepId' => $this->_stepId,
             ':gainOperation' => $this->_gainOperation,
             ':gainType' => $this->_gainType,
+            ':gainValue' => $this->_gainValue,
             ':gainQuantity' => $this->_gainQuantity
         );
         if ($req->execute($args)) {

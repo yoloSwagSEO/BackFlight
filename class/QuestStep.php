@@ -100,6 +100,7 @@ class QuestStep extends Fly
     protected function _load($param)
     {
         if($param) {
+            var_dump($param);
             $this->_id = $param['id'];
             $this->_questId = $param['questId'];
             $this->_stepName = $param['stepName'];
