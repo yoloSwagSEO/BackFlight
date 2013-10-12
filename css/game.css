@@ -112,6 +112,7 @@
     border: 1px solid #cccccc;
     padding: 10px;
     border-radius: 4px;
+    margin: 5px 0;
 }
 
 .ul_blocs li:hover
