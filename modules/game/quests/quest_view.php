@@ -54,6 +54,9 @@ if (!$Quest->isSql()) {
                 }
 
                 ?>
+                <?php
+                if ($QuestStep->getStepGains()) {
+                ?>
                 <br /><i>
                     Gains :
                     <?php
@@ -70,6 +73,13 @@ if (!$Quest->isSql()) {
                     ?>
                 
                     </i>
+                <?php
+                } else {
+                    ?>
+                    
+                    <?php
+                }
+                ?>
             </li>
                 <?php
             }
