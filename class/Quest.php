@@ -138,6 +138,7 @@ class Quest extends Fly
                 foreach ($param['steps'] as $stepId => $array_step)
                 {
                     $array_step['id'] = $stepId;
+                    var_dump($array_step);
                     $this->_steps[$stepId] = new QuestStep($array_step);
                 }
             }
@@ -304,12 +305,12 @@ class Quest extends Fly
                 }
 
                 if (!empty($row['stepNb'])) {
-                    if (empty($param['steps_seen'][$row['stepNb']])) {
+                    if (empty($param['steps_seen'][$row['id']][$row['stepNb']])) {
                         $param['steps'][$row['stepId']] = array('stepName' => $row['stepName'], 'questId' => $row['id'], 'stepDescription' => $row['stepDescription'], 'stepNb' => $row['stepPositionId'], 'stepPositionId' => $row['stepNb']);
                         if (!empty($row['userQuestStepId'])) {
                             $param['steps'][$row['stepId']]['done'] = $row['userQuestStepDate'];
                         }
-                        $param['steps_seen'][$row['stepId']] = true;
+                        $param['steps_seen'][$row['id']][$row['stepNb']] = true;
                     }
                 }
 
