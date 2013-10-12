@@ -677,6 +677,10 @@ class Ship extends Model
             if (!empty($param['fuel'])) {
                 $this->_fuel = $param['fuel'];
                 $this->_fuelStart = $param['fuel'];
+
+                if ($this->_fuel > $this->_fuelMax) {
+                    $this->_fuel = $this->_fuelMax;
+                }
             }
 
             if (!empty($param['techs'])) {
