@@ -138,7 +138,6 @@ class Quest extends Fly
                 foreach ($param['steps'] as $stepId => $array_step)
                 {
                     $array_step['id'] = $stepId;
-                    var_dump($array_step);
                     $this->_steps[$stepId] = new QuestStep($array_step);
                 }
             }
