@@ -242,3 +242,4 @@ ALTER TABLE  `notifications` CHANGE  `type`  `type` VARCHAR( 25 ) NOT NULL ;
 ALTER TABLE  `quests_gains` CHANGE  `stepId`  `stepId` INT( 11 ) NULL ;
 ALTER TABLE  `quests_gains` ADD  `gainValue` INT NULL AFTER  `gainType` ;
 ALTER TABLE  `quests` CHANGE  `positionId`  `positionId` INT( 11 ) NULL ;
+ALTER TABLE  `quests` CHANGE  `questType`  `questType` VARCHAR( 11 ) NOT NULL ;
