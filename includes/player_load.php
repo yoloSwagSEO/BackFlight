@@ -3,9 +3,7 @@ $array_fleets = Fleet::getAll('', '', $User->getId());
 $array_actions = Action::getAll('', '', $User->getId(), 'current');
 
 // Load quests
-$array_quests_player = Quest::getAll('', '', '', $User->getId());
-
-
+$array_quests_player = Quest::getAll('', '', '', $User->getId(), 'player');
 
 $CurrentPosition = new Position($MasterShipPlayer->getPositionId());
 
@@ -140,6 +138,12 @@ foreach ($array_quests_player as $Quest)
 {
     $QuestStep = $Quest->getCurrentStep();
     if ($QuestStep) {
+        // Validate step only on right position if it exists
+        if ($QuestStep->getStepPositionId()) {
+            if ($QuestStep->getStepPositionId() != $MasterShipPosition->getId()) {
+                continue;
+            }
+        }
         if ($QuestStep->hasAllRequirementsDone()) {
             $QuestStep->addUserStep($User->getId());
             $gains = $QuestStep->getStepGains();
@@ -150,15 +154,20 @@ foreach ($array_quests_player as $Quest)
     }
 
     // If quest is complete
-    if ($Quest->hasAllStepsDone())
+    if ($Quest->hasAllStepsDone() && !$Quest->isDoneByPlayer())
     {
+        if ($Quest->getPositionId()) {
+            if ($Quest->getPositionId() != $MasterShipPosition->getId()) {
+                continue;
+            }
+        }
         // Get gains
         $gains = $Quest->getGains();
         if ($gains) {
             Quest::earnGains($gains, $MasterShipPlayer, $array_ressources, $array_modules);
         }
-//        $Quest->setUserState($User->getId(), 'done');
-//        $Quest->save();
+        $Quest->setUserState($User->getId(), 'done');
+        $Quest->save();
     }
 }
 

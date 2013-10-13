@@ -3,8 +3,15 @@ title('Quests');
 head();
 
 $array_quests = array();
-$array_quests[0] = $array_quests_player;
-$array_quests[1] = array();
+
+foreach ($array_quests_player as $Quest)
+{
+    if ($Quest->isDoneByPlayer()) {
+        $array_quests[1][$Quest->getId()] = $Quest;
+    } else {
+        $array_quests[0][$Quest->getId()] = $Quest;
+    }
+}
 
 ksort($array_quests);
 
@@ -35,9 +42,6 @@ ksort($array_quests);
             <?php
             foreach ($quests as $Quest)
             {
-                if ($Quest->getState() == 'end') {
-                    continue;
-                }
                 $status = '';
                 if ($Quest->isStartedByPlayer()) {
                     $status = '[En cours] ';

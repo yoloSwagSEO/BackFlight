@@ -7,6 +7,13 @@ $position_category = $MasterShipPosition->getCategory();
 
 $array_quests_position = Quest::getAll('', '', $MasterShipPosition->getId(), $User->getId(), 'not_started');
 
+foreach ($array_quests_position as $id => $Quest)
+{
+    if ($Quest->isDoneByPlayer()) {
+        unset($array_quests_position[$id]);
+    }
+}
+
 ?>
 <div class="row">
     <div class="column large-3">

@@ -103,7 +103,20 @@ class Quest extends Fly
     public function isStartedByPlayer()
     {
         if ($this->_userQuestId) {
-            if ($this->_state != 'end') {
+            if ($this->_state != 'done') {
+                return true;
+            }
+        }
+    }
+
+    /**
+     * Check if player has succeed this quest
+     * @return boolean
+     */
+    public function isDoneByPlayer()
+    {
+        if ($this->_userQuestId) {
+            if ($this->_state == 'done') {
                 return true;
             }
         }
@@ -136,6 +149,7 @@ class Quest extends Fly
             $this->_positionId = $param['positionId'];
             $this->_questType = $param['questType'];
             $this->_sql = true;
+            
             if (!empty($param['userQuestId'])) {
                 $this->_state = $param['state'];
                 $this->_userQuestId = $param['userQuestId'];
