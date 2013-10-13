@@ -257,6 +257,9 @@ class Quest extends Fly
                 }
                 $where .= ' (uQuest.questState NOT LIKE "%done%" OR uQuest.questState IS NULL)';
             }
+
+            $where .= 'AND uQuest.userId = :userIdQ';
+            $args[':userIdQ'] = $userId;
         }
 
 

@@ -2,6 +2,7 @@
 title('Quests');
 head();
 
+$array_quests = array();
 $array_quests[0] = $array_quests_player;
 $array_quests[1] = array();
 
