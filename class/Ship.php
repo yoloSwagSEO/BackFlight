@@ -847,7 +847,8 @@ class Ship extends Model
                 mod.name modelName, mod.type modelType, mod.category modelCategory, mod.loadMax, mod.energyMax, mod.energyGain, mod.fuelMax, mod.powerMax, mod.speed, mod.modulesMax, mod.shieldMax, mod.shieldGain,
                 smodu.moduleId, smodu.moduleEnabled, smodu.id shipModuleId, modu.operation moduleOperation,
                 modu.weight moduleWeight, modu.power modulePower, modu.energy moduleEnergy, modu.load moduleLoad, modu.fuel moduleFuel, modu.techs moduleTechs,
-                modu.speed moduleSpeed, modu.shield moduleShield, modu.search moduleSearch, modu.attack moduleAttack, modu.weapons moduleWeapon, modu.defense moduleDefense, modu.energyGain moduleEnergyGain, modu.shieldGain moduleShieldGain
+                modu.speed moduleSpeed, modu.shield moduleShield, modu.search moduleSearch, modu.attack moduleAttack, modu.weapons moduleWeapon, modu.defense moduleDefense,
+                modu.energyGain moduleEnergyGain, modu.shieldGain moduleShieldGain, modu.module moduleModule
             FROM `'.self::$_sqlTable.'`
             LEFT JOIN `'.TABLE_POSITIONS.'` pos
                 ON `'.self::$_sqlTable.'`.positionId =  pos.id
@@ -927,6 +928,7 @@ class Ship extends Model
                         $param['modulesEffects'][$row['moduleId']]['defense'] = $row['moduleDefense'];
                         $param['modulesEffects'][$row['moduleId']]['energyGain'] = $row['moduleEnergyGain'];
                         $param['modulesEffects'][$row['moduleId']]['shieldGain'] = $row['moduleShieldGain'];
+                        $param['modulesEffects'][$row['moduleId']]['module'] = $row['moduleModule'];
                     }
                 }
 
@@ -1088,18 +1090,25 @@ class Ship extends Model
             {
                 foreach ($moduleEffects as $effect => $value)
                 {
-                    if ($effect != 'operation' && $effect != 'weight') {
-                        if (!empty($value)) {
-                            $propertyName = '_'.$effect;
-                            if ($effect != 'speed' && $effect != 'energyGain' && $effect != 'shieldGain') {
-                                $propertyName .= 'Max';
+                    if (!empty($value)) {
+                        if ($effect != 'operation' && $effect != 'weight') {
+                            if (!empty($value)) {
+                                $propertyName = '_'.$effect;
+                                if ($effect == 'module') {
+                                    $propertyName .= 's';
+                                }
+                                if ($effect != 'speed' && $effect != 'energyGain' && $effect != 'shieldGain') {
+                                    $propertyName .= 'Max';
+                                }
+                                if ($operation == 'multiply') {
+                                    $this->$propertyName *= $value;
+                                } else {
+                                    $this->$propertyName += $value;
+                                }
                             }
-                            if ($operation == 'multiply') {
-                                $this->$propertyName *= $value;
-                            }
+                        } else if ($effect == 'weight') {
+                            $this->_load += $value;
                         }
-                    } else if ($effect == 'weight') {
-                        $this->_load += $value;
                     }
                 }
             }

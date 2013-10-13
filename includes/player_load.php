@@ -139,11 +139,13 @@ $array_notifications_unread = Notification::getAll('', '', NOTIFICATION_UNREAD, 
 foreach ($array_quests_player as $Quest)
 {
     $QuestStep = $Quest->getCurrentStep();
-    if ($QuestStep->hasAllRequirementsDone()) {
-        $QuestStep->addUserStep($User->getId());
-        $gains = $QuestStep->getStepGains();
-        if ($gains) {
-            Quest::earnGains($gains, $array_ressources);
+    if ($QuestStep) {
+        if ($QuestStep->hasAllRequirementsDone()) {
+            $QuestStep->addUserStep($User->getId());
+            $gains = $QuestStep->getStepGains();
+            if ($gains) {
+                Quest::earnGains($gains, $MasterShipPlayer, $array_ressources, $array_modules);
+            }
         }
     }
 
@@ -151,8 +153,11 @@ foreach ($array_quests_player as $Quest)
     if ($Quest->hasAllStepsDone())
     {
         // Get gains
-
-        $Quest->setUserState($User->getId(), 'done');
+        $gains = $Quest->getGains();
+        if ($gains) {
+            Quest::earnGains($gains, $MasterShipPlayer, $array_ressources, $array_modules);
+        }
+//        $Quest->setUserState($User->getId(), 'done');
 //        $Quest->save();
     }
 }

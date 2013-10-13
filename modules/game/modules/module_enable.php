@@ -14,7 +14,9 @@ if ($MasterShipPlayer->getModulesEnabledNumber() >= $MasterShipPlayer->getModule
 }
 
 if ($MasterShipPlayer->hasModuleAvailable($Module->getId())) {
+    Quest::addAction($array_quests_player, 'module_enabled', 1, $User->getId(), $Module->getId());
     $MasterShipPlayer->enableModule($Module->getId());
+
 } else {
     exit('Module not available');
 }

@@ -230,13 +230,20 @@ class QuestStep extends Fly
     /**
      * Check if this quest step has a requirement
      * @param string $requirement requirement type
+     * @param string $value requirement value
      * @return int
      */
-    public function hasRequirement($requirement)
+    public function hasRequirement($requirement, $value = null)
     {
+        var_dump($requirement, $value);
         foreach ($this->_stepRequirements as $QuestRequirement)
         {
             if ($QuestRequirement->getRequirementType() == $requirement) {
+                if ($value) {
+                    if ($QuestRequirement->getRequirementValue() != $value) {
+                        continue;
+                    }
+                }
                 return $QuestRequirement->getId();
             }
         }

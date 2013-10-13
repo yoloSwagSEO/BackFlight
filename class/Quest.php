@@ -149,6 +149,10 @@ class Quest extends Fly
                 }
             }
 
+            if (!empty($param['userQuestStep'])) {
+                $this->_userStepId = $param['userQuestStep'];
+            }
+
             if (!empty($param['gains'])) {
                 $this->_gains = $param['gains'];
             }
@@ -267,7 +271,7 @@ class Quest extends Fly
         $sql = FlyPDO::get();
         $req = $sql->prepare('
                     SELECT `'.static::$_sqlTable.'`.*, qStep.id stepId, qStep.stepName, qStep.stepPositionId, qStep.stepNb, qStep.stepDescription,
-                        qRequirement.requirementType, qRequirement.requirementValue, qRequirement.stepId qRequirementStepId, qRequirement.id qRequirementId,
+                        qRequirement.requirementType, qRequirement.requirementValue, qRequirement.requirementQuantity, qRequirement.stepId qRequirementStepId, qRequirement.id qRequirementId,
                         qStepGain.gainOperation, qStepGain.gainType, qStepGain.gainQuantity, qStepGain.gainValue, qStepGain.stepId qStepGainStepId,
                         qGain.gainOperation questGainOperation, qGain.gainType questGainType, qGain.gainQuantity questGainQuantity, qGain.gainValue questGainValue, qGain.id questGainId
                         '.$join_select.'
@@ -314,11 +318,16 @@ class Quest extends Fly
                 // A partir d'ici, on charge les paramètres supplémentaires (par exemple conversion pour les médias)
                 if (!empty($row['userQuestId'])) {
                     $param['state'] = $row['userQuestState'];
+
                 }
 
-                if (!empty($row['uQuestStepId'])) {
-                    if ($param['userQuestStep'] < $row['uQuestStepId']) {
-                        $param['userQuestStep'] = $row['uQuestStepId'];
+                if (!empty($row['userQuestStepId'])) {
+                    if (empty($param['userQuestStep'])) {
+                        $param['userQuestStep'] = 0;
+                    }
+                    
+                    if ($param['userQuestStep'] < $row['userQuestStepId']) {
+                        $param['userQuestStep'] = $row['userQuestStepId'];
                     }
                 }
 
@@ -334,7 +343,7 @@ class Quest extends Fly
 
                 if (!empty($row['qRequirementStepId'])) {
                     if (empty($param['requirements_seen'][$row['qRequirementId']])) {
-                        $param['steps'][$row['stepId']]['requirements'][$row['qRequirementId']] = array('id' => $row['qRequirementId'], 'questId' => $row['id'], 'stepId' => $row['stepId'], 'requirementType' => $row['requirementType'], 'requirementValue' => $row['requirementValue']);
+                        $param['steps'][$row['stepId']]['requirements'][$row['qRequirementId']] = array('id' => $row['qRequirementId'], 'questId' => $row['id'], 'stepId' => $row['stepId'], 'requirementType' => $row['requirementType'], 'requirementValue' => $row['requirementValue'], 'requirementQuantity' => $row['requirementQuantity']);
                         $param['requirements_seen'][$row['qRequirementId']] = true;
                     }
                 }
@@ -393,22 +402,30 @@ class Quest extends Fly
         if (!$this->_userStepId) {
             return reset($this->_steps);
         } else {
-            return $this->_steps[$this->_userStepId];
+            $keys = array_keys($this->_steps);
+            $found_index = array_search($this->_userStepId, $keys);
+            if (!empty($keys[$found_index+1])) {
+                $stepId =  $keys[$found_index+1];
+                return $this->_steps[$stepId];
+            } return false;
         }
     }
 
-    public static function addAction(&$array_quests_player, $type, $quantity, $userId)
+    public static function addAction(&$array_quests_player, $type, $quantity, $userId, $value = null)
     {
         foreach ($array_quests_player as $Quest)
         {
             $QuestStep = $Quest->getCurrentStep();
-            $requirementId = $QuestStep->hasRequirement($type);
-            // Has quest this requirement ?
-            if ($requirementId) {
-            // Don't do anything if requirement is done
-                if (!$QuestStep->isRequirementDone($requirementId)) {
-                    $QuestRequirement = $QuestStep->getRequirement($requirementId);
-                    $QuestRequirement->addUserStepRequirement($requirementId, $quantity, $userId);
+            if ($QuestStep) {
+                $requirementId = $QuestStep->hasRequirement($type, $value);
+
+                // Has quest this requirement ?
+                if ($requirementId) {
+                // Don't do anything if requirement is done
+                    if (!$QuestStep->isRequirementDone($requirementId)) {
+                        $QuestRequirement = $QuestStep->getRequirement($requirementId);
+                        $QuestRequirement->addUserStepRequirement($quantity, $userId);
+                    }
                 }
             }
         }
@@ -438,7 +455,7 @@ class Quest extends Fly
         }
     }
 
-    public static function earnGains($gains, &$array_ressources)
+    public static function earnGains($gains, &$Ship, &$array_ressources, &$array_modules)
     {
         foreach ($gains as $type => $value)
         {
@@ -451,6 +468,13 @@ class Quest extends Fly
                             $Ressource->setQuantity($Ressource->getQuantity() * $value['quantity']);
                             $Ressource->save();
                         }
+                    }
+                }
+            } else if ($type == 'module') {
+                foreach ($array_modules as $moduleId => $Module)
+                {
+                    if ($value['value'] == $moduleId) {
+                        $Ship->addModule($moduleId);
                     }
                 }
             }

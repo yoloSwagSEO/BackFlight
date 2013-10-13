@@ -42,9 +42,13 @@ if (!$Quest->isSql()) {
                 <?php
                 foreach ($requirements as $QuestRequirement)
                 {
+                    $add = '';
+                    if ($QuestRequirement->isDone()) {
+                        $add = '[OK] ';
+                    }
                     ?>
                 <hr />
-                <strong><?php echo $QuestRequirement->getRequirementType()?></strong> : <?php echo $QuestRequirement->getRequirementValueUser()?>/<?php echo $QuestRequirement->getRequirementValue()?>
+                <strong><?php echo $add.$QuestRequirement->getRequirementType()?></strong> : <?php echo $QuestRequirement->getRequirementValueUser()?>/<?php echo $QuestRequirement->getRequirementValue()?>
                     <br />
                     <?php
                 }

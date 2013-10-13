@@ -243,3 +243,5 @@ ALTER TABLE  `quests_gains` CHANGE  `stepId`  `stepId` INT( 11 ) NULL ;
 ALTER TABLE  `quests_gains` ADD  `gainValue` INT NULL AFTER  `gainType` ;
 ALTER TABLE  `quests` CHANGE  `positionId`  `positionId` INT( 11 ) NULL ;
 ALTER TABLE  `quests` CHANGE  `questType`  `questType` VARCHAR( 11 ) NOT NULL ;
+ALTER TABLE  `quests_requirements` ADD  `requirementQuantity` INT NULL AFTER  `requirementValue` ;
+ALTER TABLE  `modules` ADD  `module` INT NULL AFTER  `defense` ;

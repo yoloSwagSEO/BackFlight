@@ -66,16 +66,18 @@ $ModuleQuestStep3->save();
 
 $ModuleQuestStep1Requirement = new QuestRequirement();
 $ModuleQuestStep1Requirement->setQuestId($ModuleQuest->getId());
+$ModuleQuestStep1Requirement->setRequirementQuantity(1);
 $ModuleQuestStep1Requirement->setRequirementType('module_enabled');
 
 $ModuleQuestStep2Requirement = clone($ModuleQuestStep1Requirement);
 $ModuleQuestStep3Requirement = clone($ModuleQuestStep1Requirement);
 
 $ModuleQuestStep1Requirement->setRequirementValue(1);
+$ModuleQuestStep1Requirement->setRequirementQuantity(1);
 $ModuleQuestStep1Requirement->setStepId($ModuleQuestStep1->getId());
 $ModuleQuestStep1Requirement->save();
 
-$ModuleQuestStep2Requirement->setRequirementValue(2);
+$ModuleQuestStep2Requirement->setRequirementValue(4);
 $ModuleQuestStep2Requirement->setStepId($ModuleQuestStep2->getId());
 $ModuleQuestStep2Requirement->save();
 
@@ -90,7 +92,4 @@ $ModuleQuestRequirementGainModule->setGainType('module');
 $ModuleQuestRequirementGainModule->setGainValue(7);
 $ModuleQuestRequirementGainModule->setGainQuantity(1);
 $ModuleQuestRequirementGainModule->save();
-
-
-
 
