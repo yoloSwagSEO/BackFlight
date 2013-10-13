@@ -706,9 +706,10 @@ class Ship extends Model
 
             if (!empty($param['modulesEnabled'])) {
                 $this->_modulesEnabled = $param['modulesEnabled'];
-                $this->_modulesEffects = $param['modulesEffects'];
                 $this->_calculateBonuses();
             }
+
+            $this->_modulesEffects = $param['modulesEffects'];
 
 
             $this->_lastUpdate = $param['lastUpdate'];
