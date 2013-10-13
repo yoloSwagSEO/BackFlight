@@ -218,9 +218,9 @@ class Quest extends Fly
     {
         // $args[1] is userId
         if (!empty($args[1])) {
-            $array = static::getAll($id, true, '', $args[1], 'all');
+            $array = static::getAll($id, true, null, $args[1], 'all');
         } else {
-            $array = static::getAll($id, true, '', '', 'all');
+            $array = static::getAll($id, true, null, '', 'all');
         }
         return array_shift($array);
     }
@@ -281,6 +281,7 @@ class Quest extends Fly
         }
 
 
+
         $array = array();
         $sql = FlyPDO::get();
         $req = $sql->prepare('
@@ -303,8 +304,7 @@ class Quest extends Fly
                         ON qGain.questId = `'.static::$_sqlTable.'`.id AND qGain.stepId IS NULL
                 '.$join_req.'
                 '.$where);
-
-
+        
         if ($req->execute($args)) {
             $current = 0;
             $loaded = false;

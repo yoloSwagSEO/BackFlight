@@ -3,7 +3,7 @@ $array_fleets = Fleet::getAll('', '', $User->getId());
 $array_actions = Action::getAll('', '', $User->getId(), 'current');
 
 // Load quests
-$array_quests_player = Quest::getAll('', '', '', $User->getId(), 'player');
+$array_quests_player = Quest::getAll('', '', null, $User->getId(), 'player');
 
 $CurrentPosition = new Position($MasterShipPlayer->getPositionId());
 
@@ -132,6 +132,7 @@ foreach ($array_builds as $Build)
 
 $array_notifications_unread = Notification::getAll('', '', NOTIFICATION_UNREAD, $User->getId());
 
+$MasterShipPosition = new Position($MasterShipPlayer->getPositionId());
 
 // Check for quests
 foreach ($array_quests_player as $Quest)
@@ -170,6 +171,4 @@ foreach ($array_quests_player as $Quest)
         $Quest->save();
     }
 }
-
-
 ?>

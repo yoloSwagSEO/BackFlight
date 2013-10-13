@@ -6,6 +6,14 @@ $Quest = new Quest($_GET['questId'], $User->getId());
 if (!$Quest->isSql()) {
     exit('Unknown quest !');
 }
+
+if ($Quest->getPositionId()) {
+    $PositionQuest = new Position($Quest->getPositionId());
+    if (!$PositionQuest->isKnownBy($User->getId())) {
+        exit('You can\'t start / see this quest : you don\'t know this position');
+    }
+}
+
 ?>
 <div class="row">
     <div class="column large-3">
@@ -109,11 +117,23 @@ if (!$Quest->isSql()) {
         <?php
         }
         if (!$Quest->isStartedByPlayer()) {
+            $start_mission = true;
+            if ($Quest->getPositionId()) {
+                if ($Quest->getPositionId() != $MasterShipPosition->getId()) {
+                    $start_mission = false;
+                }
+            }
+            if ($start_mission) {
         ?>
         <form action="" method="post">
-            <input type="submit" class="button" value="Commencer cette mission" name="quest_start" />
+            <input type="submit" class="button" value="Commencer cette quête" name="quest_start" />
         </form>
         <?php
+            } else {
+                ?>
+                Vous devez être en <?php echo $PositionQuest->getX() ?>:<?php echo $PositionQuest->getY()?> pour débuter cette quête.
+            <?php
+            }
         }
         ?>
     </div>
