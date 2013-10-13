@@ -200,9 +200,9 @@ class Quest extends Fly
     {
         // $args[1] is userId
         if (!empty($args[1])) {
-            $array = static::getAll($id, true, '', $args[1]);
+            $array = static::getAll($id, true, '', $args[1], 'all');
         } else {
-            $array = static::getAll($id, true);
+            $array = static::getAll($id, true, '', '', 'all');
         }
         return array_shift($array);
     }
@@ -222,13 +222,14 @@ class Quest extends Fly
             $args[':id'] = $id;
         }
 
-        if ($positionId) {
+        if ($positionId !== null) {
             if (empty($where)) {
                 $where = ' WHERE ';
             } else {
                 $where .= ' AND ';
             }
-            $where .= '`'.static::$_sqlTable.'`.positionId = :positionId';
+
+            $where .= '(`'.static::$_sqlTable.'`.positionId = :positionId OR `'.static::$_sqlTable.'`.positionId IS NULL)';
             $args[':positionId'] = $positionId;
         }
 
@@ -256,10 +257,9 @@ class Quest extends Fly
                     $where .= ' AND ';
                 }
                 $where .= ' (uQuest.questState NOT LIKE "%done%" OR uQuest.questState IS NULL)';
+                $where .= 'AND uQuest.userId = :userIdQ';
+                $args[':userIdQ'] = $userId;
             }
-
-            $where .= 'AND uQuest.userId = :userIdQ';
-            $args[':userIdQ'] = $userId;
         }
 
 
@@ -272,10 +272,10 @@ class Quest extends Fly
                         qGain.gainOperation questGainOperation, qGain.gainType questGainType, qGain.gainQuantity questGainQuantity, qGain.gainValue questGainValue, qGain.id questGainId
                         '.$join_select.'
                     FROM `'.static::$_sqlTable.'`
-                    INNER JOIN `'.TABLE_QUESTSTEPS.'` qStep
+                    LEFT JOIN `'.TABLE_QUESTSTEPS.'` qStep
                         ON qStep.questId = `'.static::$_sqlTable.'`.id
 
-                    INNER JOIN `'.TABLE_QUESTREQUIREMENTS.'` qRequirement
+                    LEFT JOIN `'.TABLE_QUESTREQUIREMENTS.'` qRequirement
                         ON qRequirement.stepId = qStep.id
 
                     LEFT JOIN `'.TABLE_QUESTGAINS.'` qStepGain
@@ -285,6 +285,7 @@ class Quest extends Fly
                         ON qGain.questId = `'.static::$_sqlTable.'`.id AND qGain.stepId IS NULL
                 '.$join_req.'
                 '.$where);
+
 
         if ($req->execute($args)) {
             $current = 0;

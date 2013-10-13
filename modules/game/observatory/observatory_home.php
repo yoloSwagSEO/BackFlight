@@ -5,7 +5,7 @@ head();
 $MasterShipPosition = new Position($MasterShipPlayer->getPositionId());
 $position_category = $MasterShipPosition->getCategory();
 
-$array_quests = Quest::getAll('', '', $MasterShipPosition->getId(), $User->getId());
+$array_quests_position = Quest::getAll('', '', $MasterShipPosition->getId(), $User->getId(), 'not_started');
 
 ?>
 <div class="row">
@@ -85,15 +85,15 @@ $array_quests = Quest::getAll('', '', $MasterShipPosition->getId(), $User->getId
         ?>
 
         <?php
-        if (!empty($array_quests)) {
+        if (!empty($array_quests_position)) {
             ?>
         <h3>Quêtes</h3>
         <div data-alert class="alert-box success radius">
-        <?php echo count($array_quests); ?> quête(s) se déroule(nt) ici.
+        <?php echo count($array_quests_position); ?> quête(s) se déroule(nt) ici.
         </div>
         <ul class="ul_blocs">
             <?php
-            foreach ($array_quests as $Quest)
+            foreach ($array_quests_position as $Quest)
             {
                 $status = '';
                 if ($Quest->isStartedByPlayer()) {
