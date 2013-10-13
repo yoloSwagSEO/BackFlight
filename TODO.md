@@ -2,9 +2,9 @@
 
 ## 10/11/13 
 * Add searches on asteroids and planets
-* [Partial] Start / End quests
+* [Done] Start / End quests
 * Create 3 quests
-* Add possibility to enable more modules
+* [Done] Add possibility to enable more modules
 
 ## 10/18/13
 * Add mines, bombs and rockets
