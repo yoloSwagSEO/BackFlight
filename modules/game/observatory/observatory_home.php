@@ -88,7 +88,13 @@ foreach ($array_quests_position as $id => $Quest)
         ?>
 
         <?php
-        include_once 'modules/game/observatory/observatory_'.$position_category.'.php';
+        if (!$MasterShipPlayer->isBusy()) {
+            include_once 'modules/game/observatory/observatory_'.$position_category.'.php';
+        } else {
+            ?>
+                Le vaisseau est déjà en vol !
+            <?php
+        }
         ?>
 
         <?php

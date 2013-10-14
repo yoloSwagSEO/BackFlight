@@ -1,13 +1,16 @@
         <div>
             <p>Que souhaitez-vous faire ?</p>
-            <a href="#" data-dropdown="go-to" class="button">Se diriger vers la planète</a>
+            <a href="#" data-dropdown="search" class="button">Explorer la planète</a>
             <a href="#" data-dropdown="continue" class="button">Poursuivre le vol</a>
             <a href="#" data-dropdown="reach" class="button">Atteindre une position connue</a>
         </div>
-        <ul id="go-to" class="f-dropdown" data-dropdown-content>
-          <li data-tooltip title="Les activités sur la planète ne seront pas détectées.<br />Arrivée : 1m<br />"><a href="fly/planet/fast" >Approche rapide</a></li>
-          <li data-tooltip title="Les activités et ressources seront scannées rapidement. <br />Arrivée : 4m"><a href="fly/planet">Approche normale</a></li>
+        <ul id="search" class="f-dropdown" data-dropdown-content>
+            <li data-tooltip title="Détecte la présence de vie et peut obtenir des ressources.<br />Fin : <?php echo countDown($MasterShipPlayer->getSearchTime('search', 'planet'))?><br />Proba : <?php echo $MasterShipPosition->getSearchRealProbability('search', 'fuel', 'planet') * 100?>% (F) / <?php echo $MasterShipPosition->getSearchRealProbability('search', 'techs', 'planet') * 100?>% (T)"><a href="search/fast" >Vol d'approche de la planète</a></li>
+            <li data-tooltip title="En déployant les sondes sur la planète, vous augmentez la probabilité de trouver des ressource. <br />Détecte les formes de vie. <br />Retour : <?php echo countDown($MasterShipPlayer->getSearchTime('probes', 'planet'))?><br />Proba : <?php echo $MasterShipPosition->getSearchRealProbability('probes', 'fuel', 'planet') * 100?>% (F) / <?php echo $MasterShipPosition->getSearchRealProbability('probes', 'techs', 'planet') * 100?>% (T)"><a href="search/probes">Larguer les sondes</a></li>
         </ul>
+
+
+
         <?php
         include_once 'modules/game/observatory/observatory_continue.php';
         ?>

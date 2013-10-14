@@ -8,7 +8,7 @@ if (!empty($_GET['speed'])) {
     }
 }
 
-$time = $MasterShipPlayer->getSearchTime($type);
+$time = $MasterShipPlayer->getSearchTime($type, $CurrentPosition->getCategory());
 $energy = $MasterShipPlayer->getSearchEnergy($type);
 $fuel = $MasterShipPlayer->getSearchFuel($type);
 
@@ -31,11 +31,10 @@ if ($energy > $MasterShipPlayer->getEnergy()) {
 }
 
 
-$PositionCurrent = new Position($MasterShipPlayer->getPositionId());
 
 $Action = new Action();
-$Action->setFrom($PositionCurrent->getId());
-$Action->setTo($PositionCurrent->getId());
+$Action->setFrom($CurrentPosition->getId());
+$Action->setTo($CurrentPosition->getId());
 $Action->setDuration($time);
 $Action->setType($type);
 $Action->setUser($User->getId());

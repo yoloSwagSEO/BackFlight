@@ -159,17 +159,44 @@ define('POSITION_PROBA_PROBES', .95);
 /**
  * Probability to find fuel
  */
-define('POSITION_PROBA_FUEL', .70);
+define('POSITION_PROBA_FUEL_SPACE', .75);
 
 /**
  * Probability to find techs
  */
-define('POSITION_PROBA_TECHS', .30);
+define('POSITION_PROBA_TECHS_SPACE', .25);
+
+/**
+ * Probability to find fuel
+ */
+define('POSITION_PROBA_FUEL_PLANET', .60);
+
+/**
+ * Probability to find techs
+ */
+define('POSITION_PROBA_TECHS_PLANET', .40);
+
+/**
+ * Probability to find fuel
+ */
+define('POSITION_PROBA_FUEL_ASTEROIDS', .20);
+
+/**
+ * Probability to find techs
+ */
+define('POSITION_PROBA_TECHS_ASTEROIDS', .80);
 
 /**
  * Time for a position to become "rich" again
  */
 define('POSITION_SEARCH_REGENERATION', 24*3600*2);
+
+define('POSITION_SEARCH_TIME_ASTEROIDS', 80);
+
+define('POSITION_SEARCH_TIME_PLANET', 60);
+
+define('POSITION_SEARCH_TIME_SPACE', 30);
+
 
 /**
  * Number of search after which position is "poor"

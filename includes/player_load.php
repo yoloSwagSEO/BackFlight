@@ -13,7 +13,7 @@ if (!empty($array_actions)) {
         if ($Action->countRemainingTime() < 0) {
             // Searches
             if ($Action->getType() == 'search' || $Action->getType() == 'probes') {
-                $result = $CurrentPosition->searchRessources($Action->getType());
+                $result = $CurrentPosition->searchRessources($Action->getType(), $CurrentPosition->getCategory());
                 $search_result = '';
                 if (!empty($result)) {
                     $search_result = $result[0];
@@ -147,7 +147,6 @@ foreach ($array_quests_player as $Quest)
                     continue;
                 }
             }
-
 
             if ($QuestStep->hasAllRequirementsDone()) {
                 $QuestStep->addUserStep($User->getId());

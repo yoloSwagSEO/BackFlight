@@ -248,12 +248,27 @@ class Ship extends Model
         return $this->_modulesEnabled;
     }
 
-    public function getSearchTime($type)
+    /**
+     * Determine time for search
+     * @param string $type
+     * @param string $positionType
+     * @return type
+     */
+    public function getSearchTime($type, $positionType)
     {
-        if ($type == 'probes') {
-            return 4 * 30 / GAME_SPEED;
+        if ($positionType == 'asteroids') {
+            $base_time = POSITION_SEARCH_TIME_ASTEROIDS;
+        } else if ($positionType == 'planet') {
+            $base_time = POSITION_SEARCH_TIME_PLANET;
+        } else {
+            $base_time = POSITION_SEARCH_TIME_SPACE;
         }
-        return 30 / GAME_SPEED;
+
+
+        if ($type == 'probes') {
+            return 4 * $base_time / GAME_SPEED;
+        }
+        return $base_time / GAME_SPEED;
     }
 
     public function getSearchEnergy($type)

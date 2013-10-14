@@ -141,13 +141,28 @@ class Position extends Fly
         return $this->_searchProbabilities[$type];
     }
 
-    public function getSearchRealProbability($type, $ressource)
+    public function getSearchRealProbability($type, $ressource, $positionType)
     {
-        if ($ressource == 'fuel') {
-            $positionProba = POSITION_PROBA_FUEL;
+        if ($positionType == 'asteroids') {
+            if ($ressource == 'fuel') {
+                $positionProba = POSITION_PROBA_FUEL_ASTEROIDS;
+            } else {
+                $positionProba = POSITION_PROBA_TECHS_ASTEROIDS;
+            }
+        } else if ($positionType == 'planet') {
+            if ($ressource == 'fuel') {
+                $positionProba = POSITION_PROBA_FUEL_PLANET;
+            } else {
+                $positionProba = POSITION_PROBA_TECHS_PLANET;
+            }
         } else {
-            $positionProba = POSITION_PROBA_TECHS;
+            if ($ressource == 'fuel') {
+                $positionProba = POSITION_PROBA_FUEL_SPACE;
+            } else {
+                $positionProba = POSITION_PROBA_TECHS_SPACE;
+            }
         }
+        
 
         $proba = POSITION_PROBA_FAST;
         if ($type == 'probes') {
@@ -181,10 +196,10 @@ class Position extends Fly
         }
     }
 
-    public function searchRessources($type)
+    public function searchRessources($type, $positionType)
     {
-        $foundFuel = $this->getSearchRealProbability($type, 'fuel') * 100;
-        $foundTechs = $this->getSearchRealProbability($type, 'techs') * 100;
+        $foundFuel = $this->getSearchRealProbability($type, 'fuel', $positionType) * 100;
+        $foundTechs = $this->getSearchRealProbability($type, 'techs', $positionType) * 100;
 
         $rand = rand(0, 100);
         if ($rand <= $foundFuel) {
