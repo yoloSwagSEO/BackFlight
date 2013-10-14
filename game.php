@@ -68,7 +68,11 @@ if (!empty($_GET['module'])) {
         } else {
             include_once 'modules/game/notifications/notifications_home.php';
         }
+    } else {
+        trigger_error('Unknown module', E_USER_ERROR);
     }
+} else {
+    trigger_error('No module defined', E_USER_ERROR);
 }
 
 ?>
