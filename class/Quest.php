@@ -416,6 +416,11 @@ class Quest extends Fly
         if (!$this->_userStepId) {
             return reset($this->_steps);
         } else {
+            $QuestStep = $this->_steps[$this->_userStepId];
+            if (!$QuestStep->hasAllRequirementsDone()) {
+                return $QuestStep;
+            }
+            
             $keys = array_keys($this->_steps);
             $found_index = array_search($this->_userStepId, $keys);
             if (!empty($keys[$found_index+1])) {
@@ -432,9 +437,9 @@ class Quest extends Fly
             $QuestStep = $Quest->getCurrentStep();
             if ($QuestStep) {
                 $requirementId = $QuestStep->hasRequirement($type, $value);
-
                 // Has quest this requirement ?
                 if ($requirementId) {
+
                 // Don't do anything if requirement is done
                     if (!$QuestStep->isRequirementDone($requirementId)) {
                         $QuestRequirement = $QuestStep->getRequirement($requirementId);

@@ -20,6 +20,7 @@ $FirstQuestStep1Requirement = new QuestRequirement();
 $FirstQuestStep1Requirement->setQuestId($FirstQuest->getId());
 $FirstQuestStep1Requirement->setStepId($FirstQuestStep1->getId());
 $FirstQuestStep1Requirement->setRequirementType('searches');
+$FirstQuestStep1Requirement->setRequirementValue(1);
 $FirstQuestStep1Requirement->setRequirementValue(3);
 $FirstQuestStep1Requirement->save();
 

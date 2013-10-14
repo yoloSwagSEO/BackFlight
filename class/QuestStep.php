@@ -235,7 +235,6 @@ class QuestStep extends Fly
      */
     public function hasRequirement($requirement, $value = null)
     {
-        var_dump($requirement, $value);
         foreach ($this->_stepRequirements as $QuestRequirement)
         {
             if ($QuestRequirement->getRequirementType() == $requirement) {

@@ -31,6 +31,13 @@ if ($Quest->getPositionId()) {
                 Vous avez commencé cette quête.
             </div>
             <?php
+        } else if ($Quest->isDoneByPlayer()) {
+
+            ?>
+            <div data-alert class="alert-box success radius">
+                Vous avez achevé cette quête.
+            </div>
+            <?php
         }
         ?>
         <p>
@@ -116,7 +123,7 @@ if ($Quest->getPositionId()) {
         </p>
         <?php
         }
-        if (!$Quest->isStartedByPlayer()) {
+        if (!$Quest->isStartedByPlayer() && !$Quest->isDoneByPlayer()) {
             $start_mission = true;
             if ($Quest->getPositionId()) {
                 if ($Quest->getPositionId() != $MasterShipPosition->getId()) {

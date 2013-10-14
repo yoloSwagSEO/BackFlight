@@ -39,8 +39,6 @@ if (!empty($array_actions)) {
                     // For quests
                     Quest::addAction($array_quests_player, 'searches', 1, $User->getId());
 
-
-
                 } else {
                     $_SESSION['infos']['search'] = 'empty';
                 }
@@ -99,6 +97,7 @@ if (!empty($array_actions)) {
     }
 }
 
+// Load all ships
 $array_ships = Ship::getAll('', '', $User->getId());
 if (!empty($array_ships)) {
     foreach ($array_ships as $Ship)
@@ -117,6 +116,7 @@ if (!empty($array_ships)) {
     }
 }
 
+// Load builds and create objects if necessary
 $array_builds = Build::getAll('', '', $User->getId());
 foreach ($array_builds as $Build)
 {
@@ -129,9 +129,10 @@ foreach ($array_builds as $Build)
     }
 }
 
-
+// Load notifications
 $array_notifications_unread = Notification::getAll('', '', NOTIFICATION_UNREAD, $User->getId());
 
+// Load MasterShip position
 $MasterShipPosition = new Position($MasterShipPlayer->getPositionId());
 
 // Check for quests
@@ -155,8 +156,7 @@ foreach ($array_quests_player as $Quest)
     }
 
     // If quest is complete
-    if ($Quest->hasAllStepsDone() && !$Quest->isDoneByPlayer())
-    {
+    if ($Quest->hasAllStepsDone() && !$Quest->isDoneByPlayer()) {
         if ($Quest->getPositionId()) {
             if ($Quest->getPositionId() != $MasterShipPosition->getId()) {
                 continue;
@@ -169,6 +169,14 @@ foreach ($array_quests_player as $Quest)
         }
         $Quest->setUserState($User->getId(), 'done');
         $Quest->save();
+
+        // Create notification
+        $Notification = new Notification();
+        $Notification->setType(TABLE_QUESTS);
+        $Notification->setTypeId($Quest->getId());
+        $Notification->setImportance(NOTIFICATION_IMPORTANCE_MEDIUM);
+        $Notification->setAction('quest_done');
+        $Notification->save();
     }
 }
 ?>

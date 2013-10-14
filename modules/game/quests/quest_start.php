@@ -8,6 +8,10 @@ if ($Quest->isStartedByPlayer()) {
     exit('Quest already started');
 }
 
+if ($Quest->isDoneByPlayer()) {
+    exit('Quest already done');
+}
+
 $Quest->start($User->getId());
 
 header('location: '.PATH.'observatory');
