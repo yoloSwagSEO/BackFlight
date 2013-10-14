@@ -1,7 +1,7 @@
 <?php
 title('Vaisseau');
 
-$array_modules = Module::getAll();
+$array_modules = Module::getAll('', '', $User->getId());
 
 head();
 

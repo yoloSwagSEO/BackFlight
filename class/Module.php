@@ -425,7 +425,7 @@ class Module extends Fly
         return array_shift($array);
     }
 
-    public static function getAll($id = null, $to_array = false)
+    public static function getAll($id = null, $to_array = false, $userId = null)
     {
         $where = '';
         $args = array();
@@ -438,13 +438,19 @@ class Module extends Fly
             $args[':id'] = $id;
         }
 
+        $add = '';
+        if ($userId) {
+            $args[':userIdM'] = $userId;
+            $add = 'AND builds.userId = :userIdM';
+        }
+
         $array = array();
         $sql = FlyPDO::get();
         $req = $sql->prepare('
                     SELECT `'.static::$_sqlTable.'`.*, builds.end buildEnd
                         FROM `'.static::$_sqlTable.'`
                 LEFT JOIN `'.TABLE_BUILDS.'` builds
-                    ON builds.type = "module" AND builds.typeId = `'.static::$_sqlTable.'`.id AND builds.state IS NULL OR builds.state NOT LIKE "%end%"
+                    ON builds.type = "module" AND builds.typeId = `'.static::$_sqlTable.'`.id AND (builds.state IS NULL OR builds.state NOT LIKE "%end%") '.$add.'
                 '.$where.'
                     ORDER BY id');
 
