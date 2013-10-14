@@ -1006,7 +1006,7 @@ class Ship extends Model
      */
     public function isBusy()
     {
-        if ($this->_state == 'arrived' || $this->_state == '') {
+        if ($this->_state == 'arrived' || $this->_state == '' || $this->_state == 'space') {
             return false;
         }
         return true;
