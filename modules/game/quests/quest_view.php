@@ -56,7 +56,7 @@ if ($Quest->getPositionId()) {
                     }
                     ?>
                 <hr />
-                <strong><?php echo $add.$QuestRequirement->getRequirementType()?></strong> : <?php echo $QuestRequirement->getRequirementValueUser()?>/<?php echo $QuestRequirement->getRequirementValue()?>
+                <strong><?php echo $add.$QuestRequirement->getRequirementType()?></strong> : <?php echo $QuestRequirement->getRequirementValueUser()?>/<?php echo $QuestRequirement->getRequirementQuantity()?>
                     <br />
                     <?php
                 }

@@ -2,13 +2,13 @@
 title('Quests');
 head();
 
-$array_quests = array();
+$array_quests = array(0 => array(), 1 => array());
 
 foreach ($array_quests_player as $Quest)
 {
     if ($Quest->isDoneByPlayer()) {
         $array_quests[1][$Quest->getId()] = $Quest;
-    } else {
+    } else if ($Quest->isStartedByPlayer()) {
         $array_quests[0][$Quest->getId()] = $Quest;
     }
 }
