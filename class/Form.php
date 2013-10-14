@@ -1,6 +1,16 @@
 <?php
 class Form
 {
+    /**
+     *
+     * @param string $name
+     * @param string $type
+     * @param string $value
+     * @param string $class
+     * @param string $placeholder
+     * @param string $disabled
+     * @return string
+     */
     public static function input($name=null, $type=null, $value=null, $class=null, $placeholder = null, $disabled = false)
     {
         // default type=text
@@ -18,46 +28,50 @@ class Form
             $value = self::_getValues($name);
         }
 
-        if (is_array($value)) {
-            if (empty($value)) {
-                $value = '';
-            } else {
-                if (preg_match('#(.+)\[(.+)\]#', $name)) {
-                    $value = self::_getValuesArray($name);
-                }
-            }
-        }
         $value = ' value="'.$value.'" ';
 
         if (!empty($placeholder)) {
             $placeholder = ' placeholder="'.$placeholder.'" ';
         }
 
-        if ($disabled) {
-        	$disabled = ' readonly="readonly" ';
-        }
+        $id = $name;
 
-        $id = str_replace('[', '_', $name);
-        $id = str_replace(']', '', $id);
+        if ($disabled) {
+            $disabled = ' readonly="readonly" ';
+        }
 
         return '<input id="'.$id.'" type="'.$type.'" name="'.$name.'"'.$class.''.$value.''.$placeholder.''.$disabled.' />';
     }
-    
+
+    /**
+     *
+     * @param string $for
+     * @param string $text
+     * @param string $class
+     * @return string
+     */
     public static function label($for, $text, $class=null)
     {
         if (!empty($class)) {
             $class = ' class="'.$class.'"';
     	}
-
-        $for = str_replace('[', '_', $for);
-        $for = str_replace(']', '', $for);
         return '<label for="'.$for.'"'.$class.'>'.$text.'</label>';
     }
-    
+
+    /**
+     *
+     * @param string $name
+     * @param string $value
+     * @param int $rows
+     * @param int $cols
+     * @param string $placeholder
+     * @param string $class
+     * @return string
+     */
     public static function textarea($name, $value=null, $rows=8, $cols=45, $placeholder=null, $class=null)
     {
         if (!empty($placeholder)) {
-        	$placeholder = ' placeholder="'.$placeholder.'" ';
+            $placeholder = ' placeholder="'.$placeholder.'" ';
         }
 
         if (!empty($class)) {
@@ -69,22 +83,17 @@ class Form
             $value = self::_getValues($name);
         }
 
-        if (is_array($value)) {
-            if (empty($value)) {
-                $value = '';
-            } else {
-                if (preg_match('#(.+)\[(.+)\]#', $name)) {
-                    $value = self::_getValuesArray($name);
-                }
-            }
-        }
-
-        $id = str_replace('[', '_', $name);
-        $id = str_replace(']', '', $id);
-
         return '<textarea name="'.$name.'" id="'.$id.'" rows="'.$rows.'" cols="'.$cols.'"'.$placeholder.''.$class.'>'.$value.'</textarea>';
     }
 
+    /**
+     *
+     * @param string $name
+     * @param array $options
+     * @param string $selected
+     * @param string $class
+     * @return string
+     */
     public static function select($name, array $options, $selected=null, $class=null)
     {
     	if (!empty($class)) {
@@ -98,17 +107,6 @@ class Form
             $selected = self::_getValues($name);
         }
 
-        if (is_array($selected)) {
-            if (empty($selected)) {
-                $selected = '';
-            } else {
-                if (preg_match('#(.+)\[(.+)\]#', $name)) {
-                    $selected = self::_getValuesArray($name);
-                }
-            }
-        }
-
-        	
 
         foreach($options as $value => $option)
         {
@@ -125,6 +123,13 @@ class Form
         return $return;
     }
 
+    /**
+     *
+     * @param string $name
+     * @param string $checked
+     * @param string $class
+     * @return string
+     */
     public static function checkbox($name, $checked=null, $class="")
     {
         // getting values
@@ -132,15 +137,6 @@ class Form
             $checked = self::_getValues($name);
         }
 
-        if (is_array($checked)) {
-            if (empty($checked)) {
-                $checked = '';
-            } else {
-                if (preg_match('#(.+)\[(.+)\]#', $name)) {
-                    $checked = self::_getValuesArray($name);
-                }
-            }
-        }
         if ($checked) {
             $checked = 'checked="checked"';
         }
@@ -149,11 +145,18 @@ class Form
             $class = ' class="'.$class.'" ';
         }
 
-        $id = str_replace(array('[', ']'), array('_', ''), $name);
+        $id = $name;
 
-        return '<input type="checkbox" name="'.$name.'" id="'.$id.'" '.$cocher.''.$class.' />';
+        return '<input type="checkbox" name="'.$name.'" id="'.$id.'" '.$checked.''.$class.' />';
     }
 
+    /**
+     *
+     * @param string $name
+     * @param array $radios
+     * @param string $checked
+     * @return string
+     */
     public static function radios($name, array $radios, $checked=null)
     {
         $return = '';
@@ -162,17 +165,6 @@ class Form
         if (empty($checked)) {
             $checked = self::_getValues($name);
         }
-
-        if (is_array($checked)) {
-            if (empty($checked)) {
-                $checked = '';
-            } else {
-                if (preg_match('#(.+)\[(.+)\]#', $name)) {
-                    $checked = self::_getValuesArray($name);
-                }
-            }
-        }
-
 
         foreach ($radios as $value => $text)
         {
@@ -190,52 +182,23 @@ class Form
 
         return $return;
     }
-    
+
+    /**
+     *
+     * @param string $name
+     * @return string
+     */
     private static function _getValues($name)
     {
-        // On regarde si le nom du champ comporte des [], signe qu'on a peut-être affaire à un tableau
-        if (preg_match('#(.+)\[(.+)\](.+?)#U', $name)) {
-            return self::_getValuesArray($name);
-        }
-
         if (!empty($_SESSION[$name])) {
             return $_SESSION[$name];
         }
     }
 
-    private static function _getValuesArray($name, $array=null)
-    {
-        $retour = '';
-        // Recherche des [] pour trouver les tableaux
-        if (preg_match('#^(.+)\[(.+)\](.+)?$#U', $name, $retour)) {
-            $session_add = '';
-            // S'il y a effectviement un niveau inférieur
-            if ($retour[2] != '') {
-                $session_name = $retour[1];
-                $session_check = $retour[2];
-                if (!empty($retour[3])) {
-                    $session_add = $retour[3];
-                }
-                if (empty($array)) {
-                    $array = $_SESSION[$session_name];
-                }
-                // Si la session courante est toujours un tableau
-                if (is_array($array)) {
-                    if (!empty($array[$session_check])) {
-                        $array_values = $array[$session_check];
-                        // Si la valeur est un tableau, c'est qu'il y a sans doute encore un autre niveau
-                        if (is_array($array_values)) {
-                            return self::_getValuesArray($session_check.$session_add, $array_values);
-                        }
-                        return $array_values;
-                    }
-                }
-                return $array;
-            }
-        }
-    }
-
-    
+    /**
+     *
+     * @param array $array
+     */
     public static function saveSessions(array $array)
     {
         foreach($array as $value)
@@ -253,7 +216,11 @@ class Form
             }
         }
     }
-    
+
+    /**
+     *
+     * @param array $array
+     */
     public static function cleanSessions(array $array)
     {
         foreach($array as $value)
@@ -261,4 +228,27 @@ class Form
              unset($_SESSION[$value]);
         }
     }
+
+    /**
+     *
+     * @param array $array
+     * @return boolean
+     */
+    public static function check(array $array)
+    {
+        foreach($array as $value)
+        {
+            if (empty($_POST[$value])) {
+            	if (!isset($_POST[$value])) {
+            		return false;
+            	}
+            	if ($_POST[$value] === 0 || $_POST[$value] === '') {
+            		return false;
+            	}
+            }
+
+        }
+        return true;
+    }
+    
 }
