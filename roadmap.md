@@ -10,7 +10,7 @@ This roadmap is not significant of the real developpment effort. It's just a roa
 ***First RC : one day*** (we never know)
 
 ## Game
-- **10/18** : Create inscription and test for multiplayer
+- **10/18** : Test game for multiplayer
 - **10/18** : Create messages
 - **10/18** : Create ladder based on position
 
