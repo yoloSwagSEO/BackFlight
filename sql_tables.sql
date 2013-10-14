@@ -1,4 +1,7 @@
-CREATE TABLE IF NOT EXISTS `actions` (
+CREATE DATABASE IF NOT EXISTS `backflight` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `backflight`;
+
+CREATE TABLE `actions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user` int(11) NOT NULL,
   `type` varchar(25) NOT NULL,
@@ -11,14 +14,75 @@ CREATE TABLE IF NOT EXISTS `actions` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `fleets` (
+CREATE TABLE `builds` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `type` varchar(25) NOT NULL,
+  `typeId` int(11) NOT NULL,
+  `userId` int(11) NOT NULL,
+  `destination` varchar(25) NOT NULL,
+  `destinationId` int(11) NOT NULL,
+  `start` int(11) NOT NULL,
+  `end` int(11) NOT NULL,
+  `state` varchar(25) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+CREATE TABLE `conversations` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `date` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `conversations_attachments` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `messageId` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `conversations_messages` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `conversationId` int(11) NOT NULL,
+  `userFrom` int(11) NOT NULL,
+  `date` int(11) NOT NULL,
+  `subject` varchar(50) NOT NULL,
+  `content` text NOT NULL,
+  `read` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `conversations_users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `conversationId` int(11) NOT NULL,
+  `userId` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `equipiers` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nom` varchar(30) NOT NULL,
+  `prenom` varchar(30) NOT NULL,
+  `sexe` varchar(1) NOT NULL,
+  `age` int(11) NOT NULL,
+  `mail` varchar(200) NOT NULL,
+  `key` varchar(40) NOT NULL,
+  `date` int(11) NOT NULL,
+  `timeDebut` int(11) NOT NULL,
+  `timeFin` int(11) NOT NULL,
+  `pratique` int(11) NOT NULL,
+  `nivMin` int(11) NOT NULL,
+  `nivMax` int(11) NOT NULL,
+  `texte` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `fleets` (
   `moveId` int(11) NOT NULL,
   `userId` int(11) NOT NULL,
   `shipId` int(11) NOT NULL,
   KEY `moveId` (`moveId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `models` (
+CREATE TABLE `models` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(25) NOT NULL,
   `user` int(11) DEFAULT NULL,
@@ -28,13 +92,61 @@ CREATE TABLE IF NOT EXISTS `models` (
   `loadMax` int(11) NOT NULL,
   `energyMax` int(11) NOT NULL,
   `energyGain` int(11) NOT NULL,
+  `shieldMax` int(11) NOT NULL,
+  `shieldGain` int(11) NOT NULL,
   `fuelMax` int(11) NOT NULL,
   `powerMax` int(11) NOT NULL,
   `speed` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `positions` (
+CREATE TABLE `modules` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(40) NOT NULL,
+  `intro` text NOT NULL,
+  `description` text NOT NULL,
+  `type` varchar(15) NOT NULL,
+  `operation` varchar(10) NOT NULL,
+  `time` int(11) NOT NULL,
+  `weight` float NOT NULL,
+  `power` float DEFAULT NULL,
+  `energy` float DEFAULT NULL,
+  `energyGain` float DEFAULT NULL,
+  `load` float DEFAULT NULL,
+  `fuel` float DEFAULT NULL,
+  `techs` float DEFAULT NULL,
+  `speed` float DEFAULT NULL,
+  `shield` float DEFAULT NULL,
+  `shieldGain` float DEFAULT NULL,
+  `search` float DEFAULT NULL,
+  `attack` float DEFAULT NULL,
+  `weapons` float DEFAULT NULL,
+  `defense` float DEFAULT NULL,
+  `module` int(11) DEFAULT NULL,
+  `costEnergy` int(11) NOT NULL,
+  `costTechs` int(11) NOT NULL,
+  `costFuel` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+CREATE TABLE `notifications` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `userId` int(11) NOT NULL,
+  `date` int(11) NOT NULL,
+  `importance` int(11) NOT NULL,
+  `into` varchar(10) DEFAULT NULL,
+  `intoId` int(11) DEFAULT NULL,
+  `type` varchar(25) NOT NULL,
+  `typeId` int(11) NOT NULL,
+  `action` varchar(20) NOT NULL,
+  `actionType` varchar(25) DEFAULT NULL,
+  `actionId` int(11) DEFAULT NULL,
+  `actionSub` int(11) DEFAULT NULL,
+  `read` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `positions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `x` int(11) NOT NULL,
   `y` int(11) NOT NULL,
@@ -44,14 +156,55 @@ CREATE TABLE IF NOT EXISTS `positions` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `positions_searches` (
+CREATE TABLE `positions_searches` (
   `positionId` int(11) NOT NULL,
   `userId` int(11) NOT NULL,
   `date` int(11) NOT NULL,
-  `result` varchar(10) NOT NULL
+  `result` varchar(10) CHARACTER SET latin1 NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `ressources` (
+CREATE TABLE `quests` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(30) NOT NULL,
+  `intro` varchar(100) NOT NULL,
+  `description` text NOT NULL,
+  `positionId` int(11) DEFAULT NULL,
+  `questType` varchar(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+CREATE TABLE `quests_gains` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `questId` int(11) NOT NULL,
+  `stepId` int(11) DEFAULT NULL,
+  `gainOperation` varchar(10) NOT NULL,
+  `gainType` varchar(25) NOT NULL,
+  `gainValue` int(11) DEFAULT NULL,
+  `gainQuantity` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+CREATE TABLE `quests_requirements` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `questId` int(11) NOT NULL,
+  `stepId` int(11) NOT NULL,
+  `requirementType` varchar(15) NOT NULL,
+  `requirementValue` int(11) NOT NULL,
+  `requirementQuantity` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+CREATE TABLE `quests_steps` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `questId` int(11) NOT NULL,
+  `stepName` varchar(30) NOT NULL,
+  `stepDescription` text NOT NULL,
+  `stepPositionId` int(11) DEFAULT NULL,
+  `stepNb` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+CREATE TABLE `ressources` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `userId` int(11) NOT NULL,
   `into` varchar(10) NOT NULL,
@@ -62,7 +215,7 @@ CREATE TABLE IF NOT EXISTS `ressources` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `ships` (
+CREATE TABLE `ships` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `userId` int(11) NOT NULL,
   `type` varchar(10) NOT NULL,
@@ -70,13 +223,23 @@ CREATE TABLE IF NOT EXISTS `ships` (
   `positionId` int(11) NOT NULL,
   `load` float NOT NULL,
   `energy` float NOT NULL,
+  `shield` int(11) NOT NULL,
   `power` float NOT NULL,
   `lastUpdate` int(11) NOT NULL,
   `state` varchar(10) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `users` (
+CREATE TABLE `ships_modules` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `shipId` int(11) NOT NULL,
+  `moduleId` int(11) NOT NULL,
+  `moduleOrder` int(11) DEFAULT NULL,
+  `moduleEnabled` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+CREATE TABLE `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `pseudo` varchar(12) NOT NULL,
   `password` varchar(70) NOT NULL,
@@ -86,162 +249,31 @@ CREATE TABLE IF NOT EXISTS `users` (
   UNIQUE KEY `pseudo` (`pseudo`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `users_positions` (
+CREATE TABLE `users_positions` (
   `userId` int(11) NOT NULL,
   `positionId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
-CREATE TABLE IF NOT EXISTS `ships_modules` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `shipId` int(11) NOT NULL,
-  `moduleId` int(11) NOT NULL,
-  `moduleOrder` int(11) DEFAULT NULL,
-  `moduleEnabled` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE IF NOT EXISTS `modules` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(20) NOT NULL,
-  `intro` text NOT NULL,
-  `description` text NOT NULL,
-  `type` varchar(15) NOT NULL,
-  `operation` varchar(10) NOT NULL,
-  `weight` float NOT NULL,
-  `power` float DEFAULT NULL,
-  `energy` float DEFAULT NULL,
-  `load` float DEFAULT NULL,
-  `fuel` float DEFAULT NULL,
-  `techs` float DEFAULT NULL,
-  `speed` float DEFAULT NULL,
-  `shield` float DEFAULT NULL,
-  `search` float DEFAULT NULL,
-  `attack` float DEFAULT NULL,
-  `weapons` float DEFAULT NULL,
-  `defense` float DEFAULT NULL,
-  `costEnergy` int(11) NOT NULL,
-  `costTechs` int(11) NOT NULL,
-  `costFuel` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
-
-ALTER TABLE  `modules` CHANGE  `name`  `name` VARCHAR( 40 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ;
-
-CREATE TABLE IF NOT EXISTS `builds` (
-    `id` INT(11) NOT NULL AUTO_INCREMENT,
-    `type` varchar(25) NOT NULL,
-    `typeId` INT(11) NOT NULL,
-    `userId` INT(11) NOT NULL,
-    `destination` varchar(25) NOT NULL,
-    `destinationId` INT(11) NOT NULL,
-    `start` INT(11) NOT NULL,
-    `end` INT(11) NOT NULL,
-    `state` varchar(25) NULL,
-    PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-ALTER TABLE  `modules` ADD  `time` INT NOT NULL AFTER  `operation` ;
-
-ALTER TABLE  `models` ADD  `shieldMax` INT NOT NULL AFTER  `energyGain` ,
-ADD  `shieldGain` INT NOT NULL AFTER  `shieldMax` ;
-ALTER TABLE  `ships` ADD  `shield` INT NOT NULL AFTER  `energy` ;
-
-ALTER TABLE  `modules` ADD  `energyGain` FLOAT NULL AFTER  `energy` ;
-ALTER TABLE  `modules` ADD  `shieldGain` FLOAT NULL AFTER  `shield` ;
-
-CREATE TABLE IF NOT EXISTS `quests` (
-    `id` INT(11) NOT NULL AUTO_INCREMENT,
-    `name` varchar(30) NOT NULL,
-    `intro` varchar(100) NOT NULL,
-    `description` text NOT NULL,
-    `positionId` INT(11) NOT NULL,
-    `questType` INT(11) NOT NULL,
-    PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE IF NOT EXISTS `quests_steps` (
-    `id` INT(11) NOT NULL AUTO_INCREMENT,
-    `questId` INT(11) NOT NULL,
-    `stepName` varchar(30) NOT NULL,
-    `stepDescription` text NOT NULL,
-    `stepPositionId` INT(11) NOT NULL,
-    `stepNb` INT(11) NOT NULL,
-    PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE IF NOT EXISTS `quests_requirements` (
-    `id` INT(11) NOT NULL AUTO_INCREMENT,
-    `questId` INT(11) NOT NULL,
-    `stepId` INT(11) NOT NULL,
-    `requirementType` varchar(15) NOT NULL,
-    `requirementValue` INT(11) NOT NULL,
-    PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE IF NOT EXISTS `quests_gains` (
-    `id` INT(11) NOT NULL AUTO_INCREMENT,
-    `questId` INT(11) NOT NULL,
-    `stepId` INT(11) NOT NULL,
-    `gainType` varchar(25) NOT NULL,
-    `gainQuantity` INT(11) NOT NULL,
-    PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-ALTER TABLE  `quests_steps` CHANGE  `stepPositionId`  `stepPositionId` INT( 11 ) NULL ;
-ALTER TABLE  `quests_gains` ADD  `gainOperation` VARCHAR( 10 ) NOT NULL AFTER  `stepId` ;
-
-CREATE TABLE IF NOT EXISTS `users_positions` (
-  `userId` int(11) NOT NULL,
-  `positionId` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE IF NOT EXISTS `users_quests` (
+CREATE TABLE `users_quests` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `userId` int(11) NOT NULL,
   `questId` int(11) NOT NULL,
+  `questState` varchar(5) CHARACTER SET latin1 DEFAULT NULL,
   UNIQUE KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `users_quests_requirements` (
+CREATE TABLE `users_quests_requirements` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `userId` int(11) NOT NULL,
   `requirementId` int(11) NOT NULL,
+  `requirementQuantity` int(11) DEFAULT NULL,
   UNIQUE KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `users_quests_steps` (
+CREATE TABLE `users_quests_steps` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `userId` int(11) NOT NULL,
   `stepId` int(11) NOT NULL,
   `date` int(11) NOT NULL,
   UNIQUE KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-ALTER TABLE  `users_quests` ADD  `questState` VARCHAR( 5 ) NULL AFTER  `questId` ;
-ALTER TABLE  `users_quests_steps` ADD  `userId` INT NOT NULL AFTER  `id` ;
-ALTER TABLE  `users_quests_requirements` ADD  `quantity` INT NULL ;
-ALTER TABLE  `users_quests_requirements` CHANGE  `quantity`  `requirementQuantity` INT( 11 ) NULL DEFAULT NULL ;
-
-CREATE TABLE IF NOT EXISTS `notifications` (
-    `id` INT(11) NOT NULL AUTO_INCREMENT,
-    `userId` INT(11) NOT NULL,
-    `date` INT(11) NOT NULL,
-    `importance` INT(11) NOT NULL,
-    `into` varchar(10) NULL,
-    `intoId` INT(11) NULL,
-    `type` INT(11) NOT NULL,
-    `typeId` INT(11) NOT NULL,
-    `action` varchar(20) NOT NULL,
-    `actionType` varchar(25) NULL,
-    `actionId` INT(11) NULL,
-    `actionSub` INT(11) NULL,
-    PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-ALTER TABLE  `notifications` CHANGE  `type`  `type` VARCHAR( 25 ) NOT NULL ;
-
-ALTER TABLE  `quests_gains` CHANGE  `stepId`  `stepId` INT( 11 ) NULL ;
-ALTER TABLE  `quests_gains` ADD  `gainValue` INT NULL AFTER  `gainType` ;
-ALTER TABLE  `quests` CHANGE  `positionId`  `positionId` INT( 11 ) NULL ;
-ALTER TABLE  `quests` CHANGE  `questType`  `questType` VARCHAR( 11 ) NOT NULL ;
-ALTER TABLE  `quests_requirements` ADD  `requirementQuantity` INT NULL AFTER  `requirementValue` ;
-ALTER TABLE  `modules` ADD  `module` INT NULL AFTER  `defense` ;
