@@ -3,31 +3,21 @@ This roadmap is not significant of the real developpment effort. It's just a roa
 
 ***First alpha : 18/10*** (includes some functionnalities only)
 
-***First closed beta : november 13*** (includes playable full game)
+***First closed beta : end november 2013*** (includes playable full game)
 
-***Open beta : decembre 13*** (includes ready to play full game with less bug and lots of adjustments)
+***Open beta : december 2013*** (includes ready to play full game with less bug and lots of adjustments)
 
 ***First RC : one day*** (we never know)
 
-## Ship
+## Game
+- **10/18** : Create inscription and test for multiplayer
+- **10/18** : Create messages
+- **10/18** : Create ladder based on position
 
- - **10/11** : Add more modules
- - **10/11** : Add possibility to enable more modules
-
-## Planets
-- **10/11** : Add quests on planets
-- **10/11** : Add searchs on planets
-
-## Asteroids 
-- **10/11** : Add searchs on asteroids
-
-## Quests
-- **10/11** : Create, launch and finish quests
- 
 ## Fights
 - **10/18** :  Add mines, bombs and rockets
 
 ## Design
-- **10/11**  : Creation
-- **10/18** : Integration
+- **10/25**  : Creation
+- **11/01** : Integration
  
