@@ -12,9 +12,9 @@ RewriteRule ^overview$ game.php?module=overview [L]
 
 RewriteRule ^observatory$ game.php?module=observatory [L]
 
-RewriteRule ^positions$ game.php?module=positions
-RewriteRule ^positions/fly$ game.php?module=positions&fly
-RewriteRule ^positions/fly/(jump)$ game.php?module=positions&fly&speed=$1
+RewriteRule ^positions$ game.php?module=positions [L]
+RewriteRule ^positions/fly$ game.php?module=positions&fly [L]
+RewriteRule ^positions/fly/(jump)$ game.php?module=positions&fly&speed=$1 [L]
 
 RewriteRule ^fly/([0-9]+)-([-]{0,1}[0-9]+)$ game.php?module=fly&x=$1&y=$2 [L]
 RewriteRule ^fly/([0-9]+)-([-]{0,1}[0-9]+)/(jump)$ game.php?module=fly&x=$1&y=$2&speed=$3 [L]
@@ -36,4 +36,4 @@ RewriteRule ^notifications/all$ game.php?module=notifications&all [L]
 RewriteRule ^notifications/read/([0-9]+)$ game.php?module=notifications&read=$1 [L]
 RewriteRule ^notifications/all/read/([0-9]+)$ game.php?module=notifications&read=$1&all [L]
 
-RewriteRule ^tests/([a-z]+)$ tests.php?test=$1
+RewriteRule ^tests/([a-z]+)$ tests.php?test=$1 [L]
