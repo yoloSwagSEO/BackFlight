@@ -28,8 +28,6 @@
             <?php
             if (isConnected()) {
                 echo $User->getPseudo().' - <a href="connexion/out">Déconnexion</a>';
-            } else {
-                echo '<a href="connexion">Connexion</a>';
             }
             ?>
             </p>

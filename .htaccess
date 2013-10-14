@@ -6,6 +6,8 @@ RewriteRule ^scripts/([0-9a-z-]+)$ scripts.php?script=$1 [L]
 RewriteRule ^connexion$ index.php?connexion [L]
 RewriteRule ^connexion/out$ index.php?deconnexion [L]
 
+RewriteRule ^inscription$ index.php?inscription
+
 RewriteRule ^overview$ game.php?module=overview [L]
 
 RewriteRule ^observatory$ game.php?module=observatory [L]

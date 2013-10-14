@@ -36,9 +36,12 @@ require_once 'config/game.php';
 include_once 'includes/game_verif.php';
 if (!empty($_SESSION['User'])) {
     $User = new User($_SESSION['User']);
-    if ($User->isConnected()) {
+    if ($User->isConnected() && $User->isSql()) {
         include_once 'includes/player_load_verif.php';
         include_once 'includes/player_load.php';
+    } else {
+        session_destroy();
+        header('location: '.PATH);
     }
 } else {
     $User = new User();

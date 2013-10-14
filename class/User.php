@@ -233,11 +233,14 @@ class User extends Fly
         }
     }
 
-    // TODO : mail check
+    /**
+     * Check mail validity
+     * @param type $value
+     * @return type
+     */
     public static function _isMailValid($value)
     {
-        $value = true;
-        return true;
+        return preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#", $value);
     }
 
     /**

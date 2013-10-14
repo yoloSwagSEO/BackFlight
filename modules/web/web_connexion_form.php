@@ -6,13 +6,7 @@ head();
 
 
 <form action="connexion" method="post">
-    <div class="row"><?php
-if (!empty($_SESSION['error_connexion'])) {
-    ?>
-    <div data-alert="" class="alert-box alert radius">Erreur lors de la connexion : pseudo et mot de passe invalides ou joueur inexistant.</div>
-    <?php
-}
-?>
+    <div class="row">
         <div class="columns large-8">
             <div class="row">
                 <div class="small-6 columns">

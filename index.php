@@ -8,6 +8,12 @@ if (isset($_GET['connexion'])) {
     } else {
         include_once 'modules/web/web_connexion.php';
     }
+} else if (isset($_GET['inscription'])) {
+    if (empty($_POST)) {
+        include_once 'modules/web/web_inscription_form.php';
+    } else {
+        include_once 'modules/web/web_inscription.php';
+    }
 } else if (isset($_GET['deconnexion'])) {
     include_once 'modules/web/web_deconnexion.php';
     

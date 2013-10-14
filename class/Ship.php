@@ -783,8 +783,9 @@ class Ship extends Model
 
         $sql = FlyPDo::get();
         $req = $sql->prepare('UPDATE `'.self::$_sqlTable.'` 
-            SET `userId` = :userId, `type` = :type, `model` = :model, `positionId` = :positionId, `load` = :load, `energy` = :energy, `shield` = :shield, `power` = :power, `lastUpdate` = :lastUpdate, `state` = :state');
+            SET `userId` = :userId, `type` = :type, `model` = :model, `positionId` = :positionId, `load` = :load, `energy` = :energy, `shield` = :shield, `power` = :power, `lastUpdate` = :lastUpdate, `state` = :state WHERE `'.self::$_sqlTable.'` .id = :id');
         if ($req->execute(array(
+            ':id' => $this->_id,
             ':userId' => $this->_userId,
             ':type' => $this->_type,
             ':model' => $this->_model,
