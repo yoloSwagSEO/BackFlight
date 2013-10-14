@@ -428,7 +428,7 @@ class Position extends Fly
             $param = array();
             $class = get_called_class();
             while ($row = $req->fetch()) {
-                // Nécessaire aux jointures (pour médias ou autres)
+                
                 if ($current != $row['id'] && $current != '') {
                     if ($toArray) {
                         $array[$current] = $param;
@@ -445,7 +445,7 @@ class Position extends Fly
                     $param = $row;
                 }
 
-                // A partir d'ici, on charge les paramètres supplémentaires (par exemple conversion pour les médias)
+                
                 if (!empty($row['searchResult'])) {
                     if (empty($param['searchResults'])) {
                         $param['searchResults'] = array();

@@ -891,7 +891,7 @@ class Ship extends Model
             $class = get_called_class();
             while ($row = $req->fetch())
             {
-                // Nécessaire aux jointures (pour médias ou autres)
+                
                 if ($current != $row['id'] && $current != '') {
                     if ($toArray) {
                         $array[$current] = $param;
@@ -908,7 +908,7 @@ class Ship extends Model
                     $param = $row;
                 }
 
-                // A partir d'ici, on charge les paramètres supplémentaires (par exemple conversion pour les médias)
+                
                 if (!empty($row['ressourceType'])) {
                     $param[$row['ressourceType']] = $row['ressourceQuantity'];
                 }
@@ -962,7 +962,7 @@ class Ship extends Model
             return $array;
         } else {
             var_dump($req->errorInfo());
-            trigger_error('Chargement impossible', E_USER_ERROR);
+            trigger_error('Unable to load from SQL', E_USER_ERROR);
         }
     }
 

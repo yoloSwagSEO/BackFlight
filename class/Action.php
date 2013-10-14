@@ -18,7 +18,7 @@ class Action extends Fly
 
 
     /**
-     * La table par défaut utilisée par la classe.
+     * Default SQL table
      * @var string
      */
     protected static $_sqlTable = TABLE_ACTIONS;
@@ -156,7 +156,7 @@ class Action extends Fly
             return $sql->lastInsertId();
         } else {
             var_dump($req->errorInfo());
-            trigger_error('Enregistrement impossible in '.__FILE__.' on line '.__LINE__.' ! ', E_USER_ERROR);
+            trigger_error('Unable to save in '.__FILE__.' on line '.__LINE__.' ! ', E_USER_ERROR);
         }
     }
 
@@ -208,7 +208,7 @@ class Action extends Fly
             return $this->_id;
         } else {
             var_dump($req->errorInfo());
-            trigger_error('Mise à jour impossible in '.__FILE__.' on line '.__LINE__.' ! ', E_USER_ERROR);
+            trigger_error('Unable to update in '.__FILE__.' on line '.__LINE__.' ! ', E_USER_ERROR);
         }
     }
 
@@ -270,7 +270,7 @@ class Action extends Fly
             $class = get_called_class();
             while ($row = $req->fetch())
             {
-                // Nécessaire aux jointures (pour médias ou autres)
+                
                 if ($current != $row['id'] && $current != '') {
                     if ($to_array) {
                         $array[$current] = $param;
@@ -289,7 +289,7 @@ class Action extends Fly
 
                 $param['ships'][$row['ship']] = true;
 
-                // A partir d'ici, on charge les paramètres supplémentaires (par exemple conversion pour les médias)
+                
 
             }
             if (!empty($param)) {
@@ -302,7 +302,7 @@ class Action extends Fly
             return $array;
         } else {
             var_dump($req->errorInfo());
-            trigger_error('Chargement impossible', E_USER_ERROR);
+            trigger_error('Unable to load from SQL', E_USER_ERROR);
         }
     }
 }

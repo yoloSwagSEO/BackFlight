@@ -7,7 +7,7 @@ class Fleet extends Fly
 
 
     /**
-     * La table par défaut utilisée par la classe.
+     * Default SQL table
      * @var string
      */
     protected static $_sqlTable = TABLE_FLEETS;
@@ -97,7 +97,7 @@ class Fleet extends Fly
             );
             if (!$req->execute($args)) {
                 var_dump($req->errorInfo());
-                trigger_error('Enregistrement impossible in '.__FILE__.' on line '.__LINE__.' ! ', E_USER_ERROR);
+                trigger_error('Unable to save in '.__FILE__.' on line '.__LINE__.' ! ', E_USER_ERROR);
             }
             
         }
@@ -152,7 +152,7 @@ class Fleet extends Fly
             $class = get_called_class();
             while ($row = $req->fetch())
             {
-                // Nécessaire aux jointures (pour médias ou autres)
+                
                 if ($current != $row['moveId'] && $current != '') {
                     if ($to_array) {
                         $array[$current] = $param;
@@ -169,7 +169,7 @@ class Fleet extends Fly
                     $param = $row;
                 }
 
-                // A partir d'ici, on charge les paramètres supplémentaires (par exemple conversion pour les médias)
+                
                 $param['ships'][$row['shipId']] = $row['shipId'];
 
             }
@@ -183,7 +183,7 @@ class Fleet extends Fly
             return $array;
         } else {
             var_dump($req->errorInfo());
-            trigger_error('Chargement impossible', E_USER_ERROR);
+            trigger_error('Unable to load from SQL', E_USER_ERROR);
         }
     }
 }
