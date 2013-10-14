@@ -27,6 +27,7 @@ if (GAME_AUTOCREATE_DATAS) {
         $Model->setPowerMax(100);
         $Model->setSpeed(10);
         $Model->setShieldGain(300);
+        $Model->setModulesMax(3);
         $Model->setShieldMax(80);
         $Model->save();
     }

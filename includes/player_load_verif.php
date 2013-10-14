@@ -3,15 +3,11 @@ $MasterShipPlayer = new Ship('master', $User->getId());
 
 // If the player has no master ship, we create it
 if (!$MasterShipPlayer->isSql()) {
-    echo '<div data-alert="" class="alert-box radius">No master ship for user.</div>';
     $MasterShipPlayer = new Ship('master', $User->getId());
     
     // Get a position for the player to begin
     $StartPosition = Position::getClearPosition();
-    if ($StartPosition) {
-        echo '<div data-alert="" class="alert-box radius">Ship position : '.$StartPosition->getX().':'.$StartPosition->getY().'.</div>';
-    }
-
+    
     $MasterShipPlayer->setPosition($StartPosition);
     $MasterShipPlayer->setType('master');
     $MasterShipPlayer->setModel(1);
@@ -22,7 +18,9 @@ if (!$MasterShipPlayer->isSql()) {
     $MasterShipPlayer->calculateLoad();
     $MasterShipPlayer->setPower(SHIP_START_POWER);
     $MasterShipPlayer->setEnergy(SHIP_START_ENERGY);
-
+    $MasterShipPlayer->setShield(SHIP_START_SHIELD);
+    
+    Position::addUserPosition($User->getId(), $StartPosition->getId());
 
     $MasterShipPlayer->save();   
     

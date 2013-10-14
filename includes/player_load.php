@@ -138,45 +138,49 @@ $MasterShipPosition = new Position($MasterShipPlayer->getPositionId());
 // Check for quests
 foreach ($array_quests_player as $Quest)
 {
-    $QuestStep = $Quest->getCurrentStep();
-    if ($QuestStep) {
-        // Validate step only on right position if it exists
-        if ($QuestStep->getStepPositionId()) {
-            if ($QuestStep->getStepPositionId() != $MasterShipPosition->getId()) {
-                continue;
+    if ($Quest->isStartedByPlayer()) {
+        $QuestStep = $Quest->getCurrentStep();
+        if ($QuestStep) {
+            // Validate step only on right position if it exists
+            if ($QuestStep->getStepPositionId()) {
+                if ($QuestStep->getStepPositionId() != $MasterShipPosition->getId()) {
+                    continue;
+                }
+            }
+
+
+            if ($QuestStep->hasAllRequirementsDone()) {
+                $QuestStep->addUserStep($User->getId());
+                $gains = $QuestStep->getStepGains();
+                if ($gains) {
+                    Quest::earnGains($gains, $MasterShipPlayer, $array_ressources, $array_modules);
+                }
             }
         }
-        if ($QuestStep->hasAllRequirementsDone()) {
-            $QuestStep->addUserStep($User->getId());
-            $gains = $QuestStep->getStepGains();
+
+        // If quest is complete
+        if ($Quest->hasAllStepsDone() && !$Quest->isDoneByPlayer()) {
+            if ($Quest->getPositionId()) {
+                if ($Quest->getPositionId() != $MasterShipPosition->getId()) {
+                    continue;
+                }
+            }
+            // Get gains
+            $gains = $Quest->getGains();
             if ($gains) {
                 Quest::earnGains($gains, $MasterShipPlayer, $array_ressources, $array_modules);
             }
-        }
-    }
+            $Quest->setUserState($User->getId(), 'done');
+            $Quest->save();
 
-    // If quest is complete
-    if ($Quest->hasAllStepsDone() && !$Quest->isDoneByPlayer()) {
-        if ($Quest->getPositionId()) {
-            if ($Quest->getPositionId() != $MasterShipPosition->getId()) {
-                continue;
-            }
+            // Create notification
+            $Notification = new Notification();
+            $Notification->setType(TABLE_QUESTS);
+            $Notification->setTypeId($Quest->getId());
+            $Notification->setImportance(NOTIFICATION_IMPORTANCE_MEDIUM);
+            $Notification->setAction('quest_done');
+            $Notification->save();
         }
-        // Get gains
-        $gains = $Quest->getGains();
-        if ($gains) {
-            Quest::earnGains($gains, $MasterShipPlayer, $array_ressources, $array_modules);
-        }
-        $Quest->setUserState($User->getId(), 'done');
-        $Quest->save();
-
-        // Create notification
-        $Notification = new Notification();
-        $Notification->setType(TABLE_QUESTS);
-        $Notification->setTypeId($Quest->getId());
-        $Notification->setImportance(NOTIFICATION_IMPORTANCE_MEDIUM);
-        $Notification->setAction('quest_done');
-        $Notification->save();
     }
 }
 ?>

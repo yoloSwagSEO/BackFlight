@@ -86,6 +86,8 @@ define('SHIP_START_ENERGY', 100);
  */
 define('SHIP_START_POWER', 70);
 
+define('SHIP_START_SHIELD', 80);
+
 /**
  * Max loading for a basic ship
  */

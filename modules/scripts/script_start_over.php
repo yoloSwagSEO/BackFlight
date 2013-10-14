@@ -24,23 +24,10 @@ foreach ($rows as $row) {
     }
 }
 
-$MasterShipModel = new Model();
-$MasterShipModel->setName('Survivor');
-$MasterShipModel->setCategory('master');
-$MasterShipModel->setLoadMax(SHIP_START_LOADMAX);
-$MasterShipModel->setEnergyMax(SHIP_START_ENERGYMAX);
-$MasterShipModel->setEnergyGain(SHIP_START_ENERGY_GAIN);
-$MasterShipModel->setFuelMax(SHIP_START_FUELMAX);
-$MasterShipModel->setPowerMax(SHIP_START_POWERMAX);
-$MasterShipModel->setSpeed(SHIP_START_SPEED);
-
-$MasterShipModel->save();
-
-
 $User = new User();
 $pseudo_ok = $User->setPseudo('Player');
 $mail_ok = $User->setMail('player@backflight.fr');
-$User->setPassword('Fly, you fools!');
+$User->setPassword('pass');
 
 if ($pseudo_ok == true && $mail_ok === true) {
     $User->save();
