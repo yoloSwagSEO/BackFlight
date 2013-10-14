@@ -147,8 +147,8 @@ class Notification extends Fly
 
 
     /*
-     * Charge les valeurs de l'objet
-     * @param array $param Le tableau avec les valeurs nécessaire à l'instanciation de l'objet
+     * Load object values
+     * @param array $param Instanciation values
      */
     protected function _load($param)
     {
