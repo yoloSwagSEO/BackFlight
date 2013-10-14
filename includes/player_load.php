@@ -132,6 +132,8 @@ foreach ($array_builds as $Build)
 // Load notifications
 $array_notifications_unread = Notification::getAll('', '', NOTIFICATION_UNREAD, $User->getId());
 
+$array_conversations = Conversation::getAll('', '', $User->getId());
+
 // Load MasterShip position
 $MasterShipPosition = new Position($MasterShipPlayer->getPositionId());
 

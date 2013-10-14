@@ -29,6 +29,9 @@ require_once 'includes/functions.php';
 // Loading template functions
 require_once 'includes/functions_template.php';
 
+// Loading form functions
+require_once 'includes/functions_form.php';
+
 // Game configuration
 require_once 'config/game.php';
 

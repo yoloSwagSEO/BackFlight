@@ -29,6 +29,7 @@ CREATE TABLE `builds` (
 
 CREATE TABLE `conversations` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `subject` varchar(50) NOT NULL,
   `date` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -54,24 +55,6 @@ CREATE TABLE `conversations_users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `conversationId` int(11) NOT NULL,
   `userId` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE `equipiers` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nom` varchar(30) NOT NULL,
-  `prenom` varchar(30) NOT NULL,
-  `sexe` varchar(1) NOT NULL,
-  `age` int(11) NOT NULL,
-  `mail` varchar(200) NOT NULL,
-  `key` varchar(40) NOT NULL,
-  `date` int(11) NOT NULL,
-  `timeDebut` int(11) NOT NULL,
-  `timeFin` int(11) NOT NULL,
-  `pratique` int(11) NOT NULL,
-  `nivMin` int(11) NOT NULL,
-  `nivMax` int(11) NOT NULL,
-  `texte` text NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -277,3 +260,12 @@ CREATE TABLE `users_quests_steps` (
   `date` int(11) NOT NULL,
   UNIQUE KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `conversations_read` (
+  `messageId` int(11) NOT NULL,
+  `userId` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE `conversations_messages`
+  DROP `subject`,
+  DROP `read`;

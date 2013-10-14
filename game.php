@@ -68,6 +68,18 @@ if (!empty($_GET['module'])) {
         } else {
             include_once 'modules/game/notifications/notifications_home.php';
         }
+    } else if ($module == 'messages') {
+        if (isset($_GET['add'])) {
+            if (!empty($_POST)) {
+                include_once 'modules/game/messages/message_add.php';
+            } else {
+                include_once 'modules/game/messages/message_add_form.php';
+            }
+        } else if (!empty($_GET['conversation'])) {
+            include_once 'modules/game/messages/message_view.php';
+        } else {
+            include_once 'modules/game/messages/messages_home.php';
+        }
     } else {
         trigger_error('Unknown module', E_USER_ERROR);
     }

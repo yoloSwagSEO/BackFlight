@@ -41,4 +41,12 @@ define('TABLE_USERS_QUESTS_STEPS', 'users_quests_steps');
 define('TABLE_USERS_QUESTS_REQUIREMENTS', 'users_quests_requirements');
 
 define('TABLE_NOTIFICATIONS', 'notifications');
+
+define('TABLE_MESSAGES', 'conversations_messages');
+
+define('TABLE_CONVERSATIONS', 'conversations');
+
+define('TABLE_MESSAGES_ATTACHMENTS', 'conversations_attachmments');
+
+define('TABLE_CONVERSATIONS_USERS', 'conversations_users');
 ?>

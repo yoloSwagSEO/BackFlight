@@ -37,3 +37,7 @@ RewriteRule ^notifications/read/([0-9]+)$ game.php?module=notifications&read=$1 
 RewriteRule ^notifications/all/read/([0-9]+)$ game.php?module=notifications&read=$1&all [L]
 
 RewriteRule ^tests/([a-z]+)$ tests.php?test=$1 [L]
+
+RewriteRule ^messages$ game.php?module=messages [L]
+RewriteRule ^messages/new$ game.php?module=messages&add [L]
+RewriteRule ^messages/conversation-([0-9]+)$ game.php?module=messages&conversation=$1 [L]

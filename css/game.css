@@ -134,3 +134,9 @@
 {
     font-weight: bold;
 }
+
+.message
+{
+    border: 1px solid grey;
+    border-radius: 5px;
+}
