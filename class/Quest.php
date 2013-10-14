@@ -347,7 +347,7 @@ class Quest extends Fly
 
                 if (!empty($row['stepNb'])) {
                     if (empty($param['steps_seen'][$row['id']][$row['stepNb']])) {
-                        $param['steps'][$row['stepId']] = array('stepName' => $row['stepName'], 'questId' => $row['id'], 'stepDescription' => $row['stepDescription'], 'stepNb' => $row['stepPositionId'], 'stepPositionId' => $row['stepNb']);
+                        $param['steps'][$row['stepId']] = array('stepName' => $row['stepName'], 'questId' => $row['id'], 'stepDescription' => $row['stepDescription'], 'stepNb' => $row['stepNb'], 'stepPositionId' => $row['stepPositionId']);
                         if (!empty($row['userQuestStepId'])) {
                             $param['steps'][$row['stepId']]['done'] = $row['userQuestStepDate'];
                         }
@@ -420,7 +420,6 @@ class Quest extends Fly
             if (!$QuestStep->hasAllRequirementsDone()) {
                 return $QuestStep;
             }
-            
             $keys = array_keys($this->_steps);
             $found_index = array_search($this->_userStepId, $keys);
             if (!empty($keys[$found_index+1])) {
@@ -434,16 +433,18 @@ class Quest extends Fly
     {
         foreach ($array_quests_player as $Quest)
         {
-            $QuestStep = $Quest->getCurrentStep();
-            if ($QuestStep) {
-                $requirementId = $QuestStep->hasRequirement($type, $value);
-                // Has quest this requirement ?
-                if ($requirementId) {
+            if ($Quest->isStartedByPlayer()) {
+                $QuestStep = $Quest->getCurrentStep();
+                if ($QuestStep) {
+                    $requirementId = $QuestStep->hasRequirement($type, $value);
+                    // Has quest this requirement ?
+                    if ($requirementId) {
 
-                // Don't do anything if requirement is done
-                    if (!$QuestStep->isRequirementDone($requirementId)) {
-                        $QuestRequirement = $QuestStep->getRequirement($requirementId);
-                        $QuestRequirement->addUserStepRequirement($quantity, $userId);
+                    // Don't do anything if requirement is done
+                        if (!$QuestStep->isRequirementDone($requirementId)) {
+                            $QuestRequirement = $QuestStep->getRequirement($requirementId);
+                            $QuestRequirement->addUserStepRequirement($quantity, $userId);
+                        }
                     }
                 }
             }
