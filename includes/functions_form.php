@@ -18,12 +18,11 @@ function label($for, $valeur, $class=null)
  * @param string $value
  * @param string $class
  * @param string $placeholder
- * @param string $session_force
  * @param boolean $disabled
  */
-function input ($name, $type=null, $value=null, $class=null, $placeholder = null, $session_force=null, $disabled = false)
+function input ($name, $type=null, $value=null, $class=null, $placeholder = null, $disabled = false)
 {
-    echo Form::input($name, $type, $value, $class, $session_force, $placeholder, $disabled);
+    echo Form::input($name, $type, $value, $class, $placeholder, $disabled);
 }
 
 /**

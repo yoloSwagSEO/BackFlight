@@ -83,6 +83,8 @@ class Form
             $value = self::_getValues($name);
         }
 
+        $id = $name;
+
         return '<textarea name="'.$name.'" id="'.$id.'" rows="'.$rows.'" cols="'.$cols.'"'.$placeholder.''.$class.'>'.$value.'</textarea>';
     }
 
