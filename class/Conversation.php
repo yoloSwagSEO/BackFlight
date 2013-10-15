@@ -76,6 +76,7 @@ class Conversation extends Fly
                     foreach ($array_messages as $id => $param_message)
                     $this->_messages[$date][$id] = new Message($param_message);
                 }
+                ksort($this->_messages);
             }
         }
     }
@@ -265,5 +266,26 @@ class Conversation extends Fly
     public function getUsersDate()
     {
         return $this->_usersDates;
+    }
+
+    public function isRead()
+    {
+        foreach ($this->_messages as $messages)
+        {
+            foreach ($messages as $Message)
+            {
+                if (!$Message->isRead()) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    public function getLastDate()
+    {
+        end($this->_messages);
+        return key($this->_messages);
     }
 }

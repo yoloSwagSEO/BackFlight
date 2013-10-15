@@ -2,6 +2,14 @@
 title('Messages');
 head();
 
+
+$array_conversations_date = array();
+foreach ($array_conversations as $Conversation)
+{
+    $array_conversations_date[$Conversation->getLastDate()][] = $Conversation;
+}
+krsort($array_conversations_date);
+
 ?>
 <div class="row">
     <div class="column large-3">
@@ -18,7 +26,7 @@ head();
             <a href='messages/new'>Ecrire un nouveau message</a>
         </p>
         <?php
-        if(!empty($array_conversations)) {
+        if(!empty($array_conversations_date)) {
             ?>
             <table width="100%">
                 <thead>
@@ -35,36 +43,38 @@ head();
                     </tr>
                 </thead>
             <?php
-            foreach ($array_conversations as $Conversation)
-            {
-                $class = '';
-//                if (!$Conversations->isRead()) {
-//                    $class = ' class="notification_unread"';
-//                }
-                ?>
-                <tr<?php echo $class?>>
-                    <td><a href="messages/conversation-<?php echo $Conversation->getId()?>"><?php echo $Conversation->getSubject()?></a></td>
-                    <td><a href="messages/conversation-<?php echo $Conversation->getId()?>"><?php echo date('d/m - h:i', $Conversation->getDate())?></a></td>
-                    <td>
-                        <a href="messages/conversation-<?php echo $Conversation->getId()?>">
-                            <?php
-                            $i = 0;
-                            $len = count($Conversation->getUsers());
-                            foreach ($Conversation->getUsers(true) as $id => $userPseudo)
-                            {
-                                if ($i == $len - 1) {
-                                    echo ' et ';
-                                } else if ($i != 0) {
-                                    echo ', ';
+            foreach ($array_conversations_date as $conversations) {
+                foreach($conversations as $Conversation)
+                {
+                    $class = '';
+                    if (!$Conversation->isRead()) {
+                        $class = ' class="notification_unread"';
+                    }
+                    ?>
+                    <tr<?php echo $class?>>
+                        <td><a href="messages/conversation-<?php echo $Conversation->getId()?>"><?php echo $Conversation->getSubject()?></a></td>
+                        <td><a href="messages/conversation-<?php echo $Conversation->getId()?>"><?php echo date('d/m - h:i', $Conversation->getLastDate())?></a></td>
+                        <td>
+                            <a href="messages/conversation-<?php echo $Conversation->getId()?>">
+                                <?php
+                                $i = 0;
+                                $len = count($Conversation->getUsers());
+                                foreach ($Conversation->getUsers(true) as $id => $userPseudo)
+                                {
+                                    if ($i == $len - 1) {
+                                        echo ' et ';
+                                    } else if ($i != 0) {
+                                        echo ', ';
+                                    }
+                                    echo $userPseudo;
+                                    $i++;
                                 }
-                                echo $userPseudo;
-                                $i++;
-                            }
-                            ?>
-                        </a>
-                    </td>
-                </tr>
-                <?php
+                                ?>
+                            </a>
+                        </td>
+                    </tr>
+                    <?php
+                }
             }
             ?>
             </table>
