@@ -21,7 +21,7 @@ head();
         foreach ($Conversation->getMessages() as $Message)
         {
             ?>
-        <div class="row panel">
+        <div class="row panel" style="margin-bottom: 5px;">
             <div class="large-2 columns">
                 <strong><?php echo $Message->getUserFrom(true)?></strong><br />
                 <small><?php echo date('d/m h:i', $Message->getDate())?></small>
@@ -43,6 +43,7 @@ head();
                         <?php textarea('message_text', '', '', '', 'Mon message')?>
                     </div>
                 </div>
+                <input type="hidden" value="<?php echo $Conversation->getId()?>" name="conversation_id" />
                 <input type="submit" value="Envoyer mon message" class="button" />
             </fieldset>
 

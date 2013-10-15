@@ -2,6 +2,9 @@
 $array = array('message_text');
 if (!empty($_POST['conversation_id'])) {
     $Conversation = new Conversation($_POST['conversation_id']);
+    if (!$Conversation->isSql()) {
+        exit('Unknown conversation');
+    }
 } else {
     $new = true;
     $array[] = 'message_user';

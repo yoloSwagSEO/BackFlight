@@ -18,7 +18,7 @@ head();
             <a href='messages/new'>Ecrire un nouveau message</a>
         </p>
         <?php
-        if(!empty($array_notifications)) {
+        if(!empty($array_conversations)) {
             ?>
             <table width="100%">
                 <thead>
@@ -30,22 +30,22 @@ head();
                             Date
                         </th>
                         <th>
-                            Position
+                            Joueurs
                         </th>
                     </tr>
                 </thead>
             <?php
-            foreach ($array_notifications as $Notification)
+            foreach ($array_conversations as $Conversations)
             {
                 $class = '';
-                if (!$Notification->isRead()) {
-                    $class = ' class="notification_unread"';
-                }
+//                if (!$Conversations->isRead()) {
+//                    $class = ' class="notification_unread"';
+//                }
                 ?>
                 <tr<?php echo $class?>>
-                    <td><a href="notifications/read/<?php echo $Notification->getid()?>"><?php echo $Notification->renderTitle()?></a></td>
-                    <td><a href="notifications/read/<?php echo $Notification->getid()?>"><?php echo date('d/m - h:i', $Notification->getDate())?></a></td>
-                    <td><a href="notifications/read/<?php echo $Notification->getid()?>">n:n</a></td>
+                    <td><a href="messages/conversation-<?php echo $Conversations->getid()?>"><?php echo $Conversations->getSubject()?></a></td>
+                    <td><a href="messages/conversation-<?php echo $Conversations->getid()?>"><?php echo date('d/m - h:i', $Conversations->getDate())?></a></td>
+                    <td><a href="messages/conversation-<?php echo $Conversations->getid()?>">n:n</a></td>
                 </tr>
                 <?php
             }
@@ -55,7 +55,7 @@ head();
         } else {
             ?>
         <p>
-            Aucune notification
+            Aucune conversation
         </p>
             <?php
         }
