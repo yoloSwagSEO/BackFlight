@@ -35,7 +35,7 @@ head();
                     </tr>
                 </thead>
             <?php
-            foreach ($array_conversations as $Conversations)
+            foreach ($array_conversations as $Conversation)
             {
                 $class = '';
 //                if (!$Conversations->isRead()) {
@@ -43,9 +43,26 @@ head();
 //                }
                 ?>
                 <tr<?php echo $class?>>
-                    <td><a href="messages/conversation-<?php echo $Conversations->getid()?>"><?php echo $Conversations->getSubject()?></a></td>
-                    <td><a href="messages/conversation-<?php echo $Conversations->getid()?>"><?php echo date('d/m - h:i', $Conversations->getDate())?></a></td>
-                    <td><a href="messages/conversation-<?php echo $Conversations->getid()?>">n:n</a></td>
+                    <td><a href="messages/conversation-<?php echo $Conversation->getId()?>"><?php echo $Conversation->getSubject()?></a></td>
+                    <td><a href="messages/conversation-<?php echo $Conversation->getId()?>"><?php echo date('d/m - h:i', $Conversation->getDate())?></a></td>
+                    <td>
+                        <a href="messages/conversation-<?php echo $Conversation->getId()?>">
+                            <?php
+                            $i = 0;
+                            $len = count($Conversation->getUsers());
+                            foreach ($Conversation->getUsers(true) as $id => $userPseudo)
+                            {
+                                if ($i == $len - 1) {
+                                    echo ' et ';
+                                } else if ($i != 0) {
+                                    echo ', ';
+                                }
+                                echo $userPseudo;
+                                $i++;
+                            }
+                            ?>
+                        </a>
+                    </td>
                 </tr>
                 <?php
             }
