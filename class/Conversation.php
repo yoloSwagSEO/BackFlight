@@ -6,6 +6,8 @@ class Conversation extends Fly
     protected $_subject;
     protected $_tag;
     protected $_users;
+    protected $_usersPseudos;
+    protected $_usersDate;
     protected $_messages;
 
 
@@ -64,11 +66,16 @@ class Conversation extends Fly
 
             if (!empty($param['users'])) {
                 $this->_users = $param['users'];
+                $this->_usersPseudos = $param['usersPseudos'];
+                $this->_usersDates = $param['usersDates'];
             }
 
             if (!empty($param['messages'])) {
-                foreach ($param['messages'] as $id => $param_message)
-                $this->_messages[$id] = new Message($param_message);
+                foreach ($param['messages'] as $date => $array_messages)
+                {
+                    foreach ($array_messages as $id => $param_message)
+                    $this->_messages[$date][$id] = new Message($param_message);
+                }
             }
         }
     }
@@ -138,7 +145,7 @@ class Conversation extends Fly
         $sql = FlyPDO::get();
         $req = $sql->prepare('
                     SELECT `'.static::$_sqlTable.'`.*, convUsers.userId userId, cMessages.date messageDate, cMessages.userFrom messageUserFrom, cMessages.content messageContent, cMessages.id messageId,
-                        users.pseudo userPseudo
+                        users.pseudo userPseudo, users2.pseudo usersPseudos, users2.id usersId, convUsers.date userDate
                     '.$select_add.'
                             FROM `'.static::$_sqlTable.'`
                     '.$join_add.'
@@ -148,7 +155,10 @@ class Conversation extends Fly
                         ON cMessages.conversationId = `'.static::$_sqlTable.'`.id
                     LEFT JOIN `'.TABLE_USERS.'` users
                         ON cMessages.userFrom = users.id
-                '.$where);
+                    LEFT JOIN `'.TABLE_USERS.'` users2
+                        ON convUsers.userId = users2.id
+                '.$where.'
+                    ORDER BY cMessages.date');
 
         if ($req->execute($args)) {
             $current = 0;
@@ -174,14 +184,25 @@ class Conversation extends Fly
                     $param = $row;
                 }
 
-                if (!empty($row['userId'])) {
-                    $param['users'][$row['userId']] = $row['userId'];
-                }
+                if (!empty($row['usersId'])) {
+                    if (empty($param['users'])) {
+                        $param['usersId'] = array();
+                        $param['usersPseudos'] = array();
+                        $param['users_seen'] = array();
+                        $param['users_date'] = array();
+                    }
 
+                    if (empty($param['users_seen'][$row['usersId']])) {
+                        $param['users'][$row['usersId']] = $row['usersId'];
+                        $param['usersPseudos'][$row['usersId']] = $row['usersPseudos'];
+                        $param['users_seen'][$row['usersId']] = true;
+                        $param['usersDates'][$row['usersPseudos']] = $row['userDate'];
+                    }
+                }
 
                 if (!empty($row['messageId'])) {
                     if (empty($param['messages_seen'][$row['messageId']])) {
-                        $param['messages'][$row['messageId']] = array('id' => $row['messageId'], 'conversationId' => $row['id'], 'userFrom' => $row['messageUserFrom'], 'userPseudo' => $row['userPseudo'], 'date' => $row['messageDate'], 'content' => $row['messageContent']);
+                        $param['messages'][$row['messageDate']][$row['messageId']] = array('id' => $row['messageId'], 'conversationId' => $row['id'], 'userFrom' => $row['messageUserFrom'], 'userPseudo' => $row['userPseudo'], 'date' => $row['messageDate'], 'content' => $row['messageContent']);
                         $param['messages_seen'][$row['messageId']] = true;
                     }
                 }
@@ -205,10 +226,11 @@ class Conversation extends Fly
     {
         if (empty($this->_users[$userId])) {
             $sql = FlyPDO::get();
-            $req = $sql->prepare('INSERT INTO `'.TABLE_CONVERSATIONS_USERS.'` VALUES("", :conversationId, :userId)');
+            $req = $sql->prepare('INSERT INTO `'.TABLE_CONVERSATIONS_USERS.'` VALUES("", :conversationId, :userId, :time)');
             if ($req->execute(array(
                 ':conversationId' => $this->_id,
-                ':userId' => $userId
+                ':userId' => $userId,
+                ':time' => time()
             ))) {
                 return true;
             } else {
@@ -216,5 +238,18 @@ class Conversation extends Fly
                 trigger_error('Unable to add user to conversation', E_USER_ERROR);
             }
         }
+    }
+
+    public function getUsers($full = false)
+    {
+        if ($full) {
+            return $this->_usersPseudos;
+        }
+        return $this->_users;
+    }
+
+    public function getUsersDate()
+    {
+        return $this->_usersDates;
     }
 }

@@ -269,3 +269,5 @@ CREATE TABLE IF NOT EXISTS `conversations_read` (
 ALTER TABLE `conversations_messages`
   DROP `subject`,
   DROP `read`;
+  
+ALTER TABLE  `conversations_users` ADD  `date` INT NOT NULL ;

@@ -75,6 +75,8 @@ if (!empty($_GET['module'])) {
             } else {
                 include_once 'modules/game/messages/message_add_form.php';
             }
+        } else if (isset($_GET['add_player']) && !empty($_POST)) {
+            include_once 'modules/game/messages/message_add_player.php';
         } else if (!empty($_GET['conversation'])) {
             include_once 'modules/game/messages/message_view.php';
         } else {

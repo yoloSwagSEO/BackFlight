@@ -25,7 +25,7 @@ if (!check($array)) {
 $ToUser = new User($_POST['message_user'], 'pseudo');
 
 if (!$ToUser->isSql()) {
-    exit(':(');
+    $_SESSION['errors']['messages']['player'] = 'unknown';
     header('location: '.PATH.'messages/new');
     exit;
 }

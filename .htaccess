@@ -40,4 +40,5 @@ RewriteRule ^tests/([a-z]+)$ tests.php?test=$1 [L]
 
 RewriteRule ^messages$ game.php?module=messages [L]
 RewriteRule ^messages/new$ game.php?module=messages&add [L]
+RewriteRule ^messages/add-player$ game.php?module=messages&add_player [L]
 RewriteRule ^messages/conversation-([0-9]+)$ game.php?module=messages&conversation=$1 [L]
