@@ -115,9 +115,14 @@ class Conversation extends Fly
         }
     }
 
-    public static function get($id)
+    public static function get($id, $args = null)
     {
-        $array = static::getAll($id, true);
+        // $args[1] is userId
+        if (!empty($args[1])) {
+            $array = static::getAll($id, true, $args[1]);
+        } else {
+            $array = static::getAll($id, true);
+        }
         return array_shift($array);
     }
 
@@ -138,7 +143,11 @@ class Conversation extends Fly
 
         if ($userId) {
             $args[':userId'] = $userId;
-            $join_add .= 'INNER JOIN `'.TABLE_CONVERSATIONS_USERS.'` cUser ON cUser.userId = :userId';
+            $args[':userId2'] = $userId;
+            $join_add .= 'INNER JOIN `'.TABLE_CONVERSATIONS_USERS.'` cUser ON cUser.userId = :userId
+                    LEFT JOIN `'.TABLE_CONVERSATIONS_READ.'` cRead
+                        ON (cRead.messageId = cMessages.id AND cRead.userId = :userId2)';
+            $select_add .= ', cRead.messageId messageReadId';
         }
 
         $array = array();
@@ -148,7 +157,6 @@ class Conversation extends Fly
                         users.pseudo userPseudo, users2.pseudo usersPseudos, users2.id usersId, convUsers.date userDate
                     '.$select_add.'
                             FROM `'.static::$_sqlTable.'`
-                    '.$join_add.'
                     LEFT JOIN `'.TABLE_CONVERSATIONS_USERS.'` convUsers
                         ON convUsers.conversationId = `'.static::$_sqlTable.'`.id
                     LEFT JOIN `'.TABLE_MESSAGES.'` cMessages
@@ -157,6 +165,7 @@ class Conversation extends Fly
                         ON cMessages.userFrom = users.id
                     LEFT JOIN `'.TABLE_USERS.'` users2
                         ON convUsers.userId = users2.id
+                    '.$join_add.'
                 '.$where.'
                     ORDER BY cMessages.date');
 
@@ -204,6 +213,11 @@ class Conversation extends Fly
                     if (empty($param['messages_seen'][$row['messageId']])) {
                         $param['messages'][$row['messageDate']][$row['messageId']] = array('id' => $row['messageId'], 'conversationId' => $row['id'], 'userFrom' => $row['messageUserFrom'], 'userPseudo' => $row['userPseudo'], 'date' => $row['messageDate'], 'content' => $row['messageContent']);
                         $param['messages_seen'][$row['messageId']] = true;
+                        if (!empty($row['messageReadId'])) {
+                            if ($row['messageReadId'] == $row['messageId']) {
+                                $param['messages'][$row['messageDate']][$row['messageId']]['read'] = true;
+                            }
+                        }
                     }
                 }
 

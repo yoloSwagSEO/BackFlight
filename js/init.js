@@ -90,4 +90,18 @@ $(function () {
         return false;
     });
 
+    // Chat read
+    $(document).on('mouseenter', '.message[data-unread]', function () {
+        var message = $(this);
+        var messageUnread = $(this).find('.message_unread');
+        if (messageUnread) {
+            message.removeAttr('data-unread');
+            $.post('messages/read', {messageId: $(this).data('message-id')}, function () {
+                messageUnread.fadeOut(function () {
+                    $(this).detach();
+                });
+            });
+        }
+    });
+
 });

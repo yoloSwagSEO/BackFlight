@@ -1,5 +1,5 @@
 <?php
-$Conversation = new Conversation($_GET['conversation']);
+$Conversation = new Conversation($_GET['conversation'], $User->getId());
 if (!$Conversation->isSql()) {
     exit('Unknown conversation');
 }
@@ -48,11 +48,10 @@ head();
         foreach ($array_messages as $date => $messages)
         {
             foreach ($messages as $Message)
-            {
-                // Adding player date
+            {                // Adding player date
                 if (!is_a($Message, 'message')) {
                     ?>
-                <div class="row panel" style="margin-bottom: 5px;">
+                <div class="row panel radius" style="margin-bottom: 5px;">
                     <div class="large-2 columns">
                         <small><?php echo date('d/m H:i', $date)?></small>
                     </div>
@@ -62,17 +61,26 @@ head();
                 </div>
                     <?php
                 } else {
-            ?>
-        <div class="row panel" style="margin-bottom: 5px;">
-            <div class="large-2 columns">
-                <strong><?php echo $Message->getUserFrom(true)?></strong><br />
-                <small><?php echo date('d/m H:i', $Message->getDate())?></small>
-            </div>
-            <div class="large-10 columns">
-                <?php echo $Message->getContent()?>
-            </div>
-        </div>
-            <?php
+                    $data = '';
+                    if (!$Message->isRead()) {
+                        $data = ' data-unread="true"';
+                    }
+                    ?>
+                <div class="row panel message radius" style="margin-bottom: 5px; position: relative;" data-message-id="<?php echo $Message->getId()?>"<?php echo $data?>>
+                    <div class="large-2 columns">
+                        <strong><?php echo $Message->getUserFrom(true)?></strong><br />
+                        <small><?php echo date('d/m H:i', $Message->getDate())?></small>
+                    </div>
+                    <div class="large-10 columns">
+                        <?php echo $Message->getContent()?>
+                    </div>
+                    <?php
+                    if (!$Message->isRead()) {
+                        ?><div class="message_unread"><span class="icomoon" data-icon="&#xe2d8;"></span></div><?php
+                    }
+                    ?>
+                </div>
+                    <?php
                 }
                 
             }

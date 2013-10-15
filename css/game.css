@@ -135,8 +135,15 @@
     font-weight: bold;
 }
 
-.message
+.message_unread
 {
-    border: 1px solid grey;
-    border-radius: 5px;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+}
+
+.message_unread .icomoon
+{
+    font-size: 10px;
+    color: rgba(0,0,0, .6);
 }

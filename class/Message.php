@@ -45,7 +45,7 @@ class Message extends Fly
         return $this->_content;
     }
 
-    public function getRead()
+    public function isRead()
     {
         return $this->_read;
     }
@@ -89,6 +89,9 @@ class Message extends Fly
             $this->_date = $param['date'];
             $this->_content = $param['content'];
             $this->_sql = true;
+            if (!empty($param['read'])) {
+                $this->_read = $param['read'];
+            }
         }
     }
 
@@ -131,16 +134,23 @@ class Message extends Fly
         }
     }
 
-    public static function get($id)
+    public static function get($id, $args = null)
     {
-        $array = static::getAll($id, true);
+        // $args[1] is userId
+        if (!empty($args[1])) {
+            $array = static::getAll($id, true, $args[1]);
+        } else {
+            $array = static::getAll($id, true);
+        }
         return array_shift($array);
     }
 
-    public static function getAll($id = null, $to_array = false)
+    public static function getAll($id = null, $to_array = false, $userId = null)
     {
         $where = '';
         $args = array();
+        $add_select = '';
+        $add_join = '';
 
         if ($id) {
             if (empty($where)) {
@@ -150,10 +160,23 @@ class Message extends Fly
             $args[':id'] = $id;
         }
 
+
+        if ($userId) {
+            $add_join .= 'LEFT JOIN `'.TABLE_CONVERSATIONS_READ.'` mRead
+                        on mRead.userId = :userId AND mRead.messageId = `'.static::$_sqlTable.'`.id';
+            $add_select .= ', mRead.messageId messageReadId';
+            $args[':userId'] = $userId;
+        }
+
         $array = array();
         $sql = FlyPDO::get();
         $req = $sql->prepare('
-                    SELECT `'.static::$_sqlTable.'`.* FROM `'.static::$_sqlTable.'`'.$where);
+                    SELECT `'.static::$_sqlTable.'`.*, mUser.pseudo userPseudo '.$add_select.'
+                        FROM `'.static::$_sqlTable.'`
+                    LEFT JOIN `'.TABLE_USERS.'` mUser
+                        ON mUser.id = `'.static::$_sqlTable.'`.id
+                    '.$add_join.'
+                    '.$where);
 
         if ($req->execute($args)) {
             $current = 0;
@@ -179,6 +202,11 @@ class Message extends Fly
                     $param = $row;
                 }
 
+
+                 if ($row['messageReadId'] == $row['id']) {
+                     $param['read'] = true;
+                 }
+
                 
 
             }
@@ -193,6 +221,21 @@ class Message extends Fly
         } else {
             var_dump($req->errorInfo());
             trigger_error('Unable to load from SQL', E_USER_ERROR);
+        }
+    }
+
+    public function read($userId)
+    {
+        if (!$this->_read) {
+            $sql = FlyPDO::get();
+            $req = $sql->prepare('INSERT INTO `'.TABLE_CONVERSATIONS_READ.'` VALUES (:messageId, :userId) ');
+            if ($req->execute(array(
+                ':messageId' => $this->_id,
+                ':userId' => $userId
+            ))) {
+
+            }
+            $this->_read = true;
         }
     }
 }
