@@ -43,3 +43,6 @@ RewriteRule ^messages/new$ game.php?module=messages&add [L]
 RewriteRule ^messages/read$ game.php?module=messages&read [L]
 RewriteRule ^messages/add-player$ game.php?module=messages&add_player [L]
 RewriteRule ^messages/conversation-([0-9]+)$ game.php?module=messages&conversation=$1 [L]
+
+RewriteRule ^ranks$ game.php?module=ranks
+RewriteRule ^ranks/(ressources|distance|position)$ game.php?module=ranks&type=$1

@@ -68,7 +68,7 @@ $MasterShipPosition = new Position($MasterShipPlayer->getPositionId());
             if ($Position->getId() == $MasterShipPosition->getId()) {
                 $current_position = true;
             }
-            $distance = Position::calculateDistance($MasterShipPosition->getX(), $MasterShipPosition->getY(), $Position->getX(), $Position->getY())
+            $distance = Position::calculateDistance($MasterShipPosition->getX(), $MasterShipPosition->getY(), $Position->getX(), $Position->getY());
             ?>
             <tr>
                 <td><?php echo $Position->getX()?>:<?php echo $Position->getY()?></td>

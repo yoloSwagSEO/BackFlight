@@ -542,15 +542,16 @@ class Position extends Fly
      * @param string $result
      * @return boolean
      */
-    public static function addPositionSearch($positionId, $userId, $date, $result)
+    public static function addPositionSearch($positionId, $userId, $date, $result, $quantity)
     {
         $sql = FlyPDO::get();
-        $req = $sql->prepare('INSERT INTO `'.TABLE_POSITIONS_SEARCHES.'` VALUES(:positionId, :userId, :date, :result)');
+        $req = $sql->prepare('INSERT INTO `'.TABLE_POSITIONS_SEARCHES.'` VALUES("", :positionId, :userId, :date, :result, :quantity)');
         if ($req->execute(array(
             ':positionId' => $positionId,
             ':userId' => $userId,
             ':date' => $date,
-            ':result' => $result
+            ':result' => $result,
+            ':quantity' => $quantity
         ))) {
             return true;
         } else {
@@ -583,5 +584,28 @@ class Position extends Fly
     public function getDistanceFromEarth()
     {
         return $this->calculateDistance($this->_x, $this->_y, 0, 0);
+    }
+
+    public function getAllPositionSearches($fromTime = null, $toTime = null)
+    {
+        $sql = FlyPDO::get();
+        $array_positions_searches = array();
+        $req = $sql->prepare('SELECT * FROM `'.TABLE_POSITIONS_SEARCHES.'` WHERE date > :fromTime AND date < :toTime');
+        if ($req->execute(array(
+            ':fromTime' => $fromTime,
+            ':toTime' => $toTime
+        ))) {
+            while ($row = $req->fetch())
+            {
+                if (empty($array_positions_searches[$row['userId']])) {
+                    $array_positions_searches[$row['userId']] = 0;
+                }
+                $array_positions_searches[$row['userId']] += $row['quantity'];
+            }
+        } else {
+            var_dump($req->errorInfo());
+        }
+
+        return $array_positions_searches;
     }
 }

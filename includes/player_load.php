@@ -14,9 +14,11 @@ if (!empty($array_actions)) {
             // Searches
             if ($Action->getType() == 'search' || $Action->getType() == 'probes') {
                 $result = $CurrentPosition->searchRessources($Action->getType(), $CurrentPosition->getCategory());
-                $search_result = '';
+                $search_result_type = '';
+                $search_result_quantity = 0;
                 if (!empty($result)) {
-                    $search_result = $result[0];
+                    $search_result_type = $result[0];
+                    $search_result_quantity = $result[1];
                     $MasterShipPlayer->calculateLoad();
                     if ($result[0] == 'fuel') {
                         $fuel_added = $MasterShipPlayer->addFuel($result[1]);
@@ -33,7 +35,7 @@ if (!empty($array_actions)) {
                         $MasterShipPlayer->save();
                     }
                     
-                    Position::addPositionSearch($Action->getTo(), $User->getId(), $Action->getEnd(), $search_result);
+                    Position::addPositionSearch($Action->getTo(), $User->getId(), $Action->getEnd(), $search_result_type, $search_result_quantity);
                     $_SESSION['infos']['search'] = $result;
 
                     // For quests

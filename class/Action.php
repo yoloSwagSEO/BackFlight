@@ -15,6 +15,7 @@ class Action extends Fly
     protected $_state;
     protected $_ships;
     protected $_duration;
+    protected $_distance;
 
 
     /**
@@ -69,6 +70,11 @@ class Action extends Fly
         return $this->_duration;
     }
 
+    public function getDistance()
+    {
+        return $this->_distance;
+    }
+
     public function setUser($user)
     {
         $this->_user = $user;
@@ -109,6 +115,11 @@ class Action extends Fly
         $this->_duration = $duration;
     }
 
+    public function setDistance($distance)
+    {
+        $this->_distance = $distance;
+    }
+
 
     /*
      * Load object values
@@ -128,6 +139,7 @@ class Action extends Fly
             $this->_to = $param['to'];
             $this->_start = $param['start'];
             $this->_duration = $param['duration'];
+            $this->_distance = $param['distance'];
             $this->_end = $param['end'];
             $this->_state = $param['state'];
             if (!empty($param['ships'])) {
@@ -140,7 +152,7 @@ class Action extends Fly
     protected function _create()
     {
         $sql = FlyPDO::get();
-        $req = $sql->prepare('INSERT INTO `'.static::$_sqlTable.'` VALUES (:id, :user, :type, :from, :to, :start, :duration, :end, :state)');
+        $req = $sql->prepare('INSERT INTO `'.static::$_sqlTable.'` VALUES (:id, :user, :type, :from, :to, :start, :duration, :distance, :end, :state)');
         $args = array(
             ':id' => $this->_id,
             ':user' => $this->_user,
@@ -149,6 +161,7 @@ class Action extends Fly
             ':to' => $this->_to,
             ':start' => $this->_start,
             ':duration' => $this->_duration,
+            ':distance' => $this->_distance,
             ':end' => $this->_end,
             ':state' => $this->_state
         );
@@ -192,7 +205,7 @@ class Action extends Fly
     protected function _update()
     {
         $sql = FlyPDO::get();
-        $req = $sql->prepare('UPDATE `'.static::$_sqlTable.'` SET `user` = :user, `type` = :type, `from` = :from, `to` = :to, `start` = :start, `end` = :end, `duration` = :duration, `state` = :state WHERE id = :id');
+        $req = $sql->prepare('UPDATE `'.static::$_sqlTable.'` SET `user` = :user, `type` = :type, `from` = :from, `to` = :to, `start` = :start, `end` = :end, `duration` = :duration, `distance` = :distance, `state` = :state WHERE id = :id');
         $args = array(
             ':id' => $this->_id,
             ':user' => $this->_user,
@@ -201,6 +214,7 @@ class Action extends Fly
             ':to' => $this->_to,
             ':start' => $this->_start,
             ':duration' => $this->_duration,
+            ':distance' => $this->_distance,
             ':end' => $this->_end,
             ':state' => $this->_state,
         );
@@ -304,5 +318,28 @@ class Action extends Fly
             var_dump($req->errorInfo());
             trigger_error('Unable to load from SQL', E_USER_ERROR);
         }
+    }
+
+    public function getAllDistances($fromTime = null, $toTime = null)
+    {
+        $sql = FlyPDO::get();
+        $array_distances = array();
+        $req = $sql->prepare('SELECT * FROM `'.TABLE_ACTIONS.'` WHERE end > :fromTime AND end < :toTime');
+        if ($req->execute(array(
+            ':fromTime' => $fromTime,
+            ':toTime' => $toTime
+        ))) {
+            while ($row = $req->fetch())
+            {
+                if (empty($array_distances[$row['user']])) {
+                    $array_distances[$row['user']] = 0;
+                }
+                $array_distances[$row['user']] += $row['distance'];
+            }
+        } else {
+            var_dump($req->errorInfo());
+        }
+
+        return $array_distances;
     }
 }

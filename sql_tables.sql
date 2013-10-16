@@ -271,3 +271,18 @@ ALTER TABLE `conversations_messages`
   DROP `read`;
   
 ALTER TABLE  `conversations_users` ADD  `date` INT NOT NULL ;
+
+CREATE TABLE IF NOT EXISTS `ranks` (
+    `id` INT(11) NOT NULL AUTO_INCREMENT,
+    `userId` INT(11) NOT NULL,
+    `date` INT(11) NOT NULL,
+    `distance` FLOAT(20) NOT NULL,
+    `ressources` FLOAT(20) NOT NULL,
+    `position` FLOAT(20) NOT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE  `positions_searches` ADD  `quantity` INT NOT NULL ;
+ALTER TABLE  `positions_searches` ADD  `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST ;
+ALTER TABLE  `actions` ADD  `distance` INT NULL AFTER  `duration` ;
+ALTER TABLE  `actions` CHANGE  `distance`  `distance` FLOAT( 20 ) NULL DEFAULT NULL ;

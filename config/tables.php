@@ -51,4 +51,6 @@ define('TABLE_MESSAGES_ATTACHMENTS', 'conversations_attachmments');
 define('TABLE_CONVERSATIONS_USERS', 'conversations_users');
 
 define('TABLE_CONVERSATIONS_READ', 'conversations_read');
+
+define('TABLE_RANKS', 'ranks');
 ?>

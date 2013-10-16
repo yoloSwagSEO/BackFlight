@@ -28,6 +28,7 @@ $Action->setTo($PositionDestination->getId());
 $Action->setDuration($time);
 $Action->setType($type);
 $Action->setUser($User->getId());
+$Action->setDistance($distance);
 
 $id_move = $Action->save();
 

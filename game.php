@@ -84,6 +84,9 @@ if (!empty($_GET['module'])) {
         } else {
             include_once 'modules/game/messages/messages_home.php';
         }
+    } else if ($module == 'ranks') {
+        include_once 'modules/game/ranks/ranks_global.php';
+        
     } else {
         trigger_error('Unknown module', E_USER_ERROR);
     }
