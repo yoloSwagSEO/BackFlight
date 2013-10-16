@@ -1,9 +1,9 @@
 <?php
 $nb_conversation_unread = 0;
 
-foreach ($array_conversations as $Conversation)
+foreach ($array_conversations as $mConversation)
 {
-    if (!$Conversation->isRead()) {
+    if (!$mConversation->isRead()) {
         $nb_conversation_unread++;
     }
 }
@@ -14,7 +14,6 @@ if ($nb_conversation_unread) {
 }
 
 ?>
-
 
 <ul class="side-nav">
     <li><a href="overview">Ma position</a></li>

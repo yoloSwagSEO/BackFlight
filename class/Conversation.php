@@ -177,7 +177,6 @@ class Conversation extends Fly
             $class = get_called_class();
             while ($row = $req->fetch())
             {
-                
                 if ($current != $row['id'] && $current != '') {
                     if ($to_array) {
                         $array[$current] = $param;
