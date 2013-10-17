@@ -37,6 +37,8 @@ if (!empty($_GET['module'])) {
             $action = $_GET['action'];
             if ($action == 'repair') {
                 include_once 'modules/game/ship/ship_repair.php';
+            } else if ($action == 'weapons') {
+                include_once 'modules/game/ship/ship_overview.php';
             }
         } else {
         include_once 'modules/game/ship/ship_overview.php';

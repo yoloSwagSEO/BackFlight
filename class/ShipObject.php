@@ -1,18 +1,19 @@
 <?php
-class ShipModule extends Fly
+class ShipObject extends Fly
 {
     protected $_id;
     protected $_shipId;
-    protected $_moduleId;
-    protected $_moduleOrder;
-    protected $_moduleEnabled;
+    protected $_type;
+    protected $_typeId;
+    protected $_typeOrder;
+    protected $_typeEnabled;
 
 
     /**
      * Default SQL table
      * @var string
      */
-    protected static $_sqlTable = TABLE_SHIPS_MODULES;
+    protected static $_sqlTable = TABLE_SHIPS_OBJECTS;
 
 
     public function getShipId()
@@ -20,17 +21,22 @@ class ShipModule extends Fly
         return $this->_shipId;
     }
 
-    public function getModuleId()
+    public function getType()
+    {
+        return $this->_type;
+    }
+
+    public function getTypeId()
     {
         return $this->_moduleId;
     }
 
-    public function getModuleOrder()
+    public function getTypeOrder()
     {
         return $this->_moduleOrder;
     }
 
-    public function getModuleEnabled()
+    public function getTypeEnabled()
     {
         return $this->_moduleEnabled;
     }
@@ -42,19 +48,24 @@ class ShipModule extends Fly
         $this->_shipId = $shipId;
     }
 
-    public function setModuleId($moduleId)
+    public function setType($type)
     {
-        $this->_moduleId = $moduleId;
+        $this->_type = $type;
     }
 
-    public function setModuleOrder($moduleOrder)
+    public function setTypeId($moduleId)
     {
-        $this->_moduleOrder = $moduleOrder;
+        $this->_typeId = $moduleId;
     }
 
-    public function setModuleEnabled($moduleEnabled)
+    public function setTypeOrder($moduleOrder)
     {
-        $this->_moduleEnabled = $moduleEnabled;
+        $this->_typeOrder = $moduleOrder;
+    }
+
+    public function setTypeEnabled($moduleEnabled)
+    {
+        $this->_typeEnabled = $moduleEnabled;
     }
 
 
@@ -68,9 +79,10 @@ class ShipModule extends Fly
         if($param) {
             $this->_id = $param['id'];
             $this->_shipId = $param['shipId'];
-            $this->_moduleId = $param['moduleId'];
-            $this->_moduleOrder = $param['moduleOrder'];
-            $this->_moduleEnabled = $param['moduleEnabled'];
+            $this->_type = $param['type'];
+            $this->_typeId = $param['typeId'];
+            $this->_typeOrder = $param['typeOrder'];
+            $this->_typeEnabled = $param['typeEnabled'];
             $this->_sql = true;
         }
     }
@@ -78,13 +90,14 @@ class ShipModule extends Fly
     protected function _create()
     {
         $sql = FlyPDO::get();
-        $req = $sql->prepare('INSERT INTO `'.static::$_sqlTable.'` VALUES (:id, :shipId, :moduleId, :moduleOrder, :moduleEnabled)');
+        $req = $sql->prepare('INSERT INTO `'.static::$_sqlTable.'` VALUES (:id, :shipId, :type, :typeId, :typeOrder, :typeEnabled)');
         $args = array(
             ':id' => $this->_id,
             ':shipId' => $this->_shipId,
-            ':moduleId' => $this->_moduleId,
-            ':moduleOrder' => $this->_moduleOrder,
-            ':moduleEnabled' => $this->_moduleEnabled
+            ':type' => $this->_type,
+            ':typeId' => $this->_typeId,
+            ':typeOrder' => $this->_typeOrder,
+            ':typeEnabled' => $this->_typeEnabled
         );
         if ($req->execute($args)) {
             return $sql->lastInsertId();
@@ -98,13 +111,14 @@ class ShipModule extends Fly
     protected function _update()
     {
         $sql = FlyPDO::get();
-        $req = $sql->prepare('UPDATE `'.static::$_sqlTable.'` SET `shipId` = :shipId, `moduleId` = :moduleId, `moduleOrder` = :moduleOrder, `moduleEnabled` = :moduleEnabled WHERE id = :id');
+        $req = $sql->prepare('UPDATE `'.static::$_sqlTable.'` SET `shipId` = :shipId, `type` = :type, `typeId` = :typeId, `typeOrder` = :typeOrder, `typeEnabled` = :typeEnabled WHERE id = :id');
         $args = array(
             ':id' => $this->_id,
             ':shipId' => $this->_shipId,
-            ':moduleId' => $this->_moduleId,
-            ':moduleOrder' => $this->_moduleOrder,
-            ':moduleEnabled' => $this->_moduleEnabled
+            ':type' => $this->_type,
+            ':typeId' => $this->_typeId,
+            ':typeOrder' => $this->_typeOrder,
+            ':typeEnabled' => $this->_typeEnabled
         );
         if ($req->execute($args)) {
             return $this->_id;
@@ -120,7 +134,7 @@ class ShipModule extends Fly
         return array_shift($array);
     }
 
-    public static function getAll($id = null, $to_array = false, $shipId = null, $moduleId = null, $moduleEnabled = null)
+    public static function getAll($id = null, $to_array = false, $shipId = null, $type = null, $typeId = null, $typeEnabled = null)
     {
         $where = '';
         $args = array();
@@ -143,24 +157,24 @@ class ShipModule extends Fly
             $args[':shipId'] = $shipId;
         }
 
-        if ($moduleId) {
+        if ($typeId) {
             if (empty($where)) {
                 $where = ' WHERE ';
             } else {
                 $where .= ' AND ';
             }
-            $where .= '`'.static::$_sqlTable.'`.moduleId = :moduleId';
-            $args[':moduleId'] = $moduleId;
+            $where .= '`'.static::$_sqlTable.'`.typeId = :typeId';
+            $args[':typeId'] = $typeId;
         }
         
-        if ($moduleEnabled !== null) {
+        if ($typeEnabled !== null) {
             if (empty($where)) {
                 $where = ' WHERE ';
             } else {
                 $where .= ' AND ';
             }
-            $where .= '`'.static::$_sqlTable.'`.moduleEnabled = :moduleEnabled';
-            $args[':moduleEnabled'] = $moduleEnabled;
+            $where .= '`'.static::$_sqlTable.'`.typeEnabled = :typeEnabled';
+            $args[':typeEnabled'] = $typeEnabled;
         }
 
         $array = array();

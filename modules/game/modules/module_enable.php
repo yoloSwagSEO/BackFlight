@@ -13,9 +13,9 @@ if ($MasterShipPlayer->getModulesEnabledNumber() >= $MasterShipPlayer->getModule
     exit('Already max module number enabled');
 }
 
-if ($MasterShipPlayer->hasModuleAvailable($Module->getId())) {
+if ($MasterShipPlayer->hasObjectAvailable('module', $Module->getId())) {
     Quest::addAction($array_quests_player, 'module_enabled', 1, $User->getId(), $Module->getId());
-    $MasterShipPlayer->enableModule($Module->getId());
+    $MasterShipPlayer->enableObject('module', $Module->getId());
 
 } else {
     exit('Module not available');

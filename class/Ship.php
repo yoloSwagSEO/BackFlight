@@ -607,15 +607,15 @@ class Ship extends Model
     {
         $this->_load = $this->_fuel * FUEL_WEIGHT + $this->_techs * TECHS_WEIGHT;
 
-        foreach ($this->_modulesEnabled as $moduleId => $quantity)
+        foreach ($this->_modulesEnabled as $typeId => $quantity)
         {
-            $weight = $this->_modulesEffects[$moduleId]['weight'];
+            $weight = $this->_modulesEffects[$typeId]['weight'];
             $this->_load += $weight*$quantity;
         }
         
-        foreach ($this->_modules as $moduleId => $quantity)
+        foreach ($this->_modules as $typeId => $quantity)
         {
-            $weight = $this->_modulesEffects[$moduleId]['weight'];
+            $weight = $this->_modulesEffects[$typeId]['weight'];
             $this->_load += $weight*$quantity;
         }
         
@@ -863,11 +863,18 @@ class Ship extends Model
         
         $sql = FlyPDO::get();
         $req = $sql->prepare('SELECT `'.self::$_sqlTable.'`.*, pos.x, pos.y, res.quantity ressourceQuantity, res.type ressourceType,
-                mod.name modelName, mod.type modelType, mod.category modelCategory, mod.loadMax, mod.energyMax, mod.energyGain, mod.fuelMax, mod.powerMax, mod.speed, mod.modulesMax, mod.shieldMax, mod.shieldGain,
-                smodu.moduleId, smodu.moduleEnabled, smodu.id shipModuleId, modu.operation moduleOperation,
-                modu.weight moduleWeight, modu.power modulePower, modu.energy moduleEnergy, modu.load moduleLoad, modu.fuel moduleFuel, modu.techs moduleTechs,
-                modu.speed moduleSpeed, modu.shield moduleShield, modu.search moduleSearch, modu.attack moduleAttack, modu.weapons moduleWeapon, modu.defense moduleDefense,
-                modu.energyGain moduleEnergyGain, modu.shieldGain moduleShieldGain, modu.module moduleModule
+                mod.name modelName, mod.type modelType, mod.category modelCategory, mod.loadMax, mod.energyMax, mod.energyGain, mod.fuelMax, 
+                mod.powerMax, mod.speed, mod.modulesMax, mod.shieldMax, mod.shieldGain, smodu.typeId, smodu.typeEnabled, smodu.id shipObjectId,
+                smodu.type shipObjectType,
+                
+                modu.operation moduleOperation,modu.weight moduleWeight, modu.power modulePower, modu.energy moduleEnergy, modu.load moduleLoad,
+                modu.fuel moduleFuel, modu.techs moduleTechs, modu.speed moduleSpeed, modu.shield moduleShield, modu.search moduleSearch,
+                modu.attack moduleAttack, modu.weapons moduleWeapon, modu.defense moduleDefense, modu.energyGain moduleEnergyGain,
+                modu.shieldGain moduleShieldGain, modu.module moduleModule,
+                
+                weapon.objectName, weapon.objectDescription, weapon.objectType, weapon.objectAttackType, weapon.objectAttackPower,
+                weapon.objectRange, weapon.objectSpeed, weapon.objectWeight, weapon.objectCostFuel, weapon.objectCostTechs, weapon.objectCostEnergy,
+                weapon.objectLaunchFuel, weapon.objectLaunchEnergy
             FROM `'.self::$_sqlTable.'`
             LEFT JOIN `'.TABLE_POSITIONS.'` pos
                 ON `'.self::$_sqlTable.'`.positionId =  pos.id
@@ -878,11 +885,17 @@ class Ship extends Model
             LEFT JOIN `'.TABLE_RESSOURCES.'` res
                 ON `'.self::$_sqlTable.'`.id = res.intoId AND `into` = "ship"
 
-            LEFT JOIN `'.TABLE_SHIPS_MODULES.'` smodu
-                ON smodu.shipId = `'.self::$_sqlTable.'`.id
+            LEFT JOIN `'.TABLE_SHIPS_OBJECTS.'` smodu
+                ON smodu.shipId = `'.self::$_sqlTable.'`.id AND smodu.type = "module"
+                    
+            LEFT JOIN `'.TABLE_SHIPS_OBJECTS.'` sweapon
+                ON sweapon.shipId = `'.self::$_sqlTable.'`.id AND sweapon.type = "weapon"
+
+            LEFT JOIN `'.TABLE_OBJECTS.'` weapon
+                ON sweapon.typeId = weapon.id
 
             LEFT JOIN `'.TABLE_MODULES.'` modu
-                ON modu.id = smodu.moduleId
+                ON modu.id = smodu.typeId
         '.$where);
         if ($req->execute($args)) {
             $current = 0;
@@ -913,41 +926,46 @@ class Ship extends Model
                     $param[$row['ressourceType']] = $row['ressourceQuantity'];
                 }
 
-                if (!empty($row['moduleId'])) {
-                    if (empty($param['shipModule'][$row['shipModuleId']])) {
-                        if (empty($param['modules'][$row['moduleId']])) {
-                            $param['modules'][$row['moduleId']] = 0;
-                        }
-                        if (!empty($row['moduleEnabled'])) {
-                            if (empty($param['modulesEnabled'][$row['moduleId']])) {
-                                $param['modulesEnabled'][$row['moduleId']] = 0;
+                if (!empty($row['typeId'])) {
+                    if ($row['shipObjectType'] == 'module') {
+                    var_dump($row['typeId']);
+                        if (empty($param['shipModule'][$row['shipObjectId']])) {
+                            if (empty($param['modules'][$row['typeId']])) {
+                                $param['modules'][$row['typeId']] = 0;
                             }
-                            $param['modulesEnabled'][$row['moduleId']]++;
-                        } else {
-                            $param['modules'][$row['moduleId']]++;
-                        }
-                        $param['shipModule'][$row['shipModuleId']] = true;
+                            if (!empty($row['typeEnabled'])) {
+                                if (empty($param['modulesEnabled'][$row['typeId']])) {
+                                    $param['modulesEnabled'][$row['typeId']] = 0;
+                                }
+                                $param['modulesEnabled'][$row['typeId']]++;
+                            } else {
+                                $param['modules'][$row['typeId']]++;
+                            }
+                            $param['shipModule'][$row['shipObjectId']] = true;
 
-                        // Loading module effects
-                        if (empty($param['modulesEffects'])) {
-                            $param['modulesEffects'] = array();
+                            // Loading module effects
+                            if (empty($param['modulesEffects'])) {
+                                $param['modulesEffects'] = array();
+                            }
+                            $param['modulesEffects'][$row['typeId']]['weight'] = $row['moduleWeight'];
+                            $param['modulesEffects'][$row['typeId']]['operation'] = $row['moduleOperation'];
+                            $param['modulesEffects'][$row['typeId']]['power'] = $row['modulePower'];
+                            $param['modulesEffects'][$row['typeId']]['energy'] = $row['moduleEnergy'];
+                            $param['modulesEffects'][$row['typeId']]['load'] = $row['moduleLoad'];
+                            $param['modulesEffects'][$row['typeId']]['fuel'] = $row['moduleFuel'];
+                            $param['modulesEffects'][$row['typeId']]['techs'] = $row['moduleTechs'];
+                            $param['modulesEffects'][$row['typeId']]['speed'] = $row['moduleSpeed'];
+                            $param['modulesEffects'][$row['typeId']]['shield'] = $row['moduleShield'];
+                            $param['modulesEffects'][$row['typeId']]['search'] = $row['moduleSearch'];
+                            $param['modulesEffects'][$row['typeId']]['attack'] = $row['moduleAttack'];
+                            $param['modulesEffects'][$row['typeId']]['weapons'] = $row['moduleWeapon'];
+                            $param['modulesEffects'][$row['typeId']]['defense'] = $row['moduleDefense'];
+                            $param['modulesEffects'][$row['typeId']]['energyGain'] = $row['moduleEnergyGain'];
+                            $param['modulesEffects'][$row['typeId']]['shieldGain'] = $row['moduleShieldGain'];
+                            $param['modulesEffects'][$row['typeId']]['module'] = $row['moduleModule'];
                         }
-                        $param['modulesEffects'][$row['moduleId']]['weight'] = $row['moduleWeight'];
-                        $param['modulesEffects'][$row['moduleId']]['operation'] = $row['moduleOperation'];
-                        $param['modulesEffects'][$row['moduleId']]['power'] = $row['modulePower'];
-                        $param['modulesEffects'][$row['moduleId']]['energy'] = $row['moduleEnergy'];
-                        $param['modulesEffects'][$row['moduleId']]['load'] = $row['moduleLoad'];
-                        $param['modulesEffects'][$row['moduleId']]['fuel'] = $row['moduleFuel'];
-                        $param['modulesEffects'][$row['moduleId']]['techs'] = $row['moduleTechs'];
-                        $param['modulesEffects'][$row['moduleId']]['speed'] = $row['moduleSpeed'];
-                        $param['modulesEffects'][$row['moduleId']]['shield'] = $row['moduleShield'];
-                        $param['modulesEffects'][$row['moduleId']]['search'] = $row['moduleSearch'];
-                        $param['modulesEffects'][$row['moduleId']]['attack'] = $row['moduleAttack'];
-                        $param['modulesEffects'][$row['moduleId']]['weapons'] = $row['moduleWeapon'];
-                        $param['modulesEffects'][$row['moduleId']]['defense'] = $row['moduleDefense'];
-                        $param['modulesEffects'][$row['moduleId']]['energyGain'] = $row['moduleEnergyGain'];
-                        $param['modulesEffects'][$row['moduleId']]['shieldGain'] = $row['moduleShieldGain'];
-                        $param['modulesEffects'][$row['moduleId']]['module'] = $row['moduleModule'];
+                    } else if ($row['shipObjectType'] == 'object') {
+                        
                     }
                 }
 
@@ -1034,22 +1052,23 @@ class Ship extends Model
 
     /**
      * Add a module to the ship
-     * @param int $moduleId
+     * @param int $typeId
      * @return boolean
      */
-    public function addModule($moduleId)
+    public function addObject($type, $typeId)
     {
         $sql = FlyPDO::get();
-        $req = $sql->prepare('INSERT INTO `'.TABLE_SHIPS_MODULES.'` VALUES("", :shipId, :moduleId, :moduleOrder, "")');
+        $req = $sql->prepare('INSERT INTO `'.TABLE_SHIPS_OBJECTS.'` VALUES("", :shipId, :type, :typeId, :typeOrder, "")');
         if ($req->execute(array(
             ':shipId' => $this->_id,
-            ':moduleId' => $moduleId,
-            ':moduleOrder' => 1
+            ':type' => $type,
+            ':typeId' => $typeId,
+            ':typeOrder' => 1
         ))) {
-            if (empty($this->_modules[$moduleId])) {
-                $this->_modules[$moduleId] = 0;
+            if (empty($this->_modules[$typeId])) {
+                $this->_modules[$typeId] = 0;
             }
-            $this->_modules[$moduleId]++;
+            $this->_modules[$typeId]++;
             return true;
         } else {
             var_dump($req->errorInfo());
@@ -1057,53 +1076,59 @@ class Ship extends Model
         }
     }
 
-    public function hasModuleAvailable($moduleId)
+    public function hasObjectAvailable($type, $typeId)
     {
-        if (!empty($this->_modules[$moduleId])) {
-            return true;
-        }
-    }
-
-    public function hasModuleEnabled($moduleId)
-    {
-        if (!empty($this->_modulesEnabled[$moduleId])) {
-            return true;
-        }
-    }
-
-    public function enableModule($moduleId)
-    {
-        if ($this->hasModuleAvailable($moduleId)) {
-            $ShipModule = array_shift(ShipModule::getAll('', '', $this->_id, $moduleId, '0'));
-            $ShipModule->setModuleEnabled(1);
-            $ShipModule->save();
-            $this->_modules[$moduleId]--;
-            if (empty($this->_modulesEnabled[$moduleId])) {
-                $this->_modulesEnabled[$moduleId] = 0;
+        if ($type == 'module') {
+            if (!empty($this->_modules[$typeId])) {
+                return true;
             }
-            $this->_modulesEnabled[$moduleId]++;
+        }
+    }
+
+    public function hasModuleEnabled($type, $typeId)
+    {
+        if ($type == 'module') {
+            if (!empty($this->_modulesEnabled[$typeId])) {
+                return true;
+            }
+        }
+    }
+
+    public function enableObject($type, $typeId)
+    {
+        if ($type == 'module') {
+            if ($this->hasObjectAvailable($type, $typeId)) {
+                $ShipObject = array_shift(ShipObject::getAll('', '', $this->_id, 'module', $typeId, '0'));
+                $ShipObject->setTypeEnabled(1);
+                $ShipObject->save();
+                $this->_modules[$typeId]--;
+                if (empty($this->_modulesEnabled[$typeId])) {
+                    $this->_modulesEnabled[$typeId] = 0;
+                }
+                $this->_modulesEnabled[$typeId]++;
+            }
         }
     }
     
-    public function disableModule($moduleId)
+    public function disableModule($typeId)
     {
-        if ($this->hasModuleEnabled($moduleId)) {
-            $ShipModule = array_shift(ShipModule::getAll('', '', $this->_id, $moduleId, 1));
+        if ($this->hasModuleEnabled($typeId)) {
+            $ShipModule = array_shift(ShipModule::getAll('', '', $this->_id, $typeId, 1));
             $ShipModule->setModuleEnabled('0');
             $ShipModule->save();
-            $this->_modulesEnabled[$moduleId]--;
-            if (empty($this->_modules[$moduleId])) {
-                $this->_modules[$moduleId] = 0;
+            $this->_modulesEnabled[$typeId]--;
+            if (empty($this->_modules[$typeId])) {
+                $this->_modules[$typeId] = 0;
             }
-            $this->_modules[$moduleId]++;
+            $this->_modules[$typeId]++;
         }
     }
 
     protected function _calculateBonuses()
     {
-        foreach ($this->_modulesEnabled as $moduleId => $quantity)
+        foreach ($this->_modulesEnabled as $typeId => $quantity)
         {
-            $moduleEffects = $this->_modulesEffects[$moduleId];
+            $moduleEffects = $this->_modulesEffects[$typeId];
             $operation = $moduleEffects['operation'];
             for ($i = 0; $i < $quantity; $i++)
             {

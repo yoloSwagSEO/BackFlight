@@ -20,7 +20,7 @@ define('TABLE_USERS_POSITIONS', 'users_positions');
 
 define('TABLE_RESSOURCES', 'ressources');
 
-define('TABLE_SHIPS_MODULES', 'ships_modules');
+define('TABLE_SHIPS_OBJECTS', 'ships_objects');
 
 define('TABLE_MODULES', 'modules');
 

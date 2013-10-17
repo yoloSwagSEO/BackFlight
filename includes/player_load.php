@@ -122,10 +122,14 @@ if (!empty($array_ships)) {
 $array_builds = Build::getAll('', '', $User->getId());
 foreach ($array_builds as $Build)
 {
-    if ($Build->getType() == 'module') {
-        if ($Build->getEnd() <= time()) {
+    // If build has ended
+    if ($Build->getEnd() <= time()) {
+        $type = $Build->getType();
+
+        // For modules and weapons
+        if ($type == 'module' || $type == 'weapon') {
             $Build->setState('end');
-            $MasterShipPlayer->addModule($Build->getTypeId());
+            $MasterShipPlayer->addObject($Build->getType(), $Build->getTypeId());
             $Build->save();
         }
     }
