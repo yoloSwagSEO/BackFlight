@@ -1085,7 +1085,7 @@ class Ship extends Model
         }
     }
 
-    public function hasModuleEnabled($type, $typeId)
+    public function hasObjectEnabled($type, $typeId)
     {
         if ($type == 'module') {
             if (!empty($this->_modulesEnabled[$typeId])) {
@@ -1110,11 +1110,11 @@ class Ship extends Model
         }
     }
     
-    public function disableModule($typeId)
+    public function disableObject($type, $typeId)
     {
-        if ($this->hasModuleEnabled($typeId)) {
-            $ShipModule = array_shift(ShipModule::getAll('', '', $this->_id, $typeId, 1));
-            $ShipModule->setModuleEnabled('0');
+        if ($this->hasobjectEnabled('module', $typeId)) {
+            $ShipModule = array_shift(ShipObject::getAll('', '', $this->_id, 'module', $typeId, 1));
+            $ShipModule->setTypeEnabled('0');
             $ShipModule->save();
             $this->_modulesEnabled[$typeId]--;
             if (empty($this->_modules[$typeId])) {

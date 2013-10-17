@@ -9,8 +9,8 @@ if (!empty($_POST['moduleId'])) {
 }
 
 
-if ($MasterShipPlayer->hasModuleEnabled($Module->getId())) {
-    $MasterShipPlayer->disableModule($Module->getId());
+if ($MasterShipPlayer->hasObjectEnabled('module', $Module->getId())) {
+    $MasterShipPlayer->disableObject('module', $Module->getId());
 } else {
     exit('Module not available');
 }
