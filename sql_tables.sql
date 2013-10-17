@@ -286,3 +286,35 @@ ALTER TABLE  `positions_searches` ADD  `quantity` INT NOT NULL ;
 ALTER TABLE  `positions_searches` ADD  `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST ;
 ALTER TABLE  `actions` ADD  `distance` INT NULL AFTER  `duration` ;
 ALTER TABLE  `actions` CHANGE  `distance`  `distance` FLOAT( 20 ) NULL DEFAULT NULL ;
+
+CREATE TABLE IF NOT EXISTS `objects_users` (
+    `id` INT(11) NOT NULL AUTO_INCREMENT,
+    `objectType` varchar(25) NOT NULL,
+    `objectModel` INT(11) NOT NULL,
+    `objectUserId` INT(11) NOT NULL,
+    `objectFrom` varchar(25) NOT NULL,
+    `objectFromId` INT(11) NOT NULL,
+    `objectTo` varchar(25) NOT NULL,
+    `objectToId` INT(11) NULL,
+    `objectStart` INT(11) NOT NULL,
+    `objectState` varchar(25) NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `objects` (
+    `id` INT(11) NOT NULL AUTO_INCREMENT,
+    `objectName` varchar(25) NOT NULL,
+    `objectDescription` text NOT NULL,
+    `objectType` varchar(25) NOT NULL,
+    `objectAttackType` INT(11) NULL,
+    `objectAttackPower` INT(11) NULL,
+    `objectRange` INT(11) NULL,
+    `objectSpeed` INT(11) NULL,
+    `objectWeight` INT(11) NOT NULL,
+    `objectCostTechs` INT(11) NOT NULL,
+    `objectCostFuel` INT(11) NOT NULL,
+    `objectCostEnergy` INT(11) NOT NULL,
+    `objectLaunchFuel` INT(11) NULL,
+    `objectLaunchEnergy` INT(11) NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

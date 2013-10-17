@@ -38,5 +38,11 @@ if (GAME_AUTOCREATE_DATAS) {
     if (empty($array_quests)) {
         include_once 'includes/datas/datas_quests.php';
     }
+
+    // Objects
+    $array_objects = Object::getAll();
+    if (empty($array_objects)) {
+        include_once 'includes/datas/datas_objects.php';
+    }
 }
 ?>

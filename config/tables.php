@@ -53,4 +53,8 @@ define('TABLE_CONVERSATIONS_USERS', 'conversations_users');
 define('TABLE_CONVERSATIONS_READ', 'conversations_read');
 
 define('TABLE_RANKS', 'ranks');
+
+define('TABLE_OBJECTS', 'objects');
+
+define('TABLE_OBJECTUSERS', 'object_users');
 ?>
