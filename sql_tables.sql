@@ -314,3 +314,8 @@ CREATE TABLE IF NOT EXISTS `users_quests_steps` (
   `date` int(11) NOT NULL,
   UNIQUE KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Table modifications
+ALTER TABLE  `objects` ADD  `objectTime` INT NOT NULL AFTER  `objectType` ;
+ALTER TABLE  `objects` CHANGE  `objectAttackType`  `objectAttackType` VARCHAR( 15 ) NULL DEFAULT NULL ;
+ALTER TABLE  `objects` CHANGE  `objectName`  `objectName` VARCHAR( 50 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ;

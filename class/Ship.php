@@ -87,6 +87,8 @@ class Ship extends Model
 
     protected $_modulesEffects = array();
 
+    protected $_objects = array();
+
     /**
      *
      * @var int
@@ -285,6 +287,11 @@ class Ship extends Model
             return 0;
         }
         return 1;
+    }
+
+    public function getObjects()
+    {
+        return $this->_objects;
     }
 
 
@@ -928,7 +935,6 @@ class Ship extends Model
 
                 if (!empty($row['typeId'])) {
                     if ($row['shipObjectType'] == 'module') {
-                    var_dump($row['typeId']);
                         if (empty($param['shipModule'][$row['shipObjectId']])) {
                             if (empty($param['modules'][$row['typeId']])) {
                                 $param['modules'][$row['typeId']] = 0;
@@ -965,7 +971,7 @@ class Ship extends Model
                             $param['modulesEffects'][$row['typeId']]['module'] = $row['moduleModule'];
                         }
                     } else if ($row['shipObjectType'] == 'object') {
-                        
+                        exit('QUELQUE CHOSE');
                     }
                 }
 
@@ -1112,15 +1118,17 @@ class Ship extends Model
     
     public function disableObject($type, $typeId)
     {
-        if ($this->hasobjectEnabled('module', $typeId)) {
-            $ShipModule = array_shift(ShipObject::getAll('', '', $this->_id, 'module', $typeId, 1));
-            $ShipModule->setTypeEnabled('0');
-            $ShipModule->save();
-            $this->_modulesEnabled[$typeId]--;
-            if (empty($this->_modules[$typeId])) {
-                $this->_modules[$typeId] = 0;
+        if ($type == 'module') {
+            if ($this->hasobjectEnabled($type, $typeId)) {
+                $ShipModule = array_shift(ShipObject::getAll('', '', $this->_id, 'module', $typeId, 1));
+                $ShipModule->setTypeEnabled('0');
+                $ShipModule->save();
+                $this->_modulesEnabled[$typeId]--;
+                if (empty($this->_modules[$typeId])) {
+                    $this->_modules[$typeId] = 0;
+                }
+                $this->_modules[$typeId]++;
             }
-            $this->_modules[$typeId]++;
         }
     }
 

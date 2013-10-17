@@ -16,6 +16,10 @@ class Object extends Fly
     protected $_objectLaunchFuel;
     protected $_objectLaunchEnergy;
 
+    protected $_objectTime;
+    protected $_buildEnd;
+    protected $_buildQuantity;
+
 
     /**
      * Default SQL table for this class
@@ -88,6 +92,29 @@ class Object extends Fly
     {
         return $this->_objectLaunchEnergy;
     }
+    
+    public function getBuildEnd()
+    {
+        return $this->_buildEnd;
+    }
+
+    public function getBuildQuantity()
+    {
+        return $this->_buildQuantity;
+    }
+
+    public function isBuilding()
+    {
+        if ($this->_buildEnd > time()) {
+            return true;
+        }
+    }
+
+    public function getObjectTime()
+    {
+        return $this->_objectTime;
+    }
+
 
 
 
@@ -156,6 +183,10 @@ class Object extends Fly
         $this->_objectLaunchEnergy = $objectLaunchEnergy;
     }
 
+    public function setObjectTime($objectTime)
+    {
+        $this->_objectTime = $objectTime;
+    }
 
 
     /*
@@ -179,6 +210,7 @@ class Object extends Fly
             $this->_objectCostEnergy = $param['objectCostEnergy'];
             $this->_objectLaunchFuel = $param['objectLaunchFuel'];
             $this->_objectLaunchEnergy = $param['objectLaunchEnergy'];
+            $this->_objectTime = $param['objectTime'];
             $this->_sql = true;
         }
     }
@@ -186,12 +218,13 @@ class Object extends Fly
     protected function _create()
     {
         $sql = FlyPDO::get();
-        $req = $sql->prepare('INSERT INTO `'.static::$_sqlTable.'` VALUES (:id, :objectName, :objectDescription, :objectType, :objectAttackType, :objectAttackPower, :objectRange, :objectSpeed, :objectWeight, :objectCostTechs, :objectCostFuel, :objectCostEnergy, :objectLaunchFuel, :objectLaunchEnergy)');
+        $req = $sql->prepare('INSERT INTO `'.static::$_sqlTable.'` VALUES (:id, :objectName, :objectDescription, :objectType, :objectTime, :objectAttackType, :objectAttackPower, :objectRange, :objectSpeed, :objectWeight, :objectCostTechs, :objectCostFuel, :objectCostEnergy, :objectLaunchFuel, :objectLaunchEnergy)');
         $args = array(
             ':id' => $this->_id,
             ':objectName' => $this->_objectName,
             ':objectDescription' => $this->_objectDescription,
             ':objectType' => $this->_objectType,
+            ':objectTime' => $this->_objectTime,
             ':objectAttackType' => $this->_objectAttackType,
             ':objectAttackPower' => $this->_objectAttackPower,
             ':objectRange' => $this->_objectRange,
@@ -215,12 +248,13 @@ class Object extends Fly
     protected function _update()
     {
         $sql = FlyPDO::get();
-        $req = $sql->prepare('UPDATE `'.static::$_sqlTable.'` SET `objectName` = :objectName, `objectDescription` = :objectDescription, `objectType` = :objectType, `objectAttackType` = :objectAttackType, `objectAttackPower` = :objectAttackPower, `objectRange` = :objectRange, `objectSpeed` = :objectSpeed, `objectWeight` = :objectWeight, `objectCostTechs` = :objectCostTechs, `objectCostFuel` = :objectCostFuel, `objectCostEnergy` = :objectCostEnergy, `objectLaunchFuel` = :objectLaunchFuel, `objectLaunchEnergy` = :objectLaunchEnergy WHERE id = :id');
+        $req = $sql->prepare('UPDATE `'.static::$_sqlTable.'` SET `objectName` = :objectName, `objectDescription` = :objectDescription, `objectTime` = :objectTime, `objectType` = :objectType, `objectAttackType` = :objectAttackType, `objectAttackPower` = :objectAttackPower, `objectRange` = :objectRange, `objectSpeed` = :objectSpeed, `objectWeight` = :objectWeight, `objectCostTechs` = :objectCostTechs, `objectCostFuel` = :objectCostFuel, `objectCostEnergy` = :objectCostEnergy, `objectLaunchFuel` = :objectLaunchFuel, `objectLaunchEnergy` = :objectLaunchEnergy WHERE id = :id');
         $args = array(
             ':id' => $this->_id,
             ':objectName' => $this->_objectName,
             ':objectDescription' => $this->_objectDescription,
             ':objectType' => $this->_objectType,
+            ':objectTime' => $this->_objectTime,
             ':objectAttackType' => $this->_objectAttackType,
             ':objectAttackPower' => $this->_objectAttackPower,
             ':objectRange' => $this->_objectRange,
@@ -246,7 +280,7 @@ class Object extends Fly
         return array_shift($array);
     }
 
-    public static function getAll($id = null, $to_array = false)
+    public static function getAll($id = null, $to_array = false, $userId = null)
     {
         $where = '';
         $args = array();
@@ -259,10 +293,20 @@ class Object extends Fly
             $args[':id'] = $id;
         }
 
+        $add = '';
+        if ($userId) {
+            $args[':userIdM'] = $userId;
+            $add = 'AND builds.userId = :userIdM';
+        }
+
+
         $array = array();
         $sql = FlyPDO::get();
         $req = $sql->prepare('
-                    SELECT `'.static::$_sqlTable.'`.* FROM `'.static::$_sqlTable.'`'.$where);
+                    SELECT `'.static::$_sqlTable.'`.* FROM `'.static::$_sqlTable.'`
+                    LEFT JOIN `'.TABLE_BUILDS.'` builds
+                    ON builds.type = "object" AND builds.typeId = `'.static::$_sqlTable.'`.id AND (builds.state IS NULL OR builds.state NOT LIKE "%end%") '.$add.'
+                '.$where);
 
         if ($req->execute($args)) {
             $current = 0;
