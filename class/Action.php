@@ -45,6 +45,26 @@ class Action extends Fly
         return $this->_to;
     }
 
+    public function getFromX()
+    {
+        return $this->_fromX;
+    }
+
+    public function getFromY()
+    {
+        return $this->_fromY;
+    }
+
+    public function getToX()
+    {
+        return $this->_toX;
+    }
+
+    public function getToY()
+    {
+        return $this->_toY;
+    }
+
     public function getStart()
     {
         return $this->_start;
