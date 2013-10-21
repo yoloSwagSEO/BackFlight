@@ -297,6 +297,14 @@ class Ship extends Model
         return array();
     }
 
+    public function getObject($type, $id)
+    {
+        if (!empty($this->_objects[$type][$id])) {
+            return $this->_objects[$type][$id];
+        }
+        return array();
+    }
+
 
     /**
      * User ID
@@ -1099,6 +1107,10 @@ class Ship extends Model
     {
         if ($type == 'module') {
             if (!empty($this->_modules[$typeId])) {
+                return true;
+            }
+        } else if ($type == 'weapon') {
+            if (!empty($this->_objects['weapons'][$typeId])) {
                 return true;
             }
         }

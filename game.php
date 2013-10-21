@@ -94,6 +94,10 @@ if (!empty($_GET['module'])) {
             $action = $_GET['action'];
             if ($action == 'build') {
                 include_once 'modules/game/weapons/weapon_build.php';
+            } else if ($action == 'use' && empty($_POST['attack_launch'])) {
+                include_once 'modules/game/weapons/weapon_use.php';
+            } else if ($action == 'use' && !empty($_POST['attack_launch'])) {
+                include_once 'modules/game/weapons/weapon_launch.php';
             }
         }
 

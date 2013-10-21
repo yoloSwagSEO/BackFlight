@@ -38,12 +38,13 @@ $array_objects = Object::getAll('', '', $User->getId());
                     <form action="weapons/use" method="post">
                         <div class="row collapse">
                             <div class="small-5 columns">
-                                <input type="number" placeholder="Nb" name="quantity" min="0" max="<?php echo $quantity?>">
+                                <input type="number" placeholder="nb" name="quantity" min="0" max="<?php echo $quantity?>">
                             </div>
                             <div class="small-7 columns">
                                 <input type="submit" class="postfix radius small button" value="Utiliser" />
                             </div>
                         </div>
+                        <input type="hidden" name="object_id" value="<?php echo $ObjectWeapon->getId()?>" />
                     </form>
                 </div>
             </div>
