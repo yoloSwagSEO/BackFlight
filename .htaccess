@@ -27,6 +27,7 @@ RewriteRule ^ship$ game.php?module=ship [L]
 RewriteRule ^ship/([a-z]+)$ game.php?module=ship&action=$1 [L]
 
 RewriteRule ^modules/(build|enable|disable)$ game.php?module=modules&action=$1 [L]
+RewriteRule ^weapons/(build|use)$ game.php?module=weapons&action=$1 [L]
 
 RewriteRule ^quests$ game.php?module=quests [L]
 RewriteRule ^quests/([0-9]+)$ game.php?module=quests&questId=$1 [L]

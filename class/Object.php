@@ -211,6 +211,12 @@ class Object extends Fly
             $this->_objectLaunchFuel = $param['objectLaunchFuel'];
             $this->_objectLaunchEnergy = $param['objectLaunchEnergy'];
             $this->_objectTime = $param['objectTime'];
+
+            if (!empty($param['buildEnd'])) {
+                $this->_buildEnd = $param['buildEnd'];
+                $this->_buildQuantity = $param['buildQuantity'];
+            }
+            
             $this->_sql = true;
         }
     }
@@ -303,7 +309,8 @@ class Object extends Fly
         $array = array();
         $sql = FlyPDO::get();
         $req = $sql->prepare('
-                    SELECT `'.static::$_sqlTable.'`.* FROM `'.static::$_sqlTable.'`
+                    SELECT `'.static::$_sqlTable.'`.*, builds.end buildEnd
+                        FROM `'.static::$_sqlTable.'`
                     LEFT JOIN `'.TABLE_BUILDS.'` builds
                     ON builds.type = "object" AND builds.typeId = `'.static::$_sqlTable.'`.id AND (builds.state IS NULL OR builds.state NOT LIKE "%end%") '.$add.'
                 '.$where);
@@ -331,6 +338,18 @@ class Object extends Fly
                     $param = $row;
                 }
 
+                if (empty($param['buildEndSeen'][$row['buildEnd']])) {
+                    if (!empty($row['buildEnd'])) {
+                        if ($row['buildEnd'] > $param['buildEnd']) {
+                            $param['buildEnd'] = $row['buildEnd'];
+                        }
+                    }
+                    if (empty($param['buildQuantity'])) {
+                        $param['buildQuantity'] = 0;
+                    }
+                    $param['buildQuantity']++;
+                    $param['buildEndSeen'][$row['buildEnd']] = true;
+                }
             }
             if (!empty($param)) {
                 if ($to_array) {

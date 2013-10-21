@@ -1,9 +1,8 @@
-var countdowns;
 var T;
 
 function updateCompteurs()
 {
-    countdowns = $('.countdown');   
+    var countdowns = $('.countdown');
     var counting = 0;
     countdowns.each(function() {
         var time = $(this).data('time');
@@ -17,9 +16,7 @@ function updateCompteurs()
         }
     });
 
-    if (counting !== '0') {
-        T = setTimeout('updateCompteurs()', 1000);
-    }
+    T = setTimeout('updateCompteurs()', 1000);
 }
 
 function transformerTime(time)
@@ -51,8 +48,6 @@ function transformerTime(time)
 }
 
 $(function () {
-    countdowns = $('.countdown');   
-
     T = setTimeout(function () {
         updateCompteurs();
     }, 1000);
@@ -62,7 +57,6 @@ $(function () {
         var link = $(this);
         $.post('modules/build', {moduleId: $(this).data('module-id')}, function(data) {
             if (data !== 'err') {
-                console.log(link.find('.icon_big'));
                 link.find('.icon_big').attr('data-icon', '');
                 link.find('.module_time').html(data);
             }
@@ -85,6 +79,18 @@ $(function () {
         $.post('modules/disable', {moduleId: $(this).data('module-id')}, function (data) {
             if (data !== 'err') {
                 window.location.reload();
+            }
+        });
+        return false;
+    });
+
+    // Weapon building
+    $('.weapon_link').click(function () {
+        var link = $(this);
+        $.post('weapons/build', {weaponId: $(this).data('weapon-id')}, function (data) {
+            if (data !== 'err') {
+                link.find('.icon_big').attr('data-icon', '');
+                link.find('.weapon_time').html(data);
             }
         });
         return false;

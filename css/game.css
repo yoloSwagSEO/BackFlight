@@ -1,4 +1,4 @@
-.module_type, .module_time, .arme_type, .arme_time
+.module_type, .module_time, .weapon_type, .weapon_time
 {
     position: absolute;
     top: 0;
@@ -12,7 +12,7 @@
     height: 40px;
 }
 
-.module_time, .arme_time
+.module_time, .weapon_time
 {
     position: absolute;
     top: 0;
@@ -62,7 +62,7 @@
     min-height: 32px;
 }
 
-.modules .modules_ressources, .armes .arme_ressources
+.modules .modules_ressources, .armes .weapon_ressources
 {
     width: 100%;
     background: black;
@@ -73,7 +73,7 @@
     height: 30px;
 }
 
-.modules .modules_ressources span, .armes .arme_ressources span
+.modules .modules_ressources span, .armes .weapon_ressources span
 {
     font-size: 14px !important;
     color: white;
@@ -86,7 +86,7 @@
     border-top: 1px solid rgba(0,0,0,.5);
 }
 
-.modules .modules_ressources span:before, .armes .arme_ressources span:before
+.modules .modules_ressources span:before, .armes .weapon_ressources span:before
 {
     margin-right: 5px;
 }

@@ -89,6 +89,14 @@ if (!empty($_GET['module'])) {
     } else if ($module == 'ranks') {
         include_once 'modules/game/ranks/ranks_global.php';
         
+    } else if ($module == 'weapons') {
+        if (!empty($_GET['action'])) {
+            $action = $_GET['action'];
+            if ($action == 'build') {
+                include_once 'modules/game/weapons/weapon_build.php';
+            }
+        }
+
     } else {
         trigger_error('Unknown module', E_USER_ERROR);
     }

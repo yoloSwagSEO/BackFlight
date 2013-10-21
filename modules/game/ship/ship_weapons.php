@@ -22,7 +22,6 @@ $array_objects = Object::getAll('', '', $User->getId());
                 $bigIcon = '&#xe09f;';
                 ?>
             <div class='large-4 columns'>
-                <a href='#' data-tooltip data-width=250 class="has-tip tip-top module_enable" data-module-id="<?php echo $Module->getId()?>" title="<?php echo $Module->getDescription()?>" style="display: block">
                     <div class='panel'>
                         <div class='module_type'>
                             <span data-icon="<?php echo $icon?>"></span>
@@ -38,7 +37,6 @@ $array_objects = Object::getAll('', '', $User->getId());
                             <?php echo $Module->getIntro()?>
                         </P>
                     </div>
-                </a>
             </div>
             <?php
             }
@@ -71,13 +69,14 @@ $array_objects = Object::getAll('', '', $User->getId());
             $quantity = $Object->getBuildQuantity();
             ?>
         <div class='large-4 columns'>
-            <a href='#' data-width=250 class="tip-top arme_link" data-module-id="<?php echo $Object->getId()?>" style="display: block">
+            <a href='#' data-width=250 class="tip-top weapon_link" data-weapon-id="<?php echo $Object->getId()?>" style="display: block">
                 <div class='panel'>
-                    <div class='arme_type'>
+                    <div class='weapon_type'>
                         <span data-icon="<?php echo $icon?>"></span>
                     </div>
-                    <div class='arme_time'>
+                    <div class='weapon_time'>
                         <?php
+                        var_dump($Object->isBuilding());
                         if ($Object->isBuilding()) {
                             if ($quantity > 1) {
                                 echo '('.$quantity.') ';
@@ -93,7 +92,7 @@ $array_objects = Object::getAll('', '', $User->getId());
                     <P style="font-size: .8em;">
                         <?php echo $Object->getObjectDescription()?>
                     </P>
-                    <div class="arme_ressources">
+                    <div class="weapon_ressources">
                         <span data-icon="&#xe0a4;" class="fuel"><?php echo $Object->getObjectCostFuel()?></span>
                         <span data-icon="&#xe08e;" class="techs"><?php echo $Object->getObjectCostTechs()?></span>
                         <span data-icon="&#xe0b0;" class="energy"><?php echo $Object->getObjectCostEnergy()?></span>
