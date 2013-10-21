@@ -6,37 +6,46 @@ $array_objects = Object::getAll('', '', $User->getId());
 <div class="panel armes">
     <h4>Armes disponibles</h4>
     <div class="row">
-        <?php foreach ($MasterShipPlayer->getObjects('weapons') as $moduleId => $quantity)
+        <?php
+        foreach ($MasterShipPlayer->getObjects('weapons') as $objectId => $quantity)
         {
             if ($quantity != 0) {
-                $Module = $array_modules[$moduleId];
-                if ($Module->getType() == 'load') {
+                $ObjectWeapon = $array_objects[$objectId];
+                if ($ObjectWeapon->getObjectType() == 'mine') {
                     $icon = '&#xe0a1;';
-                } else if ($Module->getType() == 'power') {
+                } else if ($ObjectWeapon->getObjectType() == 'torpedo') {
                     $icon = '&#xe0d1;';
-                } else if ($Module->getType() == 'energy') {
-                    $icon = '&#xe0b0;';
                 } else {
                     $icon = '&#xe0f6;';
                 }
                 $bigIcon = '&#xe09f;';
                 ?>
             <div class='large-4 columns'>
-                    <div class='panel'>
-                        <div class='module_type'>
-                            <span data-icon="<?php echo $icon?>"></span>
-                        </div>
-                        <div class='module_time'>
-                            <?php
-                            echo $quantity;
-                            ?>
-                        </div>
-                        <span class="icon_big" data-icon="<?php echo $bigIcon?>"></span>
-                        <strong><?php echo $Module->getName()?></strong>
-                        <P>
-                            <?php echo $Module->getIntro()?>
-                        </P>
+                <div class='panel'>
+                    <div class='module_type'>
+                        <span data-icon="<?php echo $icon?>"></span>
                     </div>
+                    <div class='module_time'>
+                        <?php
+                        echo $quantity;
+                        ?>
+                    </div>
+                    <span class="icon_big" data-icon="<?php echo $bigIcon?>"></span>
+                    <strong><?php echo $ObjectWeapon->getObjectName()?></strong>
+                    <P>
+                        <?php echo $ObjectWeapon->getObjectDescription()?>
+                    </P>
+                    <form action="weapons/use" method="post">
+                        <div class="row collapse">
+                            <div class="small-5 columns">
+                                <input type="number" placeholder="Nb" name="quantity" min="0" max="<?php echo $quantity?>">
+                            </div>
+                            <div class="small-7 columns">
+                                <input type="submit" class="postfix radius small button" value="Utiliser" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
             <?php
             }

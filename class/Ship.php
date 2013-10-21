@@ -289,9 +289,12 @@ class Ship extends Model
         return 1;
     }
 
-    public function getObjects()
+    public function getObjects($type = null)
     {
-        return $this->_objects;
+        if (!empty($this->_objects[$type])) {
+            return $this->_objects[$type];
+        }
+        return array();
     }
 
 
@@ -735,6 +738,10 @@ class Ship extends Model
                 $this->_calculateBonuses();
             }
 
+            if (!empty($param['weapons'])) {
+                $this->_objects['weapons'] = $param['weapons'];
+            }
+
 
 
             $this->_lastUpdate = $param['lastUpdate'];
@@ -893,7 +900,7 @@ class Ship extends Model
                 ON `'.self::$_sqlTable.'`.id = res.intoId AND `into` = "ship"
 
             LEFT JOIN `'.TABLE_SHIPS_OBJECTS.'` smodu
-                ON smodu.shipId = `'.self::$_sqlTable.'`.id AND smodu.type = "module"
+                ON smodu.shipId = `'.self::$_sqlTable.'`.id
                     
             LEFT JOIN `'.TABLE_SHIPS_OBJECTS.'` sweapon
                 ON sweapon.shipId = `'.self::$_sqlTable.'`.id AND sweapon.type = "weapon"
@@ -971,7 +978,13 @@ class Ship extends Model
                             $param['modulesEffects'][$row['typeId']]['module'] = $row['moduleModule'];
                         }
                     } else if ($row['shipObjectType'] == 'object') {
-                        exit('QUELQUE CHOSE');
+                        if (empty($param['shipWeapon'][$row['shipObjectId']])) {
+                            if (empty($param['weapons'][$row['typeId']])) {
+                                $param['weapons'][$row['typeId']] = 0;
+                            }
+                            $param['weapons'][$row['typeId']]++;
+                            $param['shipWeapon'][$row['shipObjectId']] = true;
+                        }
                     }
                 }
 
