@@ -76,7 +76,6 @@ $array_objects = Object::getAll('', '', $User->getId());
                     </div>
                     <div class='weapon_time'>
                         <?php
-                        var_dump($Object->isBuilding());
                         if ($Object->isBuilding()) {
                             if ($quantity > 1) {
                                 echo '('.$quantity.') ';
