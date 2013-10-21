@@ -4,6 +4,8 @@ if (!empty($_POST['moduleId'])) {
     if (!$Module->isSql()) {
         exit('Unknown module');
     }
+} else {
+    exit('Empty module');
 }
 
 // Check for ressources
