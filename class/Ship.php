@@ -1103,6 +1103,28 @@ class Ship extends Model
         }
     }
 
+    /**
+     *
+     * @param type $type
+     * @param type $typeId
+     * @return boolean
+     */
+    public function removeObject($type, $typeId)
+    {
+        $sql = FlyPDO::get();
+        $req = $sql->prepare('DELETE FROM `'.TABLE_SHIPS_OBJECTS.'` WHERE shipId = :shipId AND type = :type AND typeId = :typeId LIMIT 1');
+        if ($req->execute(array(
+            ':shipId' => $this->_id,
+            ':type' => 'object',
+            ':typeId' => $typeId,
+        ))) {            
+            return true;
+        } else {
+            var_dump($req->errorInfo());
+            trigger_error('Unable to remove module from ship', E_USER_ERROR);
+        }
+    }
+
     public function hasObjectAvailable($type, $typeId)
     {
         if ($type == 'module') {
@@ -1190,5 +1212,20 @@ class Ship extends Model
                 }
             }
         }
+    }
+
+    /**
+     *
+     * @param type $objectType
+     * @param type $objectId
+     */
+    public function useObject($objectType, $objectId)
+    {
+        if ($objectType == 'module') {
+            $this->_modules[$objectId]--;
+        } else if ($objectType == 'weapon') {
+            $this->_objects['weapons'][$objectId]--;
+        }
+        $this->removeObject($objectType, $objectId);
     }
 }

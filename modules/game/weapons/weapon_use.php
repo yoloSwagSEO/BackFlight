@@ -1,42 +1,5 @@
 <?php
-if (empty($_POST['object_quantity'])) {
-    exit('No quantities passed');
-}
-
-$array_weapons = Object::getAll('', '', $User->getId());
-
-$array_weapons_post = $_POST['object_quantity'];
-$array_weapons_use = array();
-$type = '';
-foreach ($array_weapons_post as $objectId => $quantity)
-{
-    if (empty($array_weapons[$objectId])) {
-        exit('Unknown object');
-    }
-
-    $ObjectWeapon = $array_weapons[$objectId];
-
-    if (empty($type)) {
-        $type = $ObjectWeapon->getObjectType();
-    } else {
-        if ($type != $ObjectWeapon->getObjectType()) {
-            exit('Can\'t use torpedoes and mines together');
-        }
-    }
-
-
-    // Check for availability
-    if (!$MasterShipPlayer->hasObjectAvailable('weapon', $ObjectWeapon->getId())) {
-        exit('No object on board');
-    }
-
-    $quantity = $MasterShipPlayer->getObject('weapons', $ObjectWeapon->getId());
-    if (!$quantity >= $array_weapons_post[$ObjectWeapon->getId()]) {
-        exit('Not so much objects onboard');
-    }
-
-    $array_weapons_use[$ObjectWeapon->getId()] = $ObjectWeapon;
-}
+include_once 'modules/game/weapons/weapons_check_post.php';
 
 title('Lancement d\'une attaque');
 head();
@@ -70,18 +33,25 @@ head();
             if ($type == 'torpedo') {
             ?>
             <div class="row">
-                <div class="large-6 columns">
-                    <strong>Mode de ciblage :</strong>
+                <div class="large-4 columns">
+                    <strong>Direction :</strong>
                     <p>
-                        <label for="attack_auto"><input name="attack_auto" id="attack_auto" type="radio" style="display:none;" checked><span class="custom radio checked"></span>Automatique</label>
-                        <label for="attack_user"><input name="attack_user" id="attack_user" type="radio" disabled style="display:none;"><span class="custom radio"></span>Fixe</label>
+                        <label for="launch_front"><input name="launch_direction" id="launch_front" type="radio" style="display:none;" checked value="front"><span class="custom radio checked"></span>Vers l'avant</label>
+                        <label for="launch_behind"><input name="launch_direction" id="launch_behind" type="radio" style="display:none;" value="behind"><span class="custom radio"></span>Vers l'arrière</label>
                     </p>
                 </div>
-                <div class="large-6 columns">
+                <div class="large-4 columns">
                     <strong>Type d'envoi :</strong>
                     <p>
-                        <label for="launch_all"><input name="launch_all" id="launch_all" type="radio" style="display:none;" checked><span class="custom radio checked"></span>Groupé</label>
-                        <label for="launch_wave"><input name="launch_wave" id="launch_wave" type="radio" disabled style="display:none;"><span class="custom radio"></span>Par vagues</label>
+                        <label for="launch_all"><input name="launch_mode" id="launch_all" type="radio" style="display:none;" checked value="all"><span class="custom radio checked"></span>Groupé</label>
+                        <label for="launch_wave"><input name="launch_mode" id="launch_wave" type="radio" style="display:none;" value="wave"><span class="custom radio"></span>Par vagues</label>
+                    </p>
+                </div>
+                <div class="large-4 columns">
+                    <strong>Mode de ciblage :</strong>
+                    <p>
+                        <label for="attack_auto"><input name="attack_mode" id="attack_auto" type="radio" style="display:none;" checked value="auto"><span class="custom radio checked"></span>Automatique</label>
+                        <label for="attack_user"><input name="attack_mode" id="attack_user" type="radio" disabled style="display:none;" value="user"><span class="custom radio"></span>Fixe</label>
                     </p>
                 </div>
             </div>

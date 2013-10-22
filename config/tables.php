@@ -56,5 +56,5 @@ define('TABLE_RANKS', 'ranks');
 
 define('TABLE_OBJECTS', 'objects');
 
-define('TABLE_OBJECTUSERS', 'object_users');
+define('TABLE_OBJECTUSERS', 'objects_users');
 ?>
