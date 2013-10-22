@@ -1,16 +1,21 @@
 <?php
-class ObjectUser extends Fly
+class ObjectUser extends Object
 {
     protected $_id;
     protected $_objectType;
     protected $_objectModel;
     protected $_objectUserId;
     protected $_objectFrom;
+    protected $_objectFromX;
+    protected $_objectFromY;
     protected $_objectFromId;
     protected $_objectTo;
     protected $_objectToId;
     protected $_objectStart;
     protected $_objectState;
+
+    protected $_positionShipX;
+    protected $_positionShipY;
 
 
     /**
@@ -45,6 +50,16 @@ class ObjectUser extends Fly
         return $this->_objectFromId;
     }
 
+    public function getObjectFromX()
+    {
+        return $this->_objectFromX;
+    }
+
+    public function getObjectFromY()
+    {
+        return $this->_objectFromY;
+    }
+
     public function getObjectTo()
     {
         return $this->_objectTo;
@@ -63,6 +78,16 @@ class ObjectUser extends Fly
     public function getObjectState()
     {
         return $this->_objectState;
+    }
+
+    public function getPositionShipX()
+    {
+        return $this->_positionShipX;
+    }
+
+    public function getPositionShipY()
+    {
+        return $this->_positionShipY;
     }
 
 
@@ -127,8 +152,30 @@ class ObjectUser extends Fly
             $this->_objectUserId = $param['objectUserId'];
             $this->_objectFrom = $param['objectFrom'];
             $this->_objectFromId = $param['objectFromId'];
+            $this->_objectFromX = $param['positionFromX'];
+            $this->_objectFromY = $param['positionFromY'];
             $this->_objectTo = $param['objectTo'];
             $this->_objectToId = $param['objectToId'];
+
+            $this->_objectName = $param['objectName'];
+            $this->_objectDescription = $param['objectDescription'];
+            $this->_objectAttackType = $param['objectAttackType'];
+            $this->_objectAttackPower = $param['objectAttackPower'];
+            $this->_objectRange = $param['objectRange'];
+            $this->_objectSpeed = $param['objectSpeed'];
+            $this->_objectWeight = $param['objectWeight'];
+            $this->_objectCostTechs = $param['objectCostTechs'];
+            $this->_objectCostFuel = $param['objectCostFuel'];
+            $this->_objectCostEnergy = $param['objectCostEnergy'];
+            $this->_objectLaunchFuel = $param['objectLaunchFuel'];
+            $this->_objectLaunchEnergy = $param['objectLaunchEnergy'];
+            $this->_objectTime = $param['objectTime'];
+
+            if ($this->_objectTo == 'ship') {
+                $this->_positionShipX = $param['positionShipX'];
+                $this->_positionShipY = $param['positionShipY'];
+            }
+
             $this->_objectStart = $param['objectStart'];
             $this->_objectState = $param['objectState'];
             $this->_sql = true;
@@ -190,10 +237,12 @@ class ObjectUser extends Fly
         return array_shift($array);
     }
 
-    public static function getAll($id = null, $to_array = false)
+    public static function getAll($id = null, $to_array = false, $userId = null)
     {
         $where = '';
         $args = array();
+        $join_add = '';
+        $select_add = '';
 
         if ($id) {
             if (empty($where)) {
@@ -203,10 +252,48 @@ class ObjectUser extends Fly
             $args[':id'] = $id;
         }
 
+        if ($userId) {
+            if (empty($where)) {
+                $where = ' WHERE ';
+            } else {
+                $where .= ' AND';
+            }
+
+            $select_add = ', usersTo.id userId, posShip.x positionShipX, posShip.y positionShipY, pos.x positionFromX, pos.y positionFromY,
+                obj.objectRange, obj.objectSpeed, obj.objectName, obj.objectDescription, obj.objectAttackType, obj.objectAttackPower,
+                obj.objectWeight, obj.objectCostTechs, obj.objectCostFuel, obj.objectCostEnergy, obj.objectLaunchFuel, obj.objectLaunchEnergy, obj.objectTime';
+
+
+            $join_add .= '
+                LEFT JOIN `'.TABLE_SHIPS.'` shipsTo
+                    ON `'.static::$_sqlTable.'`.objectTo = "ship" AND shipsTo.id = `'.static::$_sqlTable.'`.objectToId
+                        
+                LEFT JOIN `'.TABLE_USERS.'` usersTo
+                    ON (usersTo.id = shipsTo.userId)
+
+                LEFT JOIN `'.TABLE_POSITIONS.'` posShip
+                    ON shipsTo.positionId = posShip.id
+                    
+                LEFT JOIN `'.TABLE_POSITIONS.'` pos
+                    ON `'.static::$_sqlTable.'`.objectFromId = pos.id
+
+                INNER JOIN `'.TABLE_OBJECTS.'` obj
+                    ON `'.static::$_sqlTable.'`.objectModel = obj.id';
+            
+            $where .= '(usersTo.id = :userId OR objectUserId = :userId2)';
+            $args[':userId'] = $userId;
+            $args[':userId2'] = $userId;
+        }
+
+
         $array = array();
         $sql = FlyPDO::get();
         $req = $sql->prepare('
-                    SELECT `'.static::$_sqlTable.'`.* FROM `'.static::$_sqlTable.'`'.$where);
+                    SELECT `'.static::$_sqlTable.'`.* '.$select_add.'
+                        FROM `'.static::$_sqlTable.'`
+                        '.$join_add.'
+
+                        '.$where);
 
         if ($req->execute($args)) {
             $current = 0;
@@ -244,5 +331,10 @@ class ObjectUser extends Fly
             var_dump($req->errorInfo());
             trigger_error('Unable to load in '.__FILE__.' on line '.__LINE__.' ! ', E_USER_ERROR);
         }
+    }
+
+    public function destroy()
+    {
+        $this->delete();
     }
 }

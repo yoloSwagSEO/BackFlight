@@ -68,7 +68,7 @@ foreach ($array_weapons_use as $ObjectWeapon)
         $ObjectUser->setObjectState($state);
         $ObjectUser->save();
 
-//        $MasterShipPlayer->useObject('weapon', $ObjectWeapon->getId());
+        $MasterShipPlayer->useObject('weapon', $ObjectWeapon->getId());
         
         if ($launch_mode == 'wave') {
             $time++;

@@ -98,8 +98,8 @@ abstract class Fly
     public function delete()
     {
         $sql = FlyPDO::get();
-        $req = $sql->prepare('DELETE FROM '.static::$_tableSql.' WHERE id = :id');
-        if ($req->execute()) {
+        $req = $sql->prepare('DELETE FROM '.static::$_sqlTable.' WHERE id = :id');
+        if ($req->execute(array(':id' => $this->_id))) {
             return true;
         }
         var_dump($req->errorInfo());
