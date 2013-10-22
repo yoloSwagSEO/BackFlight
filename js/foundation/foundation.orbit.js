@@ -211,6 +211,9 @@
       container.on('click', '.'+settings.prev_class, self.prev);
       container.on('click', '[data-orbit-slide]', self.link_bullet);
       container.on('click', self.toggle_timer);
+      if(settings.next_on_click){
+        container.on('click', self.next);
+      }
       if (settings.swipe) {
         container.on('touchstart.fndtn.orbit', function(e) {
           if (!e.touches) {e = e.originalEvent;}
@@ -327,20 +330,23 @@
     var margin = is_rtl ? 'marginRight' : 'marginLeft';
     var animMargin = {};
     animMargin[margin] = '0%';
+    var easing = (typeof jQuery === 'undefined') ? 'ease-in-out' : undefined;
 
     this.next = function(current, next, callback) {
-      next.animate(animMargin, duration, 'linear', function() {
+      next.animate(animMargin, duration, easing, function() {
         current.css(margin, '100%');
         callback();
       });
+      current.animate({marginLeft:'-100%'}, duration, easing);
     };
 
     this.prev = function(current, prev, callback) {
       prev.css(margin, '-100%');
-      prev.animate(animMargin, duration, 'linear', function() {
+      prev.animate(animMargin, duration, easing, function() {
         current.css(margin, '100%');
         callback();
       });
+      current.animate({marginLeft:'100%'}, duration, easing);
     };
   };
 
@@ -402,6 +408,7 @@
       timer: true,
       variable_height: false,
       swipe: true,
+      next_on_click: false,
       before_slide_change: noop,
       after_slide_change: noop
     },
