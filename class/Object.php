@@ -313,7 +313,8 @@ class Object extends Fly
                         FROM `'.static::$_sqlTable.'`
                     LEFT JOIN `'.TABLE_BUILDS.'` builds
                     ON builds.type = "object" AND builds.typeId = `'.static::$_sqlTable.'`.id AND (builds.state IS NULL OR builds.state NOT LIKE "%end%") '.$add.'
-                '.$where);
+                '.$where.'
+                    ORDER BY id');
 
         if ($req->execute($args)) {
             $current = 0;
@@ -338,6 +339,9 @@ class Object extends Fly
                     $param = $row;
                 }
 
+
+                if (!empty($row['buildEnd'])) {
+                }
                 if (empty($param['buildEndSeen'][$row['buildEnd']])) {
                     if (!empty($row['buildEnd'])) {
                         if ($row['buildEnd'] > $param['buildEnd']) {
