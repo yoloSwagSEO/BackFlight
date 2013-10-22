@@ -1228,4 +1228,54 @@ class Ship extends Model
         }
         $this->removeObject($objectType, $objectId);
     }
+
+    public static function getAShip($fromPositionX, $fromPositionY, $inRange, $forUserId, $direction)
+    {
+        $array_ships = self::getShips($fromPositionX, $fromPositionY, $inRange, $forUserId, $direction);
+
+        if (!empty($array_ships)) {
+            $rand = rand(0, count($array_ships) - 1);
+            return new Ship($array_ships[$rand]); 
+        }
+    }
+
+    public static function getShips($fromPositionX, $fromPositionY, $inRange, $forUserId, $direction)
+    {
+        $minX = $fromPositionX - $inRange;
+        $maxX = $fromPositionX + $inRange;
+        $minY = $fromPositionY - $inRange;
+        $maxY = $fromPositionY + $inRange;
+        
+        if ($direction == 'front') {
+            $minX = $fromPositionX;
+        } else {
+            $maxX = $fromPositionX;
+        }
+
+        $sql = FlyPDO::get();
+        $req = $sql->prepare('SELECT pos.x, pos.y, `'.self::$_sqlTable.'`.id  FROM `'.self::$_sqlTable.'`
+        INNER JOIN `'.TABLE_POSITIONS.'` pos
+            ON pos.id = `'.self::$_sqlTable.'`.positionId
+        WHERE `'.self::$_sqlTable.'`.userId != :userId
+        AND pos.x < :maxX AND pos.x > :minX AND pos.y < :maxY AND pos.y > :minY');
+
+        if ($req->execute(array(
+            ':minX' => $minX,
+            ':maxX' => $maxX,
+            ':minY' => $minY,
+            ':maxY' => $maxY,
+            ':userId' => $forUserId
+        ))) {
+            $array_ships = array();
+            while ($row = $req->fetch()) {
+                // Check real distance
+                $distance = Position::calculateDistance($fromPositionX, $fromPositionY, $row['x'], $row['y']);
+                if ($distance <= $inRange * POSITION_LENGHT) {
+                    $array_ships[] = $row['id'];
+                }
+            }
+
+            return $array_ships;
+        }
+    }
 }

@@ -37,9 +37,16 @@ if ($type == 'torpedo') {
 $time = time();
 
 if ($type == 'torpedo') {
+    // Get a ship ID to attack
+    $ShipDestination = Ship::getAShip($CurrentPosition->getX(), $CurrentPosition->getY(), $ObjectWeapon->getObjectRange(), $User->getId(), $attack_direction);
+    if (empty($ShipDestination)) {
+        $_SESSION['errors']['attack']['no_ships'] = true;
+    }
+    $to = 'ship';
     $state = 'flying';
 } else {
     $state = 'armed';
+    $to = 'space';
 }
 
 foreach ($array_weapons_use as $ObjectWeapon)
@@ -52,12 +59,16 @@ foreach ($array_weapons_use as $ObjectWeapon)
         $ObjectUser->setObjectUserId($User->getId());
         $ObjectUser->setObjectFrom('ship');
         $ObjectUser->setObjectFromId($CurrentPosition->getId());
-        $ObjectUser->setObjectTo('space');
+
+        $ObjectUser->setObjectTo($to);
+        if ($type == 'torpedo') {
+            $ObjectUser->setObjectToId($ShipDestination->getId());
+        }
         $ObjectUser->setObjectStart($time);
         $ObjectUser->setObjectState($state);
         $ObjectUser->save();
 
-        $MasterShipPlayer->useObject('weapon', $ObjectWeapon->getId());
+//        $MasterShipPlayer->useObject('weapon', $ObjectWeapon->getId());
         
         if ($launch_mode == 'wave') {
             $time++;

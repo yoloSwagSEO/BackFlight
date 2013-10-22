@@ -4,6 +4,36 @@ include_once 'modules/game/weapons/weapons_check_post.php';
 title('Lancement d\'une attaque');
 head();
 
+$range = 0;
+
+foreach ($array_weapons_use as $ObjectWeapon)
+{
+    if (empty($range)) {
+        $range = $ObjectWeapon->getObjectRange();
+    } else {
+        if ($range > $ObjectWeapon->getObjectRange()) {
+            $range = $ObjectWeapon->getObjectRange();
+        }
+    }
+}
+
+$array_ships_front = Ship::getShips($MasterShipPlayer->getPositionX(), $MasterShipPlayer->getPositionY(), $range, $User->getId(), 'front');
+$array_ships_behind = Ship::getShips($MasterShipPlayer->getPositionX(), $MasterShipPlayer->getPositionY(), $range, $User->getId(), 'behind');
+
+$nb_ships_front = count($array_ships_front);
+$nb_ships_behind = count($array_ships_behind);
+
+
+$front_disabled = '';
+if ($nb_ships_front < 1) {
+    $front_disabled = 'disabled';
+}
+
+$behind_disabled = '';
+if ($nb_ships_behind < 1) {
+    $behind_disabled = 'disabled';
+}
+
 
 ?>
 
@@ -36,22 +66,46 @@ head();
                 <div class="large-4 columns">
                     <strong>Direction :</strong>
                     <p>
-                        <label for="launch_front"><input name="launch_direction" id="launch_front" type="radio" style="display:none;" checked value="front"><span class="custom radio checked"></span>Vers l'avant</label>
-                        <label for="launch_behind"><input name="launch_direction" id="launch_behind" type="radio" style="display:none;" value="behind"><span class="custom radio"></span>Vers l'arrière</label>
+                        <label>
+                            <input name="launch_direction" type="radio" style="display:none;" <?php echo $front_disabled;?> value="front">
+                            <span class="custom radio"></span>
+                            <span data-tooltip title="<?php echo $nb_ships_front?> vaisseau(x) à cibler" class="has-tip">Vers l'avant</span>
+                        </label>
+                        <label>
+                            <input name="launch_direction"  type="radio" style="display:none;" <?php echo $behind_disabled;?> value="behind">
+                            <span class="custom radio"></span>
+                            <span data-tooltip title="<?php echo $nb_ships_behind?> vaisseau(x) à cibler" class="has-tip">Vers l'arrière</span>
+                        </label>
                     </p>
                 </div>
                 <div class="large-4 columns">
                     <strong>Type d'envoi :</strong>
                     <p>
-                        <label for="launch_all"><input name="launch_mode" id="launch_all" type="radio" style="display:none;" checked value="all"><span class="custom radio checked"></span>Groupé</label>
-                        <label for="launch_wave"><input name="launch_mode" id="launch_wave" type="radio" style="display:none;" value="wave"><span class="custom radio"></span>Par vagues</label>
+                        <label>
+                            <input name="launch_mode" type="radio" style="display:none;" checked value="all">
+                            <span class="custom radio checked"></span>
+                            <span class="has-tip" data-tooltip title="Toutes les torpilles partent en même temps">Groupé</span>
+                        </label>
+                        <label>
+                            <input name="launch_mode" type="radio" style="display:none;" value="wave">
+                            <span class="custom radio"></span>
+                            <span class="has-tip" data-tooltip title="Les torpilles sont envoyées une à une">Par vagues</span>
+                        </label>
                     </p>
                 </div>
                 <div class="large-4 columns">
                     <strong>Mode de ciblage :</strong>
                     <p>
-                        <label for="attack_auto"><input name="attack_mode" id="attack_auto" type="radio" style="display:none;" checked value="auto"><span class="custom radio checked"></span>Automatique</label>
-                        <label for="attack_user"><input name="attack_mode" id="attack_user" type="radio" disabled style="display:none;" value="user"><span class="custom radio"></span>Fixe</label>
+                        <label for="attack_auto">
+                            <input name="attack_mode" type="radio" style="display:none;" checked value="auto">
+                            <span class="custom radio checked"></span>
+                            <span class="has-tip" data-tooltip title="Les torpilles ciblent un des vaisseaux à portée">Automatique</span>
+                        </label>
+                        <label for="attack_user">
+                            <input name="attack_mode" type="radio" disabled style="display:none;" value="user">
+                            <span class="custom radio"></span>
+                            <span class="has-tip" data-tooltip title="Les torpilles ciblent le vaisseau indiqué">Fixe</span>
+                        </label>
                     </p>
                 </div>
             </div>
