@@ -633,8 +633,12 @@ class Ship extends Model
         
         foreach ($this->_modules as $typeId => $quantity)
         {
-            $weight = $this->_modulesEffects[$typeId]['weight'];
-            $this->_load += $weight*$quantity;
+            if (!empty($this->_modulesEffects[$typeId])) {
+                $weight = $this->_modulesEffects[$typeId]['weight'];
+                $this->_load += $weight*$quantity;
+            } else {
+                trigger_error('This shouldn\'t happen');
+            }
         }
         
         return $this->_load;
