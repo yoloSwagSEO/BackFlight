@@ -4,7 +4,7 @@ head();
 
 $array_notifications = $array_notifications_unread;
 if (isset($_GET['all'])) {
-    $array_notifications = Notification::getAll();
+    $array_notifications = Notification::getAll('', '', null, $User->getId());
 }
 
 
