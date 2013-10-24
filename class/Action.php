@@ -288,7 +288,7 @@ class Action extends Fly
         $array = array();
         $sql = FlyPDO::get();
         $req = $sql->prepare('
-                    SELECT `'.static::$_sqlTable.'`.*, posFrom.x fromX, posFrom.y fromY, posTo.x toX, posto.y toY, fleets.shipId ship FROM `'.static::$_sqlTable.'`
+                    SELECT `'.static::$_sqlTable.'`.*, posFrom.x fromX, posFrom.y fromY, posTo.x toX, posTo.y toY, fleets.shipId ship FROM `'.static::$_sqlTable.'`
                         LEFT JOIN `'.TABLE_POSITIONS.'` posFrom
                             ON posFrom.id = `'.static::$_sqlTable.'`.from
                         LEFT JOIN `'.TABLE_POSITIONS.'` posTo
