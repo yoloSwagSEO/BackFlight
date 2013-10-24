@@ -35,8 +35,13 @@ require_once 'includes/functions_form.php';
 // Game configuration
 require_once 'config/game.php';
 
-
+// Check game
 include_once 'includes/game_verif.php';
+
+// Load game values (eg. ranks)
+include_once 'includes/game_load.php';
+
+
 if (!empty($_SESSION['User'])) {
     $User = new User($_SESSION['User']);
     if ($User->isConnected() && $User->isSql()) {

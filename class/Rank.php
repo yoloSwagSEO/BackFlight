@@ -312,4 +312,16 @@ class Rank extends Fly
     {
         return $position + $distance / 2 + $ressources / 3;
     }
+
+    public static function getFor($array_ranks, $userId)
+    {
+        $i = 1;
+        foreach ($array_ranks as $Rank)
+        {
+            if ($Rank->getUserId() == $userId) {
+                return array('global' => $i);
+            }
+            $i++;
+        }
+    }
 }

@@ -2,17 +2,10 @@
 title('Classement général');
 head();
 
-$Rank = new Rank();
-$Rank->updateRanks();
-$lastUpdate = $Rank->getLastUpdate();
-$type = 'global';
 if (!empty($_GET['type'])) {
     $type = $_GET['type'];
+    $array_ranks = Rank::getAll('', '', $lastRankUpdate, $type);
 }
-
-
-$array_ranks = Rank::getAll('', '', $lastUpdate, $type);
-
 
 ?>
 <div class="row">
@@ -24,7 +17,7 @@ $array_ranks = Rank::getAll('', '', $lastUpdate, $type);
     <div class="column large-9">
         <h3>Classement</h3>
         <?php include_once 'modules/game/ranks/ranks_menu.php';?>
-            <small>Dernière mise à jour : <?php echo date('H:i', $lastUpdate)?></small>
+            <small>Dernière mise à jour : <?php echo date('H:i', $lastRankUpdate)?></small>
         </p>
         <table style="width: 100%">
             <thead>

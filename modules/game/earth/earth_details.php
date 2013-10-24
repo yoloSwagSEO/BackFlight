@@ -5,6 +5,9 @@ $total = Position::calculateDistance(POSITION_START_X, POSITION_START_Y, 0, 0);
 $diff = $total - $remainingDistance;
 
 $current = 100 - $remainingDistance / $total * 100;
+
+$array_ranks_user = $Rank->getFor($array_ranks, $User->getId());
+$nb_users = User::getNbUsers();
 ?>
 
 
@@ -21,3 +24,11 @@ $current = 100 - $remainingDistance / $total * 100;
     ?> </a>
     
 </div>
+
+<a href="ranks"><div class="panel">
+    <div data-alert="" class="alert-box radius">
+        Classement
+    </div>
+    <strong>Général : <small><?php echo $array_ranks_user['global']?> / <?php echo $nb_users;?></small></strong><br />
+</div>
+</a>

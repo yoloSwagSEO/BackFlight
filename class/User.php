@@ -9,6 +9,8 @@ class User extends Fly
 
     protected static $_sqlTable = TABLE_USERS;
 
+    protected static $_nbUsers = 0;
+
     public function setPseudo($pseudo)
     {
         if (self::_isPseudoValid($pseudo)) {
@@ -296,5 +298,32 @@ class User extends Fly
     private function _checkPassword($password)
     {
         return Bcrypt::checkPassword($password, $this->_password);
+    }
+
+    /**
+     * Return quantity of players
+     * @return int
+     */
+    public static function getNbUsers()
+    {
+        if (empty(self::$_nbUsers)) {
+            self::_loadNbUsers();
+        }
+        return self::$_nbUsers;
+    }
+
+    /**
+     * Load quantity of users
+     */
+    protected static function _loadNbUsers()
+    {
+        $sql = FlyPDO::get();
+        $req = $sql->prepare('SELECT COUNT(id) nbUsers FROM `'.self::$_sqlTable.'`');
+        if ($req->execute()) {
+            while ($row = $req->fetch())
+            {
+                self::$_nbUsers = $row['nbUsers'];
+            }
+        }
     }
 }
