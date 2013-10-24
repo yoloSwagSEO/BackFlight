@@ -153,7 +153,7 @@ class Rank extends Fly
      * @param type $order
      * @return \class
      */
-    public static function getAll($id = null, $to_array = false, $date = null, $order = null)
+    public static function getAll($id = null, $to_array = false, $date = null, $order = 'global')
     {
         $where = '';
         $args = array();
