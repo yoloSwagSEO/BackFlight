@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
-    <base href="http://localhost/BackFlight/" />
+    <base href="<?php echo PATH ?>" />
     <title><?php echo title()?></title>
     <link rel="stylesheet" href="css/normalize.css" />
     <link rel="stylesheet" href="css/foundation.css" />
