@@ -25,10 +25,11 @@ $nb_users = User::getNbUsers();
     
 </div>
 
-<a href="ranks"><div class="panel">
-    <div data-alert="" class="alert-box radius">
-        Classement
+<a href="ranks">
+    <div class="panel">
+        <div data-alert="" class="alert-box radius">
+            Classement
+        </div>
+        <strong>Général : <small><?php echo $array_ranks_user['global']?> / <?php echo $nb_users;?></small></strong><br />
     </div>
-    <strong>Général : <small><?php echo $array_ranks_user['global']?> / <?php echo $nb_users;?></small></strong><br />
-</div>
 </a>

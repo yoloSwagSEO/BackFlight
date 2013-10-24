@@ -218,10 +218,10 @@ class Position extends Fly
      * @param string $moveType
      * @return \Position
      */
-    public function determineDestination($type = DESTINATION_NORMAL, $moveType = 'flight')
+    public function determineDestination($type = DESTINATION_NORMAL, $moveType = 'flight', $array_positions_knowns = null)
     {
         if ($type == DESTINATION_EMPTY) {
-            $position = self::getClearPosition($this->_x, $this->_y, $moveType);
+            $position = self::getClearPosition($this->_x, $this->_y, $moveType, $array_positions_knowns);
             return $position;
         }
         // TODO : determine destination for "normal" search
@@ -284,7 +284,7 @@ class Position extends Fly
      * @param int $y
      * @return \Position
      */
-    public static function getClearPosition($startX = POSITION_START_X, $startY = POSITION_START_Y, $moveType = 'flight')
+    public static function getClearPosition($startX = POSITION_START_X, $startY = POSITION_START_Y, $moveType = 'flight', $array_positions_knowns = null)
     {
         $rand = rand(0,1);
         if ($rand == 0) {
@@ -310,6 +310,19 @@ class Position extends Fly
                     }
                 }
                 if (($x != $startX) || ($y != $startY)) {
+                    foreach ($array_positions_knowns as $Position) {
+                        if ($Position->getX() == $x && $Position->getY() == $y) {
+                            if ($max_forward > 0) {
+                                // Detect if ship will move forward
+                                $move_forward = rand(1,100);
+                                if ($move_forward < $probaActionForward * 100) {
+                                $max_forward--;
+                                    break;
+                                }
+                            }
+                            continue;
+                        }
+                    }
                     if (Position::isEmpty($x, $y)) {
                         $Position = new Position($x, $y);
 

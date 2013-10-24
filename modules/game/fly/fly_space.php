@@ -13,7 +13,13 @@ if ($MasterShipPlayer->getState() == 'flying') {
 
 $PositionCurrent = new Position($MasterShipPlayer->getPositionId());
 
-$PositionDestination = $PositionCurrent->determineDestination(DESTINATION_EMPTY, $type);
+$array_positions_knowns = Position::getKnownFor($User->getId());
+
+
+var_dump($array_positions_knowns);
+exit;
+
+$PositionDestination = $PositionCurrent->determineDestination(DESTINATION_EMPTY, $type, $array_positions_knowns);
 
 $distance = Position::calculateDistance($PositionCurrent->getX(), $PositionCurrent->getY(), $PositionDestination->getX(), $PositionDestination->getY());
 $time = $MasterShipPlayer->calculateTravelTime($distance, $type);
