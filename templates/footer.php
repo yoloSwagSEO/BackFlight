@@ -33,5 +33,7 @@
         echo '    <script'.$src.'>'.$script.'</script>'."\n";
     }
     ?>
+
+<?php echo SCRIPT_STATS; ?>
 </body>
 </html>
