@@ -7,16 +7,16 @@ if (User::_isPseudoValid($_POST['pseudo'])) {
                 exit;
             } else {
                 $_SESSION['error_connexion'] = true;
-                header('location: ./connexion');
+                header('location: '.PATH);
                 exit;
             }
 	}
         $_SESSION['error_connexion'] = true;
-        header('location: ./connexion');
+        header('location:'.PATH);
         exit;
 
 } else {
     $_SESSION['error_connexion'] = true;
-        header('location: ./connexion');
+        header('location: '.PATH);
     exit;
 }
