@@ -20,7 +20,12 @@ $nb_users = User::getNbUsers();
     <div class="progress success radius" data-tooltip title="<?php echo round($current, 2)?>%"><span class="meter" style="width: <?php echo $current?>%"></span></div>
         
     <a class="button tiny" data-tooltip title="Total flight time to reach earth"><?php
-    echo countDown($MasterShipPlayer->calculateTravelTime($remainingDistance));
+    $time = $MasterShipPlayer->calculateTravelTime($remainingDistance);
+    if ($time) {
+        echo countDown($time);
+    } else {
+        echo 'Unknown';
+    }
     ?> </a>
     
 </div>

@@ -11,6 +11,12 @@ if ($MasterShipPlayer->getState() == 'flying') {
     exit('Ship already flying !');
 }
 
+// Is ship damaged ?
+if ($MasterShipPlayer->isShipDamaged()) {
+    exit('Ship is damaged. Repair it or wait');
+}
+
+
 $PositionCurrent = new Position($MasterShipPlayer->getPositionId());
 
 $array_positions_knowns = Position::getKnownFor($User->getId());

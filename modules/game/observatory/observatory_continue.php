@@ -1,6 +1,3 @@
-<?php
-
-?>
 <ul id="continue" class="f-dropdown" data-dropdown-content>
   <li data-tooltip title="Déplacement ultra-rapide vers une autre zone de l'espace.
       <br />Prochain bond : 30s<br />Energie : 20"><a href="fly/space/jump">Bond hyperespace</a></li>

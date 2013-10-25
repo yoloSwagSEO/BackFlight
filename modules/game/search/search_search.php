@@ -17,6 +17,11 @@ if ($MasterShipPlayer->getState() == 'flying') {
     exit('Ship already flying !');
 }
 
+// Is ship damaged ?
+if ($MasterShipPlayer->isShipDamaged()) {
+    exit('Ship is damaged. Repair it or wait');
+}
+
 if ($fuel > $MasterShipPlayer->getFuel())
 {
     $_SESSION['errors']['search']['fuel_missing'] = true;

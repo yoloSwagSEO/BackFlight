@@ -17,7 +17,20 @@
     Load <small>(<?php echo round($MasterShipPlayer->getLoad())?> / <?php echo round($MasterShipPlayer->getLoadMax())?>)</small>
     <div class="progress success radius "><span class="meter" style="width: <?php echo round($MasterShipPlayer->getLoad() / $MasterShipPlayer->getLoadMax() * 100)?>%"></span></div>
 
-    <a class="button tiny secondary" >Speed <?php echo $MasterShipPlayer->getSpeed()?></a>
+
+
+    <?php
+    $class = 'secondary';
+    $tip = '';
+    $href = 'javascript:void(0)';
+    if ($MasterShipPlayer->isShipDamaged()) {
+        $class = 'alert has-tip';
+        $tip = ' title="Votre vaisseau est trop endommagé pour voler. Réparez-le ou patientez." data-tooltip';
+        $href = 'ship';
+    }
+    ?>
+
+    <a class="button tiny <?php echo $class?>" <?php echo $tip ?> href="<?php echo $href?>">Speed <?php echo $MasterShipPlayer->getSpeed()?></a>
     <a class="button tiny" ><?php echo number_format($MasterShipPlayer->getTechs())?> techs </a>
 
 </div>

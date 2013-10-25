@@ -79,15 +79,19 @@ $MasterShipPosition = new Position($MasterShipPlayer->getPositionId());
                 <td><?php echo countDown($MasterShipPlayer->calculateTravelTime($distance, $type))?></td>
                 <td>
                     <?php
-                    if (!$current_position) {
-                        ?>
-                    <a href="fly/<?php echo $Position->getX()?>-<?php echo $Position->getY()?><?php echo $type_link?>">Rejoindre</a>
-
-                        <?php
+                    if ($MasterShipPlayer->isShipDamaged()) {
+                        echo 'Vaisseau endommagé';
                     } else {
-                        ?>
-                        Position actuelle
-                        <?php
+                        if (!$current_position) {
+                            ?>
+                        <a href="fly/<?php echo $Position->getX()?>-<?php echo $Position->getY()?><?php echo $type_link?>">Rejoindre</a>
+
+                            <?php
+                        } else {
+                            ?>
+                            Position actuelle
+                            <?php
+                        }
                     }
                     ?>
                 </td>

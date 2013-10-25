@@ -553,7 +553,11 @@ class Ship extends Model
      */
     public function calculateTravelTime($distance, $type=null)
     {
-        return ceil($distance / $this->getSpeed($type));
+        $speed = $this->getSpeed();
+        if ($speed) {
+            return ceil($distance / $speed);
+        }
+        return false;
     }
 
     public function calculateTravelEnergy($distance, $type=null)
@@ -754,12 +758,25 @@ class Ship extends Model
                 $this->_objects['weapons'] = $param['weapons'];
             }
 
-
-
             $this->_lastUpdate = $param['lastUpdate'];
             $this->_state = $param['state'];
 
             $this->_sql = true;
+
+
+            // Preparing ship
+            $this->updateEnergy();
+            $this->updatePower();
+            if ($this->isOverloaded()) {
+                $this->setSpeed($this->getSpeed() / SHIP_SPEED_OVERLOADED);
+            }
+            
+            $this->updateShield();
+            $this->setLastUpdate(time());
+
+            $this->checkShipDamaged();
+
+            $this->save();
         }
     }
     
@@ -1290,5 +1307,21 @@ class Ship extends Model
 
             return $array_ships;
         }
+    }
+
+    public function checkShipDamaged()
+    {
+        if ($this->isShipDamaged()) {
+            $this->_speed = 0;
+        }
+    }
+
+    public function isShipDamaged()
+    {
+        $power_ratio = $this->_power / $this->_powerMax;
+        if ($power_ratio < SHIP_POWER_RATIO_DAMAGED) {
+            return true;
+        }
+        return false;
     }
 }
