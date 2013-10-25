@@ -69,7 +69,6 @@ class ShipObject extends Fly
     }
 
 
-
     /*
      * Load object values
      * @param array $param Instanciation values
@@ -106,7 +105,6 @@ class ShipObject extends Fly
             trigger_error('Unable to save in '.__FILE__.' on line '.__LINE__.' ! ', E_USER_ERROR);
         }
     }
-
 
     protected function _update()
     {
@@ -165,6 +163,16 @@ class ShipObject extends Fly
             }
             $where .= '`'.static::$_sqlTable.'`.typeId = :typeId';
             $args[':typeId'] = $typeId;
+        }
+
+        if ($type) {
+            if (empty($where)) {
+                $where = ' WHERE ';
+            } else {
+                $where .= ' AND ';
+            }
+            $where .= '`'.static::$_sqlTable.'`.type = :type';
+            $args[':type'] = $type;
         }
         
         if ($typeEnabled !== null) {

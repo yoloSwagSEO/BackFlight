@@ -1,23 +1,26 @@
 <div class="panel modules">
-    <div class="row">
     <h4>Modules actifs (<?php echo $MasterShipPlayer->getModulesEnabledNumber() ?>/<?php echo $MasterShipPlayer->getModulesMax() ?>)</h4>
-    <?php
-    if (!$MasterShipPlayer->getModulesEnabled()) {
-        ?>
-    <p>
-        Il n'y a aucun module activé pour l'instant.
-    </p>
-        <?php
-    }
-
+    <div class="row">
+    <?php    
     $modulesEnabled = $MasterShipPlayer->getModulesEnabled();
     ksort($modulesEnabled);
 
+    if (!empty($modulesEnabled[7])) {
+        unset($modulesEnabled[7]);
+    }
+
+    if (!$modulesEnabled) {
+        ?>
+        <div class="large-12 columns">
+            <div class="alert-box success">
+        Il n'y a aucun module activé pour l'instant.
+            </div>
+        </div>
+        <?php
+    }
+
     foreach ($modulesEnabled as $moduleId => $quantity)
     {
-        if ($moduleId == 7) {
-            continue;
-        }
         $Module = $array_modules[$moduleId];
         $icon = $Module->getIcon();
         $bigIcon = '&#xe09f;';
@@ -53,7 +56,19 @@
     ?>
     <h4>Modules à utiliser</h4>
     <div class="row">
-        <?php foreach ($modulesAvailable as $moduleId => $quantity)
+        <?php
+        if (empty($modulesAvailable)) {
+        ?>
+        <div class="large-12 columns">
+            <div class="alert-box success">
+                Il n'y a aucun module disponible.
+            </div>
+        </div>
+        <?php
+        }
+
+
+        foreach ($modulesAvailable as $moduleId => $quantity)
         {
             if ($quantity != 0) {
                 $Module = $array_modules[$moduleId];
