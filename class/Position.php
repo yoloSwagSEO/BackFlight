@@ -307,8 +307,6 @@ class Position extends Fly
                     }
                 }
                 if (($x != $startX) || ($y != $startY)) {
-                    var_dump($array_positions_knowns);
-
                     foreach ($array_positions_knowns as $Position) {
                         if ($Position->getX() == $x && $Position->getY() == $y) {
                             if ($max_forward > 0) {
@@ -383,12 +381,13 @@ class Position extends Fly
         }
     }
 
-    public static function getAll($toArray = false, $id = null, $x = null, $y = null, $userId = null)
+    public static function getAll($toArray = false, $id = null, $x = null, $y = null, $userId = null, $order = null)
     {
         $where = '';
         $args = array();
         $join = '';
         $join_select = '';
+        $add_order = '';
 
         if ($id) {
             $where = 'WHERE id = :id';
@@ -427,12 +426,16 @@ class Position extends Fly
             $join_select = '';
         }
 
+        if ($order != null) {
+            $add_order = 'ORDER BY `'.$order.'`';
+        }
+
         $sql = FlyPDO::get();
         $req = $sql->prepare('SELECT * '.$join_select.', posearch.result searchResult FROM `'.self::$_sqlTable.'`
             '.$join.'
                 LEFT JOIN (SELECT date, result, positionId FROM `'.TABLE_POSITIONS_SEARCHES.'` WHERE `date` > "'.(time() - POSITION_SEARCH_REGENERATION).'" ORDER BY date DESC) posearch
                     ON `'.self::$_sqlTable.'`.id = posearch.positionId
-        '.$where);
+        '.$where.' '.$add_order);
         if ($req->execute($args)) {
             $array = array();
             $current = 0;
@@ -574,7 +577,7 @@ class Position extends Fly
 
     public static function getKnownFor($userId)
     {
-        return self::getAll(false, '', '', '', $userId);
+        return self::getAll(false, '', '', '', $userId, 'x');
     }
 
     public function isKnownBy($userId)

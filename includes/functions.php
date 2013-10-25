@@ -23,6 +23,10 @@ function countDown($rem)
     if($day) $time .= $day."j ";
     if($hr) $time .= $hr."h ";
     if($min) $time .= $min."m ";
-    if($sec) $time .= $sec."s ";
+    if($sec) {
+        $time .= $sec."s ";
+    } else if (!$day && !$hr && $min) {
+        $time .= '0s';
+    }
     return $time;
 }

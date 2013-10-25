@@ -494,7 +494,7 @@ class Quest extends Fly
                 foreach ($array_modules as $moduleId => $Module)
                 {
                     if ($value['value'] == $moduleId) {
-                        $Ship->addModule($moduleId);
+                        $Ship->addObject('module', $moduleId);
                     }
                 }
             }

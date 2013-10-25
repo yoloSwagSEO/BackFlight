@@ -76,7 +76,7 @@ $MasterShipPosition = new Position($MasterShipPlayer->getPositionId());
                 <td><?php echo ceil($distance)?></td>
                 <td><?php echo $MasterShipPlayer->calculateTravelEnergy($distance, $type)?></td>
                 <td><?php echo $MasterShipPlayer->calculateTravelFuel($distance, $type)?></td>
-                <td><?php echo $MasterShipPlayer->calculateTravelTime($distance, $type)?>s</td>
+                <td><?php echo countDown($MasterShipPlayer->calculateTravelTime($distance, $type))?></td>
                 <td>
                     <?php
                     if (!$current_position) {
