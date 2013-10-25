@@ -88,7 +88,7 @@ class Fleet extends Fly
         $sql = FlyPDO::get();
         $req = $sql->prepare('INSERT INTO `'.static::$_sqlTable.'` VALUES (:moveId, :userId, :shipId)');
 
-        foreach ($this->_ships as $shipId)
+        foreach ($this->_ships as $shipId => $null)
         {
             $args = array(
                 ':userId' => $this->_userId,
