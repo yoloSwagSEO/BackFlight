@@ -214,17 +214,14 @@ class Position extends Fly
 
     /**
      * Get a destination
-     * @param int $type 'DESTINATION_EMPTY' to get empty destination
      * @param string $moveType
+     * @param array $array_positions_knows
      * @return \Position
      */
-    public function determineDestination($type = DESTINATION_NORMAL, $moveType = 'flight', $array_positions_knowns = null)
+    public function determineDestination($moveType = 'flight', $array_positions_knowns = null)
     {
-        if ($type == DESTINATION_EMPTY) {
-            $position = self::getClearPosition($this->_x, $this->_y, $moveType, $array_positions_knowns);
-            return $position;
-        }
-        // TODO : determine destination for "normal" search
+        $position = self::getClearPosition($this->_x, $this->_y, $moveType, $array_positions_knowns);
+        return $position;
     }
 
     /**
@@ -310,6 +307,8 @@ class Position extends Fly
                     }
                 }
                 if (($x != $startX) || ($y != $startY)) {
+                    var_dump($array_positions_knowns);
+
                     foreach ($array_positions_knowns as $Position) {
                         if ($Position->getX() == $x && $Position->getY() == $y) {
                             if ($max_forward > 0) {

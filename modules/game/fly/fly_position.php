@@ -29,6 +29,11 @@ $energy = $MasterShipPlayer->calculateTravelEnergy($distance, $type);
 $fuel = $MasterShipPlayer->calculateTravelFuel($distance, $type);
 
 
+if ($energy > $MasterShipPlayer->getEnergy() || $fuel > $MasterShipPlayer->getFuel()) {
+    exit('Unsufficiant resources');
+}
+
+
 $Action = new Action();
 $Action->setFrom($PositionCurrent->getId());
 $Action->setTo($PositionDestination->getId());

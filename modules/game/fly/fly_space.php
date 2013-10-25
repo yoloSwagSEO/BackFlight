@@ -15,17 +15,19 @@ $PositionCurrent = new Position($MasterShipPlayer->getPositionId());
 
 $array_positions_knowns = Position::getKnownFor($User->getId());
 
-
-var_dump($array_positions_knowns);
-exit;
-
-$PositionDestination = $PositionCurrent->determineDestination(DESTINATION_EMPTY, $type, $array_positions_knowns);
+$PositionDestination = $PositionCurrent->determineDestination($type, $array_positions_knowns);
 
 $distance = Position::calculateDistance($PositionCurrent->getX(), $PositionCurrent->getY(), $PositionDestination->getX(), $PositionDestination->getY());
 $time = $MasterShipPlayer->calculateTravelTime($distance, $type);
 
 $energy = $MasterShipPlayer->calculateTravelEnergy($distance, $type);
 $fuel = $MasterShipPlayer->calculateTravelFuel($distance, $type);
+
+
+if ($energy > $MasterShipPlayer->getEnergy() || $fuel > $MasterShipPlayer->getFuel()) {
+    exit('Unsufficiant resources');
+}
+
 
 
 $Action = new Action();
