@@ -252,6 +252,7 @@ class Rank extends Fly
 
         if ($time - $lastUpdate > 5 * 60) {
 
+
             $array_masterships = Ship::getAll('', '', '', 'master');
             $array_users_ressources = Position::getAllPositionSearches($lastUpdate, $time);
             $array_users_distances = Action::getAllDistances($lastUpdate, $time);
@@ -276,6 +277,7 @@ class Rank extends Fly
 
                 $distance = 0;
                 $ressources = 0;
+                
                 if (!empty($array_users_ranks[$MasterShip->getUserId()])) {
                     $RankUserPrevious = $array_users_ranks[$MasterShip->getUserId()];
                     $distance = $RankUserPrevious->getDistance();
@@ -284,12 +286,12 @@ class Rank extends Fly
 
 
                 if (!empty($array_users_ressources[$MasterShip->getUserId()])) {
-                    $ressources = $array_users_ressources[$MasterShip->getUserId()];
+                    $ressources += $array_users_ressources[$MasterShip->getUserId()];
                 }
                 $RankUser->setRessources($ressources);
 
                 if (!empty($array_users_distances[$MasterShip->getUserId()])) {
-                    $distance = $array_users_distances[$MasterShip->getUserId()];
+                    $distance += $array_users_distances[$MasterShip->getUserId()];
                 }
                 $RankUser->setDistance($distance);
 
