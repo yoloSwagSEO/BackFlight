@@ -9,5 +9,5 @@ define('ENABLE_SCRIPTS', true);
 
 define('KEY_ALPHA', '1234');
 
-define('SCRIPT_STATS', '<-- Here goes your analytics code -->');
+define('SCRIPT_STATS', '<!-- Here goes your analytics code -->');
 ?>
