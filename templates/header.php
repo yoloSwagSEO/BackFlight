@@ -129,7 +129,7 @@
                         ?>
                         <div class="row">
                             <div data-alert="" class="alert-box alert radius">
-                                Attaque de torpille détectée depuis <?php echo $ObjectUser->getObjectFromId()?>! Impact estimé dans <?php echo renderCountDown($time_remaining)?>.
+                                Attaque de torpille détectée depuis <?php echo $ObjectUser->getObjectFromX()?>:<?php echo $ObjectUser->getObjectFromY()?> (<?php echo $ObjectUser->getObjectUserpseudo()?>) ! Impact estimé dans <?php echo renderCountDown($time_remaining)?>.
                             </div>
                         </div>
                         <?php
@@ -137,7 +137,7 @@
                         ?>
                         <div class="row">
                             <div data-alert="" class="alert-box radius">
-                                Attaque de torpille vers vaiseau de <?php $ObjectUser->getObjectToId()?> ! Impact estimé dans <?php echo renderCountDown($time_remaining)?>.
+                                Attaque de torpille vers vaiseau de <?php echo $ObjectUser->getUserToPseudo()?> (<?php echo $ObjectUser->getPositionShipX()?>:<?php echo $ObjectUser->getPositionShipY()?>) ! Impact estimé dans <?php echo renderCountDown($time_remaining)?>.
                             </div>
                         </div>
                         <?php

@@ -5,6 +5,7 @@ class ObjectUser extends Object
     protected $_objectType;
     protected $_objectModel;
     protected $_objectUserId;
+    protected $_objectUserPseudo;
     protected $_objectFrom;
     protected $_objectFromX;
     protected $_objectFromY;
@@ -16,6 +17,8 @@ class ObjectUser extends Object
 
     protected $_positionShipX;
     protected $_positionShipY;
+
+    protected $_userToPseudo;
 
 
     /**
@@ -38,6 +41,11 @@ class ObjectUser extends Object
     public function getObjectUserId()
     {
         return $this->_objectUserId;
+    }
+
+    public function getObjectUserPseudo()
+    {
+        return $this->_objectUserPseudo;
     }
 
     public function getObjectFrom()
@@ -88,6 +96,11 @@ class ObjectUser extends Object
     public function getPositionShipY()
     {
         return $this->_positionShipY;
+    }
+
+    public function getUserToPseudo()
+    {
+        return $this->_userToPseudo;
     }
 
 
@@ -150,6 +163,8 @@ class ObjectUser extends Object
             $this->_objectType = $param['objectType'];
             $this->_objectModel = $param['objectModel'];
             $this->_objectUserId = $param['objectUserId'];
+            $this->_objectUserPseudo = $param['objectUserPseudo'];
+            $this->_userToPseudo = $param['userToPseudo'];
             $this->_objectFrom = $param['objectFrom'];
             $this->_objectFromId = $param['objectFromId'];
             $this->_objectFromX = $param['positionFromX'];
@@ -289,8 +304,14 @@ class ObjectUser extends Object
         $array = array();
         $sql = FlyPDO::get();
         $req = $sql->prepare('
-                    SELECT `'.static::$_sqlTable.'`.* '.$select_add.'
+                    SELECT `'.static::$_sqlTable.'`.*, users.pseudo objectUserPseudo, toUsers.pseudo userToPseudo '.$select_add.'
                         FROM `'.static::$_sqlTable.'`
+                           INNER JOIN `'.TABLE_USERS.'` users
+                               ON users.id = `'.static::$_sqlTable.'`.objectUserId
+                           INNER JOIN `'.TABLE_SHIPS.'` toShip
+                               ON toShip.id = `'.static::$_sqlTable.'`.objectToId
+                            INNER JOIN `'.TABLE_USERS.'` toUsers
+                               ON toUsers.id = toShip.userId
                         '.$join_add.'
 
                         '.$where);
