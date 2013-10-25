@@ -72,7 +72,7 @@ head();
                         <small><?php echo date('d/m H:i', $Message->getDate())?></small>
                     </div>
                     <div class="large-10 columns">
-                        <?php echo $Message->getContent()?>
+                        <?php echo nl2br($Message->getContent())?>
                     </div>
                     <?php
                     if (!$Message->isRead()) {

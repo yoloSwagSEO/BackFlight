@@ -1,5 +1,6 @@
 <?php
 $MasterShipPlayer = new Ship('master', $User->getId());
+profile('Mastership load');
 
 // If the player has no master ship, we create it
 if (!$MasterShipPlayer->isSql()) {
@@ -27,6 +28,9 @@ if (!$MasterShipPlayer->isSql()) {
     
 }
 
+
+profile('Mastership load');
+
 $array_ressources = Ressource::getAll('', '', $User->getId(), 'ship', $MasterShipPlayer->getId());
 if (empty($array_ressources)) {
     $RessourceFuel = new Ressource();
@@ -44,4 +48,6 @@ if (empty($array_ressources)) {
     $RessourceFuel->save();
     $RessourceTechs->save();
 }
+
+profile('ressources load');
 

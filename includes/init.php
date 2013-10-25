@@ -1,4 +1,6 @@
 <?php
+$script_start_microtime = time() + microtime();
+
 // Setting encoding
 header('Content-Type: text/html; charset=utf-8');
 
@@ -41,7 +43,7 @@ include_once 'includes/game_verif.php';
 // Load game values (eg. ranks)
 include_once 'includes/game_load.php';
 
-
+profile('Before user');
 if (!empty($_SESSION['User'])) {
     $User = new User($_SESSION['User']);
     if ($User->isConnected() && $User->isSql()) {
@@ -54,5 +56,7 @@ if (!empty($_SESSION['User'])) {
 } else {
     $User = new User();
 }
+
+profile('User loaded');
 
 ?>

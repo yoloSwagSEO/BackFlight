@@ -30,3 +30,14 @@ function countDown($rem)
     }
     return $time;
 }
+
+function profile($title = null)
+{
+    global $script_start_microtime;
+    if (!empty($_SESSION['User'])) {
+        if ($_SESSION['User'] == 1) {
+                echo '<pre><span style="color:#cc0000; display: inline-block; width: 100px; text-align: right;">'.number_format(microtime(true) - $script_start_microtime, 4, '.', '').'s</span> <small>('.$title.')</small></pre>';
+
+        }
+    }
+}
