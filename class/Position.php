@@ -307,17 +307,19 @@ class Position extends Fly
                     }
                 }
                 if (($x != $startX) || ($y != $startY)) {
-                    foreach ($array_positions_knowns as $Position) {
-                        if ($Position->getX() == $x && $Position->getY() == $y) {
-                            if ($max_forward > 0) {
-                                // Detect if ship will move forward
-                                $move_forward = rand(1,100);
-                                if ($move_forward < $probaActionForward * 100) {
-                                $max_forward--;
-                                    break;
+                    if (!empty($array_positions_knowns)) {
+                        foreach ($array_positions_knowns as $Position) {
+                            if ($Position->getX() == $x && $Position->getY() == $y) {
+                                if ($max_forward > 0) {
+                                    // Detect if ship will move forward
+                                    $move_forward = rand(1,100);
+                                    if ($move_forward < $probaActionForward * 100) {
+                                    $max_forward--;
+                                        break;
+                                    }
                                 }
+                                continue;
                             }
-                            continue;
                         }
                     }
                     if (Position::isEmpty($x, $y)) {
