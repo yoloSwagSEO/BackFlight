@@ -8,23 +8,27 @@
     </p>
         <?php
     }
-    foreach ($MasterShipPlayer->getModulesEnabled() as $moduleId => $quantity)
+
+    $modulesEnabled = $MasterShipPlayer->getModulesEnabled();
+    ksort($modulesEnabled);
+
+    foreach ($modulesEnabled as $moduleId => $quantity)
     {
         if ($moduleId == 7) {
             continue;
         }
         $Module = $array_modules[$moduleId];
-            if ($Module->getType() == 'load') {
-                $icon = '&#xe0a1;';
-            } else if ($Module->getType() == 'power') {
-                $icon = '&#xe0d1;';
-            } else if ($Module->getType() == 'energy') {
-                $icon = '&#xe0b0;';
-            } else {
-                $icon = '&#xe0f6;';
-            }
-            $bigIcon = '&#xe09f;';
-            ?>
+        if ($Module->getType() == 'load') {
+            $icon = '&#xe0a1;';
+        } else if ($Module->getType() == 'power') {
+            $icon = '&#xe0d1;';
+        } else if ($Module->getType() == 'energy') {
+            $icon = '&#xe0b0;';
+        } else {
+            $icon = '&#xe0f6;';
+        }
+        $bigIcon = '&#xe09f;';
+        ?>
         <div class='large-4 columns'>
             <a href='#' data-tooltip data-width=250 class="has-tip tip-top module_disable" data-module-id="<?php echo $Module->getId()?>" title="<?php echo $Module->getDescription()?>" style="display: block">
                 <div class='panel'>
@@ -44,11 +48,15 @@
         </div>
         <?php
     }
+
+    $modulesAvailable = $MasterShipPlayer->getModules();
+    ksort($modulesAvailable);
+
     ?>
     <hr />
     <h4>Modules à utiliser</h4>
     <div class="row">
-        <?php foreach ($MasterShipPlayer->getModules() as $moduleId => $quantity)
+        <?php foreach ($modulesAvailable as $moduleId => $quantity)
         {
             if ($quantity != 0) {
                 $Module = $array_modules[$moduleId];
