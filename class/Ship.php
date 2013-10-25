@@ -955,15 +955,15 @@ class Ship extends Model
                 if (!empty($row['typeId'])) {
                     if ($row['shipObjectType'] == 'module') {
                         if (empty($param['shipModule'][$row['shipObjectId']])) {
-                            if (empty($param['modules'][$row['typeId']])) {
-                                $param['modules'][$row['typeId']] = 0;
-                            }
                             if (!empty($row['typeEnabled'])) {
                                 if (empty($param['modulesEnabled'][$row['typeId']])) {
                                     $param['modulesEnabled'][$row['typeId']] = 0;
                                 }
                                 $param['modulesEnabled'][$row['typeId']]++;
                             } else {
+                                if (empty($param['modules'][$row['typeId']])) {
+                                    $param['modules'][$row['typeId']] = 0;
+                                }
                                 $param['modules'][$row['typeId']]++;
                             }
                             $param['shipModule'][$row['shipObjectId']] = true;
