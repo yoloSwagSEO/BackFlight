@@ -112,7 +112,7 @@ class Object extends Fly
 
     public function getObjectTime()
     {
-        return $this->_objectTime;
+        return $this->_objectTime / GAME_SPEED;
     }
 
 

@@ -141,7 +141,7 @@ class Module extends Fly
 
     public function getTime()
     {
-        return $this->_time;
+        return $this->_time / GAME_SPEED;
     }
 
     public function getBuildEnd()
