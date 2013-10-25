@@ -1064,9 +1064,11 @@ class Ship extends Model
     public function getModulesEnabledNumber()
     {
         $number = 0;
-        foreach ($this->_modulesEnabled as $quantity)
+        foreach ($this->_modulesEnabled as $id => $quantity)
         {
-            $number += $quantity;
+            if ($id != 7) {
+                $number += $quantity;
+            }
         }
         return $number;
     }

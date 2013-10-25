@@ -10,6 +10,9 @@
     }
     foreach ($MasterShipPlayer->getModulesEnabled() as $moduleId => $quantity)
     {
+        if ($moduleId == 7) {
+            continue;
+        }
         $Module = $array_modules[$moduleId];
             if ($Module->getType() == 'load') {
                 $icon = '&#xe0a1;';

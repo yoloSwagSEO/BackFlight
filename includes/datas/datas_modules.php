@@ -93,7 +93,7 @@ $ModuleSlotModule->setIntro('+1 emplacement module');
 $ModuleSlotModule->setDescription('L\'agrandissement des slots modules permet d\'ajouter plus de modules.');
 $ModuleSlotModule->setType('module');
 $ModuleSlotModule->setWeight(15);
-$ModuleSlotModule->setModule(2);
+$ModuleSlotModule->setModule(1);
 $ModuleSlotModule->setOperation('add');
 $ModuleSlotModule->setCostEnergy(50);
 $ModuleSlotModule->setCostFuel(90);
