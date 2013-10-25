@@ -1,4 +1,5 @@
 <div class="panel modules">
+    <div class="row">
     <h4>Modules actifs (<?php echo $MasterShipPlayer->getModulesEnabledNumber() ?>/<?php echo $MasterShipPlayer->getModulesMax() ?>)</h4>
     <?php
     if (!$MasterShipPlayer->getModulesEnabled()) {
@@ -40,12 +41,16 @@
         </div>
         <?php
     }
+    ?>
+    </div>
+</div>
+<div class="panel modules">
+    <?php
 
     $modulesAvailable = $MasterShipPlayer->getModules();
     ksort($modulesAvailable);
 
     ?>
-    <hr />
     <h4>Modules à utiliser</h4>
     <div class="row">
         <?php foreach ($modulesAvailable as $moduleId => $quantity)
@@ -53,7 +58,7 @@
             if ($quantity != 0) {
                 $Module = $array_modules[$moduleId];
                 $icon = $Module->getIcon();
-                $bigIcon = '&#xe09f;';
+                $bigIcon = '&#xe0fe;';
                 ?>
             <div class='large-4 columns'>
                 <a href='#' data-tooltip data-width=250 class="has-tip tip-top module_enable" data-module-id="<?php echo $Module->getId()?>" title="<?php echo $Module->getDescription()?>" style="display: block">
