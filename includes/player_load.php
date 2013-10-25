@@ -99,6 +99,17 @@ if (!empty($array_actions)) {
     }
 }
 
+// Load all ships
+$array_ships = Ship::getAll('', '', $User->getId());
+if (!empty($array_ships)) {
+    foreach ($array_ships as $Ship)
+    {
+        if ($Ship->getId() === $MasterShipPlayer->getId()) {
+            $MasterShipPlayer = $Ship;
+        }        
+    }
+}
+
 // Load builds and create objects if necessary
 $array_builds = Build::getAll('', '', $User->getId());
 foreach ($array_builds as $Build)
