@@ -1098,10 +1098,17 @@ class Ship extends Model
             ':typeId' => $typeId,
             ':typeOrder' => 1
         ))) {
-            if (empty($this->_modules[$typeId])) {
-                $this->_modules[$typeId] = 0;
+            if ($type == 'module') {
+                if (empty($this->_modules[$typeId])) {
+                    $this->_modules[$typeId] = 0;
+                }
+                $this->_modules[$typeId]++;
+            } else if ($type == 'object') {
+                if (empty($this->_objects['weapons'][$typeId])) {
+                    $this->_objects['weapons'][$typeId] = 0;
+                }
+                $this->_objects['weapons'][$typeId]++;
             }
-            $this->_modules[$typeId]++;
             return true;
         } else {
             var_dump($req->errorInfo());
