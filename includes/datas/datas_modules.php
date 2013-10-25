@@ -76,7 +76,7 @@ $SolarBasicModule = new Module();
 $SolarBasicModule->setName('Capteurs solaires');
 $SolarBasicModule->setIntro('+40% gain énergie');
 $SolarBasicModule->setDescription('En recouvrant une plus grande partie du vaisseau de capteurs solaires, celui-ci récupérera plus vite son énergie');
-$SolarBasicModule->setType('energyGain');
+$SolarBasicModule->setType('energy');
 $SolarBasicModule->setWeight(20);
 $SolarBasicModule->setEnergyGain(1.4);
 $SolarBasicModule->setOperation('multiply');

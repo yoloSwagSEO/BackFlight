@@ -506,4 +506,23 @@ class Module extends Fly
             trigger_error('Unable to load from SQL', E_USER_ERROR);
         }
     }
+
+    public function getIcon()
+    {
+        if ($this->_type == 'load') {
+            return '&#xe0a1;';
+        } else if ($this->_type == 'power') {
+            return '&#xe0d1;';
+        } else if ($this->_type == 'energy') {
+            return '&#xe0b0;';
+        } else if ($this->_type == 'shield') {
+            return '&#xe0af;';
+        } else if ($this->_type == 'speed') {
+            return '&#xe09f;';
+        } else if ($this->_type == 'module') {
+            return '&#xe102;';
+        } else {
+            return '&#xe0f6;';
+        }
+    }
 }

@@ -18,15 +18,7 @@
             continue;
         }
         $Module = $array_modules[$moduleId];
-        if ($Module->getType() == 'load') {
-            $icon = '&#xe0a1;';
-        } else if ($Module->getType() == 'power') {
-            $icon = '&#xe0d1;';
-        } else if ($Module->getType() == 'energy') {
-            $icon = '&#xe0b0;';
-        } else {
-            $icon = '&#xe0f6;';
-        }
+        $icon = $Module->getIcon();
         $bigIcon = '&#xe09f;';
         ?>
         <div class='large-4 columns'>
@@ -60,15 +52,7 @@
         {
             if ($quantity != 0) {
                 $Module = $array_modules[$moduleId];
-                if ($Module->getType() == 'load') {
-                    $icon = '&#xe0a1;';
-                } else if ($Module->getType() == 'power') {
-                    $icon = '&#xe0d1;';
-                } else if ($Module->getType() == 'energy') {
-                    $icon = '&#xe0b0;';
-                } else {
-                    $icon = '&#xe0f6;';
-                }
+                $icon = $Module->getIcon();
                 $bigIcon = '&#xe09f;';
                 ?>
             <div class='large-4 columns'>
@@ -104,15 +88,7 @@
     <div class="row">
         <?php foreach ($array_modules as $Module)
         {
-            if ($Module->getType() == 'load') {
-                $icon = '&#xe0a1;';
-            } else if ($Module->getType() == 'power') {
-                $icon = '&#xe0d1;';
-            } else if ($Module->getType() == 'energy') {
-                $icon = '&#xe0b0;';
-            } else {
-                $icon = '&#xe0f6;';
-            }
+            $icon = $Module->getIcon();
             $bigIcon = '&#xe091;';
             if ($Module->isBuilding()) {
                 $bigIcon = '&#xe077;';
