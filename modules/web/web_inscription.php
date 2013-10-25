@@ -27,7 +27,10 @@ if (!empty($_POST['pseudo']) && !empty($_POST['email']) && !empty($_POST['clef']
     }
 
     if ($setPseudo === true && $setMail === true && $setKey === true) {
-        $User->save();
+        $id = $User->save();
+
+        $Conversation = new Conversation(1);
+        $Conversation->addUser($id);
 
         header('location: '.PATH);
         $_SESSION['infos']['inscription'] = true;
