@@ -44,5 +44,15 @@ if (GAME_AUTOCREATE_DATAS) {
     if (empty($array_objects)) {
         include_once 'includes/datas/datas_objects.php';
     }
+
+    $array_positions = Position::getAll();
+    if (empty($array_positions)) {
+        $Position = new Position();
+        $Position->setCategory('asteroids');
+        $Position->setX(800);
+        $Position->setY(0);
+        $Position->setType(1);
+        $Position->save();
+    }
 }
 ?>

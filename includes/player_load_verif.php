@@ -4,10 +4,10 @@ $MasterShipPlayer = new Ship('master', $User->getId());
 // If the player has no master ship, we create it
 if (!$MasterShipPlayer->isSql()) {
     $MasterShipPlayer = new Ship();
-    
-    // Get a position for the player to begin
-    $StartPosition = Position::getClearPosition();
-    
+
+    $StartPosition = new Position(1);
+
+    // Get a position for the player to begin    
     $MasterShipPlayer->setPosition($StartPosition);
     $MasterShipPlayer->setType('master');
     $MasterShipPlayer->setModel(1);
@@ -22,7 +22,8 @@ if (!$MasterShipPlayer->isSql()) {
     
     Position::addUserPosition($User->getId(), $StartPosition->getId());
 
-    $MasterShipPlayer->save();   
+    $MasterShipPlayer->save();
+    header('location: '.PATH);
     
 }
 
