@@ -1260,9 +1260,9 @@ class Ship extends Model
         $maxY = $fromPositionY + $inRange;
         
         if ($direction == 'front') {
-            $minX = $fromPositionX;
-        } else {
             $maxX = $fromPositionX;
+        } else {
+            $minX = $fromPositionX;
         }
 
         $sql = FlyPDO::get();

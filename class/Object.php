@@ -60,7 +60,7 @@ class Object extends Fly
 
     public function getObjectSpeed()
     {
-        return $this->_objectSpeed;
+        return $this->_objectSpeed * GAME_SPEED;
     }
 
     public function getObjectWeight()

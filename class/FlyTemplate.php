@@ -11,7 +11,7 @@ abstract class FlyTemplate
 
     public static function head($file = false)
     {
-        global $User, $array_fleets, $array_actions, $array_notifications_unread;
+        global $User, $array_fleets, $array_actions, $array_notifications_unread, $array_torpedoes_user;
         if (self::$_header) {
             trigger_error('Header already loaded', E_USER_ERROR);
         }

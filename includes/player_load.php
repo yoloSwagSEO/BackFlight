@@ -137,60 +137,68 @@ foreach ($array_builds as $Build)
 
 // Load user objects for player (sent by / sent to)
 $array_objects_user = ObjectUser::getAll('', '', $User->getId());
+$array_torpedoes_user = array();
 
 foreach ($array_objects_user as $ObjectUser)
 {
-    $distance = Position::calculateDistance($ObjectUser->getObjectFromX(), $ObjectUser->getObjectFromY(), $ObjectUser->getPositionShipX(), $ObjectUser->getPositionShipY());
-    if ($distance > $ObjectUser->getObjectRange() * POSITION_LENGHT) {
-        exit('Ship has runaway');
-        $ObjectUser->destroy();
-    } else {
-        $time_travel = $distance / $ObjectUser->getObjectSpeed();
-        if ($ObjectUser->getObjectStart() + $time_travel <= time()) {
-            if ($MasterShipPlayer->getId() == $ObjectUser->getObjectToId()) {
-                $Ship = $MasterShipPlayer;
-            } else {
-                $Ship = new Ship($ObjectUser->getObjectToId());
-                $Ship->updateEnergy();
-                $Ship->updatePower();
-                $Ship->updateShield();
-                $Ship->setLastUpdate(time());
-                $Ship->save();
-            }
-
-            if ($ObjectUser->getObjectAttackType() == 'shield') {
-                $Ship->removeShield($ObjectUser->getObjectAttackPower());
-            } else {
-                $Ship->removePower($ObjectUser->getObjectAttackPower());
-            }
-
-            $NotificationTarget = new Notification();
-            $NotificationTarget->setAction('attack');
-            $NotificationTarget->setTypeId(1);
-            $NotificationTarget->setActionId($Ship->getId());
-            $NotificationTarget->setActionType($ObjectUser->getObjectAttackType());
-            $NotificationTarget->setDate($ObjectUser->getObjectStart() + $time_travel);
-            $NotificationTarget->setImportance(NOTIFICATION_IMPORTANCE_HIGH);
-
-            $NotificationLauncher = clone($NotificationTarget);
-            $NotificationLauncher->setType('attack_done');
-            $NotificationLauncher->setUserId($ObjectUser->getObjectUserId());
-            $NotificationLauncher->setImportance(NOTIFICATION_IMPORTANCE_MEDIUM);
-            $NotificationLauncher->setActionSub($Ship->getId());
-            $NotificationLauncher->save();
-
-            $NotificationTarget->setActionSub($ObjectUser->getObjectUserId());
-            $NotificationTarget->setType('attack_received');
-            $NotificationTarget->setUserId($Ship->getUserId());
-            $NotificationTarget->save();
-
+    if ($ObjectUser->getObjectType() == 'torpedo') {
+        $distance = Position::calculateDistance($ObjectUser->getObjectFromX(), $ObjectUser->getObjectFromY(), $ObjectUser->getPositionShipX(), $ObjectUser->getPositionShipY());
+        if ($distance > $ObjectUser->getObjectRange() * POSITION_LENGHT) {
             $ObjectUser->destroy();
+            exit('Ship has runaway');
+        } else {
+            $time_travel = $distance / $ObjectUser->getObjectSpeed();
+            if ($ObjectUser->getObjectStart() + $time_travel <= time()) {
+                if ($MasterShipPlayer->getId() == $ObjectUser->getObjectToId()) {
+                    $Ship = $MasterShipPlayer;
+                } else {
+                    $Ship = new Ship($ObjectUser->getObjectToId());
+                    $Ship->updateEnergy();
+                    $Ship->updatePower();
+                    $Ship->updateShield();
+                    $Ship->setLastUpdate(time());
+                    $Ship->save();
+                }
 
-            $Ship->save();
+                if ($ObjectUser->getObjectAttackType() == 'shield') {
+                    $Ship->removeShield($ObjectUser->getObjectAttackPower());
+                } else {
+                    $Ship->removePower($ObjectUser->getObjectAttackPower());
+                }
+
+                $NotificationTarget = new Notification();
+                $NotificationTarget->setAction('attack');
+                $NotificationTarget->setTypeId(1);
+                $NotificationTarget->setActionId($Ship->getId());
+                $NotificationTarget->setActionType($ObjectUser->getObjectAttackType());
+                $NotificationTarget->setDate($ObjectUser->getObjectStart() + $time_travel);
+                $NotificationTarget->setImportance(NOTIFICATION_IMPORTANCE_HIGH);
+
+                $NotificationLauncher = clone($NotificationTarget);
+                $NotificationLauncher->setType('attack_done');
+                $NotificationLauncher->setUserId($ObjectUser->getObjectUserId());
+                $NotificationLauncher->setImportance(NOTIFICATION_IMPORTANCE_MEDIUM);
+                $NotificationLauncher->setActionSub($Ship->getId());
+                $NotificationLauncher->save();
+
+                $NotificationTarget->setActionSub($ObjectUser->getObjectUserId());
+                $NotificationTarget->setType('attack_received');
+                $NotificationTarget->setUserId($Ship->getUserId());
+                $NotificationTarget->save();
+
+                $ObjectUser->destroy();
+
+                $Ship->save();
+            } else {
+                $from = 'target';
+                if ($ObjectUser->getObjectUserId() == $User->getId()) {
+                    $from = 'launcher';
+                }
+                $array_torpedoes_user[$from][$ObjectUser->getId()] = $ObjectUser;
+            }
         }
     }
 }
-
 
 
 // Load notifications

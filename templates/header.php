@@ -115,7 +115,36 @@
             unset($_SESSION['infos']['flight']['damages']);
 
         }
+        
+        if (!empty($array_torpedoes_user)) {
+            foreach ($array_torpedoes_user as $type => $torpedoes)
+            {
+                foreach ($torpedoes as $ObjectUser)
+                {
+                    $distance = Position::calculateDistance($ObjectUser->getObjectFromX(), $ObjectUser->getObjectFromY(), $ObjectUser->getPositionShipX(), $ObjectUser->getPositionShipY());
+                    $time_travel = $distance / $ObjectUser->getObjectSpeed();
+                    $time_remaining = $ObjectUser->getObjectStart() + $time_travel - time();
 
+                    if ($type == 'target') {
+                        ?>
+                        <div class="row">
+                            <div data-alert="" class="alert-box alert radius">
+                                Attaque de torpille détectée depuis <?php echo $ObjectUser->getObjectFromId()?>! Impact estimé dans <?php echo renderCountDown($time_remaining)?>.
+                            </div>
+                        </div>
+                        <?php
+                    } else {
+                        ?>
+                        <div class="row">
+                            <div data-alert="" class="alert-box radius">
+                                Attaque de torpille vers vaiseau de <?php $ObjectUser->getObjectToId()?> ! Impact estimé dans <?php echo renderCountDown($time_remaining)?>.
+                            </div>
+                        </div>
+                        <?php
+                    }
+                }                
+            }
+        }
 
     }
     ?>
