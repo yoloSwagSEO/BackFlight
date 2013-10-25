@@ -13,7 +13,7 @@ CREATE TABLE `actions` (
   `end` int(11) DEFAULT NULL,
   `state` varchar(15) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 CREATE TABLE `builds` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -26,20 +26,20 @@ CREATE TABLE `builds` (
   `end` int(11) NOT NULL,
   `state` varchar(25) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 CREATE TABLE `conversations` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `subject` varchar(50) NOT NULL,
   `date` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 CREATE TABLE `conversations_attachments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `messageId` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `conversations_messages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -48,12 +48,12 @@ CREATE TABLE `conversations_messages` (
   `date` int(11) NOT NULL,
   `content` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 CREATE TABLE `conversations_read` (
   `messageId` int(11) NOT NULL,
   `userId` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `conversations_users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -61,14 +61,14 @@ CREATE TABLE `conversations_users` (
   `userId` int(11) NOT NULL,
   `date` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 CREATE TABLE `fleets` (
   `moveId` int(11) NOT NULL,
   `userId` int(11) NOT NULL,
   `shipId` int(11) NOT NULL,
   KEY `moveId` (`moveId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `models` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -86,7 +86,7 @@ CREATE TABLE `models` (
   `powerMax` int(11) NOT NULL,
   `speed` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 CREATE TABLE `modules` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -115,7 +115,7 @@ CREATE TABLE `modules` (
   `costTechs` int(11) NOT NULL,
   `costFuel` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 CREATE TABLE `notifications` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -132,7 +132,7 @@ CREATE TABLE `notifications` (
   `actionSub` int(11) DEFAULT NULL,
   `read` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `objects` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -151,7 +151,7 @@ CREATE TABLE `objects` (
   `objectLaunchFuel` int(11) DEFAULT NULL,
   `objectLaunchEnergy` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 CREATE TABLE `objects_users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -165,7 +165,7 @@ CREATE TABLE `objects_users` (
   `objectStart` int(11) NOT NULL,
   `objectState` varchar(25) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `positions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -175,7 +175,7 @@ CREATE TABLE `positions` (
   `category` varchar(10) NOT NULL,
   `type` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 CREATE TABLE `positions_searches` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -185,7 +185,7 @@ CREATE TABLE `positions_searches` (
   `result` varchar(10) CHARACTER SET latin1 NOT NULL,
   `quantity` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 CREATE TABLE `quests` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -195,7 +195,7 @@ CREATE TABLE `quests` (
   `positionId` int(11) DEFAULT NULL,
   `questType` varchar(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 CREATE TABLE `quests_gains` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -206,7 +206,7 @@ CREATE TABLE `quests_gains` (
   `gainValue` int(11) DEFAULT NULL,
   `gainQuantity` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 CREATE TABLE `quests_requirements` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -216,7 +216,7 @@ CREATE TABLE `quests_requirements` (
   `requirementValue` int(11) NOT NULL,
   `requirementQuantity` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 CREATE TABLE `quests_steps` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -226,7 +226,7 @@ CREATE TABLE `quests_steps` (
   `stepPositionId` int(11) DEFAULT NULL,
   `stepNb` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 CREATE TABLE `ranks` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -237,7 +237,7 @@ CREATE TABLE `ranks` (
   `position` float NOT NULL,
   `global` float NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 CREATE TABLE `ressources` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -248,7 +248,7 @@ CREATE TABLE `ressources` (
   `quantity` int(11) NOT NULL,
   `quality` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 CREATE TABLE `ships` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -263,7 +263,7 @@ CREATE TABLE `ships` (
   `lastUpdate` int(11) NOT NULL,
   `state` varchar(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 CREATE TABLE `ships_objects` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -273,7 +273,7 @@ CREATE TABLE `ships_objects` (
   `typeOrder` int(11) DEFAULT NULL,
   `typeEnabled` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 CREATE TABLE `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -283,12 +283,12 @@ CREATE TABLE `users` (
   `rank` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `pseudo` (`pseudo`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 CREATE TABLE `users_positions` (
   `userId` int(11) NOT NULL,
   `positionId` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `users_quests` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -296,7 +296,7 @@ CREATE TABLE `users_quests` (
   `questId` int(11) NOT NULL,
   `questState` varchar(5) CHARACTER SET latin1 DEFAULT NULL,
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `users_quests_requirements` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -304,7 +304,7 @@ CREATE TABLE `users_quests_requirements` (
   `requirementId` int(11) NOT NULL,
   `requirementQuantity` int(11) DEFAULT NULL,
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `users_quests_steps` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -312,4 +312,25 @@ CREATE TABLE `users_quests_steps` (
   `stepId` int(11) NOT NULL,
   `date` int(11) NOT NULL,
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+ALTER TABLE  `actions` ADD INDEX (  `user` ) ;
+ALTER TABLE  `positions` ADD INDEX (  `id` ) ;
+ALTER TABLE  `ships` ADD INDEX (  `positionId` ) ;
+ALTER TABLE  `ships` ADD INDEX (  `model` ) ;
+ALTER TABLE  `ressources` ADD INDEX (  `intoId` ) ;
+ALTER TABLE  `ressources` ADD INDEX (  `into` ) ;
+ALTER TABLE  `ships_objects` ADD INDEX (  `shipId` ) ;
+ALTER TABLE  `ships_objects` ADD INDEX (  `type` ) ;
+ALTER TABLE  `ships_objects` ADD INDEX (  `typeId` ) ;
+
+ALTER TABLE  `fleets` ADD INDEX (  `moveId` ,  `userId` ) ;
+ALTER TABLE  `notifications` ADD INDEX (  `userId` ,  `read` ) ;
+ALTER TABLE  `positions_searches` ADD INDEX (  `positionId` ,  `userId` ,  `date` ) ;
+ALTER TABLE  `ranks` ADD INDEX (  `userId` ,  `date` ) ;
+ALTER TABLE  `ships` ADD INDEX (  `userId` ) ;
+ALTER TABLE  `users` ADD INDEX (  `pseudo` ) ;
+ALTER TABLE  `users_positions` ADD INDEX (  `userId` ) ;
+ALTER TABLE  `users_quests` ADD INDEX (  `userId` ,  `questId` ) ;
+ALTER TABLE  `users_quests_requirements` ADD INDEX (  `userId` ,  `requirementId` ) ;
+ALTER TABLE  `users_quests_steps` ADD INDEX (  `userId` ,  `stepId` ) ;
