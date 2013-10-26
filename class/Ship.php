@@ -405,13 +405,15 @@ class Ship extends Model
         return $this->_fuel = $fuel;
     }
 
-    public function setTechs($techs)
+    public function setTechs($techs, $force = false)
     {
-        $dif = $techs - $this->_techs;
-        $max_load = $this->_getAvailableLoadFor('techs');
+        if (!$force) {
+            $dif = $techs - $this->_techs;
+            $max_load = $this->_getAvailableLoadFor('techs');
 
-        if ($dif > $max_load) {
-            $techs = $this->_techs + $max_load;
+            if ($dif > $max_load) {
+                $techs = $this->_techs + $max_load;
+            }
         }
 
         $this->_techs = $techs;
@@ -801,17 +803,7 @@ class Ship extends Model
             ':power' => $this->_power,
             ':state' => $this->_state
         ))) {
-            if ($this->_fuel != $this->_fuelStart) {
-                $RessourceFuel = new Ressource('fuel', 'ship', $this->_id);
-                $RessourceFuel->setQuantity($this->_fuel);
-                $RessourceFuel->save();
-            }
-
-            if ($this->_techs != $this->_techsStart) {
-                $RessourceFuel = new Ressource('techs', 'ship', $this->_id);
-                $RessourceFuel->setQuantity($this->_techs);
-                $RessourceFuel->save();
-            }
+            
             return $sql->lastInsertId();
         } else {
             var_dump($req->errorInfo());
