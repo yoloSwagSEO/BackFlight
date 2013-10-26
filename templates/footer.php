@@ -1,4 +1,6 @@
-<?php profile('Page load')  ?>
+<footer id="footer" class="row">
+    Page générée en <?php echo number_format(microtime(true) - $script_start_microtime, 3, '.', '')?>s
+</footer>
     <!--<script src="js/foundation.min.js"></script>-->
 
     <script src="js/vendor/jquery.js"></script>

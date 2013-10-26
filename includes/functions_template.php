@@ -7,6 +7,7 @@ function head($file = false)
 
 function foot($file = false)
 {
+    global $script_start_microtime;
     return FlyTemplate::foot($file);
 }
 
