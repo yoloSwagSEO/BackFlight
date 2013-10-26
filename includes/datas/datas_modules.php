@@ -2,7 +2,7 @@
 $HoldBasicModule = new Module();
 $HoldBasicModule->setName('Bloc de soute');
 $HoldBasicModule->setIntro('+25% chargement');
-$HoldBasicModule->setDescription('En rajoutant un bloc de soute, vous pourrez doubler votre capacité de chargement !');
+$HoldBasicModule->setDescription('En rajoutant un bloc de soute, vous augmentez votre capacité de chargement !');
 $HoldBasicModule->setType('load');
 $HoldBasicModule->setWeight(20);
 $HoldBasicModule->setLoad(1.25);
