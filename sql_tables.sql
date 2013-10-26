@@ -334,3 +334,5 @@ ALTER TABLE  `users_positions` ADD INDEX (  `userId` ) ;
 ALTER TABLE  `users_quests` ADD INDEX (  `userId` ,  `questId` ) ;
 ALTER TABLE  `users_quests_requirements` ADD INDEX (  `userId` ,  `requirementId` ) ;
 ALTER TABLE  `users_quests_steps` ADD INDEX (  `userId` ,  `stepId` ) ;
+
+ALTER TABLE  `quests` CHANGE  `name`  `name` VARCHAR( 50 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ;
