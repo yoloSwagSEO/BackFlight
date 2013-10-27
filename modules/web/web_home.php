@@ -71,6 +71,7 @@ Serez-vous prêt à relevez le défi ?
                 - <a href="https://github.com/In4matik/BackFlight/pull/6">#6</a> Fix module description<br />
                 - Add page generation time<br />
                 - More techs on game start<br />
+                - Add game speed value<br />
             </p>
         </div>
         <?php
