@@ -14,16 +14,17 @@ head();
     <div class="large-9 columns">
         <div class="panel">A simple game in a complex space</div>
         <p>
-            <strong>2442, somewhere in the space...</strong> Spaceships return to life after their captains wake up from cryogenic sleep. Smart crews awake from different places, and all of them seems to be survivors of a biggest ship, now disappeard. In their possession, only some flight documents and... a mysterious encrypted map that lead to a very powerful traveling network.
+            <strong>2442, quelque part dans l'espace...</strong> <br />
+            Un à un, des vaisseaux se réveillent après le long sommeil cryogénique de leurs capitaines. <br />
+Tous leurs équipages semblent se souvenir d'une seule chose : ils faisaient partie de la plus grande mission d'exploration jamais réalisée, à bord d'un plus grand vaisseau.<br />
+En leur possession : quelques documents de vol et... une mystérieuse carte cryptée qui ouvre l'accès à des voies de communication intergalactiques.
         </p>
         <p>
-            You're one of this captains. Your mission ? Be the first crew to bring the map on Earth, or the first team to bring it to humanity. Choice is yours.
+Vous êtes un de ces capitaines. Votre mission ? Être le premier équipage à ramener la carte sur terre, ou la première équipe à l'offrir à l'humanité. 
         </p>
         <p>
-        With technologics fragments, energy residues, patience and strategy, you have to survive in that complexe environnment.
-        </p>
-        <p>
-        More is to come...
+Grâce à des débris technologiques, des restes de carburant, de la patience et de la stratégie, vous aurez à survivre dans cette course à la terre. <br />
+Serez-vous prêt à relevez le défi ?
         </p>
     </div>
     <div class="large-3 columns">
