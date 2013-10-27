@@ -9,7 +9,7 @@ abstract class FlyTemplate
     private static $_css = array();
     private static $_scripts = array();
 
-    public static function head($file = false)
+    public static function head()
     {
         global $User, $array_fleets, $array_actions, $array_notifications_unread, $array_torpedoes_user;
         if (self::$_header) {
@@ -19,8 +19,9 @@ abstract class FlyTemplate
         include_once ROOT_DIR.'templates/header.php';
     }
 
-    public static function foot($file = false)
+    public static function foot()
     {
+        global $script_start_microtime;
         if (self::$_footer) {
             trigger_error('Footer already loaded', E_USER_ERROR);
         }

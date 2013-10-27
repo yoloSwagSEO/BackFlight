@@ -107,7 +107,9 @@ class Message extends Fly
             ':content' => $this->_content
         );
         if ($req->execute($args)) {
-            return $sql->lastInsertId();
+            $this->_id = $sql->lastInsertId();
+            $this->read($this->_userFrom);
+            return $this->_id;
         } else {
             var_dump($req->errorInfo());
             trigger_error('Unable to save in '.__FILE__.' on line '.__LINE__.' ! ', E_USER_ERROR);

@@ -1,6 +1,6 @@
 <?php
 $MasterShipPlayer = new Ship('master', $User->getId());
-profile('Mastership load');
+profile('Mastership loaded');
 
 // If the player has no master ship, we create it
 if (!$MasterShipPlayer->isSql()) {
@@ -15,7 +15,7 @@ if (!$MasterShipPlayer->isSql()) {
     $MasterShipPlayer->setUserId($User->getId());
     $MasterShipPlayer->setState('space');
     $MasterShipPlayer->setFuel(SHIP_START_FUEL);
-    $MasterShipPlayer->setTechs(SHIP_START_TECHS);
+    $MasterShipPlayer->setTechs(SHIP_START_TECHS, true);
     $MasterShipPlayer->calculateLoad();
     $MasterShipPlayer->setPower(SHIP_START_POWER);
     $MasterShipPlayer->setEnergy(SHIP_START_ENERGY);
@@ -28,9 +28,6 @@ if (!$MasterShipPlayer->isSql()) {
     
 }
 
-
-profile('Mastership load');
-
 $array_ressources = Ressource::getAll('', '', $User->getId(), 'ship', $MasterShipPlayer->getId());
 if (empty($array_ressources)) {
     $RessourceFuel = new Ressource();
@@ -42,12 +39,12 @@ if (empty($array_ressources)) {
     $RessourceTechs->setType('techs');
     $RessourceFuel->setType('fuel');
 
-    $RessourceFuel->setQuantity(60);
-    $RessourceTechs->setQuantity(10);
+    $RessourceFuel->setQuantity(SHIP_START_FUEL);
+    $RessourceTechs->setQuantity(SHIP_START_TECHS);
 
     $RessourceFuel->save();
     $RessourceTechs->save();
 }
 
-profile('ressources load');
+profile('Ressources loaded');
 

@@ -14,17 +14,24 @@ head();
     <div class="large-9 columns">
         <div class="panel">A simple game in a complex space</div>
         <p>
-            <strong>2442, somewhere in the space...</strong> Spaceships return to life after their captains wake up from cryogenic sleep. Smart crews awake from different places, and all of them seems to be survivors of a biggest ship, now disappeard. In their possession, only some flight documents and... a mysterious encrypted map that lead to a very powerful traveling network.
+            <strong>2442, quelque part dans l'espace...</strong> <br />
+            Un à un, des vaisseaux se réveillent après le long sommeil cryogénique de leurs capitaines. <br />
+Tous leurs équipages semblent se souvenir d'une seule chose : ils faisaient partie de la plus grande mission d'exploration jamais réalisée, à bord d'un plus grand vaisseau.<br />
+En leur possession : quelques documents de vol et... une mystérieuse carte cryptée qui ouvre l'accès à des voies de communication intergalactiques.
         </p>
         <p>
-            You're one of this captains. Your mission ? Be the first crew to bring the map on Earth, or the first team to bring it to humanity. Choice is yours.
+Vous êtes un de ces capitaines. Votre mission ? Être le premier équipage à ramener la carte sur terre, ou la première équipe à l'offrir à l'humanité. 
         </p>
         <p>
-        With technologics fragments, energy residues, patience and strategy, you have to survive in that complexe environnment.
+Grâce à des débris technologiques, des restes de carburant, de la patience et de la stratégie, vous aurez à survivre dans cette course à la terre. <br />
+Serez-vous prêt à relevez le défi ?
         </p>
-        <p>
-        More is to come...
-        </p>
+
+        <div class="row">
+            <a class="th radius" href="img/ui/sample.jpg" style="width: 200px; height: 150px;" target="_blank">
+                <img src="img/ui/sample-th.jpg" />
+            </a>
+        </div>
     </div>
     <div class="large-3 columns">
         <div class="panel">
@@ -57,11 +64,16 @@ head();
                 <a href="inscription">Inscription</a>
             </form>
         </div>
-        <h4>Dates</h4>
-        <span class="small success button">First alpha : 10/18</span>
-        <span class="small success button">First closed beta : november</span>
-        <span class="small success button">First open beta : december</span>
-        <span class="small success button">Game launch : 2014</span>
+        <div class='panel callout'>
+            <strong style='color: white'>Alpha 0.1.1</strong>
+            <p style="font-size: .9em">
+                - <a href="https://github.com/In4matik/BackFlight/pull/2">#2</a> Fix unread messages<br />
+                - <a href="https://github.com/In4matik/BackFlight/pull/6">#6</a> Fix module description<br />
+                - Add page generation time<br />
+                - More techs on game start<br />
+                - Add game speed value<br />
+            </p>
+        </div>
         <?php
         if (ENABLE_SCRIPTS) {
             ?>
@@ -75,12 +87,6 @@ head();
     </div>
 
 </div>
-<div class="row">
-    <div class="large-9 columns">
-        <a class="th radius" href="img/ui/sample.jpg" style="width: 200px; height: 150px;" target="_blank">
-            <img src="img/ui/sample-th.jpg" />
-        </a>
-    </div>
-</div>
+
 <?php
 foot();

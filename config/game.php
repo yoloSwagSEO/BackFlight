@@ -9,8 +9,6 @@
  */
 define('GAME_SPEED', 20);
 
-define('GAME_AUTOCREATE_DATAS', true);
-
 /**
  * Position distance
  */
@@ -93,27 +91,59 @@ define('SHIP_START_SHIELD', 80);
  */
 define('SHIP_START_LOADMAX', 1000);
 
+/**
+ * Probability for the ship to move forward during a flight
+ */
 define('SHIP_FLIGHT_FORWARD_PROBA', 0.9);
 
+/**
+ * Probability for the ship to move forward during a jump
+ */
 define('SHIP_JUMP_FORWARD_PROBA', 0.2);
 
+/**
+ * Power gain after repairing
+ */
 define('SHIP_REPAIR_VALUE', 30);
 
+/**
+ * Cost in fuel of a repairing
+ */
 define('SHIP_REPAIR_FUEL', 15);
 
+/**
+ * Cost in techs of a repairing
+ */
 define('SHIP_REPAIR_TECHS', 250);
 
+/**
+ * Cost in energy of a repairing
+ */
 define('SHIP_REPAIR_ENERGY', 5);
 
+/**
+ * Duration of a repairing
+ */
 define('SHIP_REPAIR_TIME', 80);
 
+/**
+ * Speed's divider for ship when overloaded
+ */
 define('SHIP_SPEED_OVERLOADED', 10);
 
+/**
+ * Under this ratio (power/powerMax), the ship will be blocked
+ */
 define('SHIP_POWER_RATIO_DAMAGED', .2);
 
-
+/**
+ * Probability that asteroids hit the ship during a normal flight
+ */
 define('FLIGHT_PROBA_ASTEROIDS_HIT_FLIGHT', 0.2);
 
+/**
+ * Probability that asteroids hit the ship during a research
+ */
 define('FLIGHT_PROBA_ASTEROIDS_HIT_SEARCH', 0.30);
 
 
@@ -132,6 +162,9 @@ Position::setCategories(array('space' => 'Espace', 'asteroids' => 'Astéroïdes'
  */
 define('POSITION_DEEP_SEARCH_LIMIT', 700);
 
+/**
+ * The ship wont go higher or lower (in Y)
+ */
 define('POSITION_DEEP_SEARCH_LIMIT_Y', 50);
 
 /**
@@ -193,10 +226,19 @@ define('POSITION_PROBA_TECHS_ASTEROIDS', .80);
  */
 define('POSITION_SEARCH_REGENERATION', 24*3600*2);
 
+/**
+ * Time search in asteroids
+ */
 define('POSITION_SEARCH_TIME_ASTEROIDS', 80);
 
+/**
+ * Time search on a planet
+ */
 define('POSITION_SEARCH_TIME_PLANET', 60);
 
+/**
+ * Time search in space
+ */
 define('POSITION_SEARCH_TIME_SPACE', 30);
 
 
@@ -259,10 +301,32 @@ define('TECHS_WEIGHT', 1.4);
                     //
                     // RESSOURCES
                     //
+/**
+ * Low importance for notifications
+ */
 define('NOTIFICATION_IMPORTANCE_LOW', 0);
+
+/**
+ * Medium importance for notifications
+ */
 define('NOTIFICATION_IMPORTANCE_MEDIUM', 1);
+
+/**
+ * High importance for notifications
+ */
 define('NOTIFICATION_IMPORTANCE_HIGH', 2);
+
+/**
+ * Extreme importance for notifications
+ */
 define('NOTIFICATION_IMPORTANCE_EXTREME', 3);
 
+/**
+ * Unread notification
+ */
 define('NOTIFICATION_UNREAD', 0);
+
+/**
+ * Read notification
+ */
 define('NOTIFICATION_READ', 1);
