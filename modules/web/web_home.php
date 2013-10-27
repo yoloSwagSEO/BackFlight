@@ -26,6 +26,12 @@ Vous êtes un de ces capitaines. Votre mission ? Être le premier équipage à r
 Grâce à des débris technologiques, des restes de carburant, de la patience et de la stratégie, vous aurez à survivre dans cette course à la terre. <br />
 Serez-vous prêt à relevez le défi ?
         </p>
+
+        <div class="row">
+            <a class="th radius" href="img/ui/sample.jpg" style="width: 200px; height: 150px;" target="_blank">
+                <img src="img/ui/sample-th.jpg" />
+            </a>
+        </div>
     </div>
     <div class="large-3 columns">
         <div class="panel">
@@ -58,11 +64,15 @@ Serez-vous prêt à relevez le défi ?
                 <a href="inscription">Inscription</a>
             </form>
         </div>
-        <h4>Dates</h4>
-        <span class="small success button">First alpha : 10/18</span>
-        <span class="small success button">First closed beta : november</span>
-        <span class="small success button">First open beta : december</span>
-        <span class="small success button">Game launch : 2014</span>
+        <div class='panel callout'>
+            <strong style='color: white'>Alpha 0.1.1</strong>
+            <p style="font-size: .9em">
+                - <a href="https://github.com/In4matik/BackFlight/pull/2">#2</a> Fix unread messages<br />
+                - <a href="https://github.com/In4matik/BackFlight/pull/6">#6</a> Fix module description<br />
+                - Add page generation time<br />
+                - More techs on game start<br />
+            </p>
+        </div>
         <?php
         if (ENABLE_SCRIPTS) {
             ?>
@@ -76,12 +86,6 @@ Serez-vous prêt à relevez le défi ?
     </div>
 
 </div>
-<div class="row">
-    <div class="large-9 columns">
-        <a class="th radius" href="img/ui/sample.jpg" style="width: 200px; height: 150px;" target="_blank">
-            <img src="img/ui/sample-th.jpg" />
-        </a>
-    </div>
-</div>
+
 <?php
 foot();
