@@ -1,7 +1,7 @@
 # BackFlight
 A simple game in a complexe space.
 
-http://back-flight.fr - not yet
+http://www.back-flight.fr - closed alpha online
 
 [French] More about this game : http://fr.openclassrooms.com/forum/sujet/jeu-navigateur-backflight
 
