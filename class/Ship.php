@@ -1227,8 +1227,6 @@ class Ship extends Model
                                     $this->$propertyName += $value;
                                 }
                             }
-                        } else if ($effect == 'weight') {
-                            $this->_load += $value;
                         }
                     }
                 }
