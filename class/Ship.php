@@ -89,6 +89,8 @@ class Ship extends Model
 
     protected $_objects = array();
 
+    protected $_objectsEffects = array();
+
     /**
      *
      * @var int
@@ -443,6 +445,7 @@ class Ship extends Model
      */
     public function isOverloaded()
     {
+        $this->calculateLoad();
         if ($this->_load > $this->_loadMax) {
             return true;
         }
@@ -646,6 +649,14 @@ class Ship extends Model
                 trigger_error('This shouldn\'t happen');
             }
         }
+
+        if (!empty($this->_objects['weapons'])) {
+            foreach($this->_objects['weapons'] as $objectId => $quantity)
+            {
+                $weight = $this->_objectsEffects['weapons'][$objectId]['weight'];
+                $this->_load += $weight * $quantity;
+            }
+        }
         
         return $this->_load;
     }
@@ -758,6 +769,7 @@ class Ship extends Model
 
             if (!empty($param['weapons'])) {
                 $this->_objects['weapons'] = $param['weapons'];
+                $this->_objectsEffects['weapons'] = $param['weaponsEffects'];
             }
 
             $this->_lastUpdate = $param['lastUpdate'];
@@ -765,10 +777,10 @@ class Ship extends Model
 
             $this->_sql = true;
 
-
             // Preparing ship
             $this->updateEnergy();
             $this->updatePower();
+
             if ($this->isOverloaded()) {
                 $this->setSpeed($this->getSpeed() / SHIP_SPEED_OVERLOADED);
                 $this->setTechs($this->_techs);
@@ -904,8 +916,8 @@ class Ship extends Model
         $sql = FlyPDO::get();
         $req = $sql->prepare('SELECT `'.self::$_sqlTable.'`.*, pos.x, pos.y, res.quantity ressourceQuantity, res.type ressourceType,
                 mod.name modelName, mod.type modelType, mod.category modelCategory, mod.loadMax, mod.energyMax, mod.energyGain, mod.fuelMax, 
-                mod.powerMax, mod.speed, mod.modulesMax, mod.shieldMax, mod.shieldGain, smodu.typeId, smodu.typeEnabled, smodu.id shipObjectId,
-                smodu.type shipObjectType,
+                mod.powerMax, mod.speed, mod.modulesMax, mod.shieldMax, mod.shieldGain, sobject.typeId, sobject.typeEnabled, sobject.id shipObjectId,
+                sobject.type shipObjectType,
                 
                 modu.operation moduleOperation,modu.weight moduleWeight, modu.power modulePower, modu.energy moduleEnergy, modu.load moduleLoad,
                 modu.fuel moduleFuel, modu.techs moduleTechs, modu.speed moduleSpeed, modu.shield moduleShield, modu.search moduleSearch,
@@ -916,26 +928,23 @@ class Ship extends Model
                 weapon.objectRange, weapon.objectSpeed, weapon.objectWeight, weapon.objectCostFuel, weapon.objectCostTechs, weapon.objectCostEnergy,
                 weapon.objectLaunchFuel, weapon.objectLaunchEnergy
             FROM `'.self::$_sqlTable.'`
-            LEFT JOIN `'.TABLE_POSITIONS.'` pos
+            INNER JOIN `'.TABLE_POSITIONS.'` pos
                 ON `'.self::$_sqlTable.'`.positionId =  pos.id
                     
-            LEFT JOIN `'.TABLE_MODELS.'` `mod`
+            INNER JOIN `'.TABLE_MODELS.'` `mod`
                 ON `'.self::$_sqlTable.'`.model = `mod`.id
 
             LEFT JOIN `'.TABLE_RESSOURCES.'` res
                 ON `'.self::$_sqlTable.'`.id = res.intoId AND `into` = "ship"
 
-            LEFT JOIN `'.TABLE_SHIPS_OBJECTS.'` smodu
-                ON smodu.shipId = `'.self::$_sqlTable.'`.id
-                    
-            LEFT JOIN `'.TABLE_SHIPS_OBJECTS.'` sweapon
-                ON sweapon.shipId = `'.self::$_sqlTable.'`.id AND sweapon.type = "weapon"
+            LEFT JOIN `'.TABLE_SHIPS_OBJECTS.'` sobject
+                ON sobject.shipId = `'.self::$_sqlTable.'`.id
 
             LEFT JOIN `'.TABLE_OBJECTS.'` weapon
-                ON sweapon.typeId = weapon.id
+                ON sobject.typeId = weapon.id AND sobject.type="object"
 
             LEFT JOIN `'.TABLE_MODULES.'` modu
-                ON modu.id = smodu.typeId
+                ON modu.id = sobject.typeId
         '.$where);
         if ($req->execute($args)) {
             $current = 0;
@@ -1007,6 +1016,7 @@ class Ship extends Model
                         if (empty($param['shipWeapon'][$row['shipObjectId']])) {
                             if (empty($param['weapons'][$row['typeId']])) {
                                 $param['weapons'][$row['typeId']] = 0;
+                                $param['weaponsEffects'][$row['typeId']]['weight'] = $row['objectWeight'];
                             }
                             $param['weapons'][$row['typeId']]++;
                             $param['shipWeapon'][$row['shipObjectId']] = true;
