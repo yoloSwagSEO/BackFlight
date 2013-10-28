@@ -26,7 +26,8 @@ RewriteRule ^search/(fast|probes)$ game.php?module=search&speed=$1 [L]
 RewriteRule ^ship$ game.php?module=ship [L]
 RewriteRule ^ship/([a-z]+)$ game.php?module=ship&action=$1 [L]
 
-RewriteRule ^cargo/([a-z]+)$ game.php?module=drop&action=$1 [L]
+RewriteRule ^cargo$ game.php?module=cargo [L]
+RewriteRule ^cargo/([a-z]+)$ game.php?module=cargo&action=$1 [L]
 
 RewriteRule ^modules/(build|enable|disable)$ game.php?module=modules&action=$1 [L]
 RewriteRule ^weapons/(build|use)$ game.php?module=weapons&action=$1 [L]

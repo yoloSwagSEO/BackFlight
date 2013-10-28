@@ -101,8 +101,15 @@ if (!empty($_GET['module'])) {
             }
         }
 
-    } else if ($module == 'drop') {
-        include_once 'modules/game/drop/drop_drop.php';
+    } else if ($module == 'cargo') {
+        if (!empty($_GET['action'])) {
+            $action = $_GET['action'];
+            if ($action = 'drop') {
+                include_once 'modules/game/cargo/cargo_drop.php';
+            }
+        } else {
+            include_once 'modules/game/cargo/cargo_home.php';
+        }
     } else {
         trigger_error('Unknown module', E_USER_ERROR);
     }
