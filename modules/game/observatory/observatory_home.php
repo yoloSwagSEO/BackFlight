@@ -102,7 +102,7 @@ foreach ($array_quests_position as $id => $Quest)
             ?>
         <h3>Quêtes</h3>
         <div data-alert class="alert-box success radius">
-        <?php echo count($array_quests_position); ?> quête(s) se déroule(nt) ici.
+        <?php $c = count($array_quests_position); echo $c; ?> quête<?php echo ($c>1?'s':'') ?> se déroule<?php echo ($c>1?'nt':'') ?> ici.
         </div>
         <ul class="ul_blocs">
             <?php
