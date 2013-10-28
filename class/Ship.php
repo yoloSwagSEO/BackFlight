@@ -570,7 +570,7 @@ class Ship extends Model
     public function calculateTravelFuel($distance, $type=null)
     {
         if ($type == 'jump') {
-            return 1;
+            return 0;
         }
         return ceil($distance / POSITION_LENGHT * $this->getSpeed($type) * SHIP_FUEL_USE);
     }
