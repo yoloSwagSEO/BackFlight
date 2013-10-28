@@ -51,13 +51,15 @@ head();
         
         <h3>Cargaison</h3>
 
-
-        <div><?php dropForm('dropfuel','fuel'); ?>Fuel : <?php echo $fuel .' * '. FUEL_WEIGHT .' = '.$fuel * FUEL_WEIGHT ;?>
+        <div class="panel"><h4>Ressources</h4>
+            <div><?php dropForm('dropfuel','fuel'); ?>Fuel : <?php echo $fuel .' * '. FUEL_WEIGHT .' = '.$fuel * FUEL_WEIGHT ;?>
+            </div>
+            
+            <div><?php dropForm('droptechs','techs'); ?>Techs : <?php echo $techs .' * '. TECHS_WEIGHT .' = '.$techs * TECHS_WEIGHT ;?>
+            </div>
         </div>
         
-        <div><?php dropForm('droptechs','techs'); ?>Techs : <?php echo $techs .' * '. TECHS_WEIGHT .' = '.$techs * TECHS_WEIGHT ;?>
-        </div>
-
+        <?php if (!empty($modules)) { ?>
         <div class="panel modules">
             <h4>Modules</h4>
             <div class="row">
@@ -73,31 +75,32 @@ head();
             ?>
             </div>
         </div>
-        
+        <?php } ?>
+
+        <?php if (!empty($array_weapons_user)) { ?>
         <div class="panel armes">
             <?php
         foreach ($array_weapons_user as $type => $array_weapons_type)
         {
-            if (!empty($array_weapons_type)) {
-                ?>
-                <h4><?php echo $type ?></h4>
-                <div class="row">
+            ?>
+            <h4><?php echo $type ?></h4>
+            <div class="row">
+            <?php
+            foreach ($array_weapons_type as $objectId => $quantity)
+            {
+                if ($quantity != 0) {
+                    dropForm('dropweapon'.$ObjectWeapon->getId(),'weapon',$ObjectWeapon->getId(),$type);
+                    echo $quantity.' '.$ObjectWeapon->getObjectName(); ?>
                 <?php
-                foreach ($array_weapons_type as $objectId => $quantity)
-                {
-                    if ($quantity != 0) {
-                        dropForm('dropweapon'.$ObjectWeapon->getId(),'weapon',$ObjectWeapon->getId(),$type);
-                        echo $quantity.' '.$ObjectWeapon->getObjectName(); ?>
-                    <?php
-                    }
                 }
-                ?>
-                </div>
-                <?php
             }
+            ?>
+            </div>
+            <?php
         }
             ?>
         </div>
+        <?php } ?>
 
     </div>
 </div>
