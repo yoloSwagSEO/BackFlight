@@ -13,6 +13,9 @@ function updateCompteurs()
             counting++;
         } else {
             $(this).html('Terminé');
+            setTimeout(function () {
+                window.location.reload();
+            }, 1000);
         }
     });
 
