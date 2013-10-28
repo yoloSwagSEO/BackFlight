@@ -4,7 +4,7 @@
     if (isset($_SESSION['infos']['drop'])) {
         foreach ($_SESSION['infos']['drop'] as $type => $quantity) {
     ?>
-    <div data-alert class="alert-box success radius">Larguage de <?php echo $quantity.' '.$type ?> avec succès !</div>
+    <span class="icomoon" data-icon="&#xe0a8;" style="margin: 0 5px"></span><div data-alert class="alert-box success radius">Larguage de <?php echo $quantity.' '.$type ?> avec succès !</div>
     <?php
         }
     }
@@ -25,7 +25,7 @@
 
     <span class="icomoon" data-icon="&#xe0a4;" style="margin: 0 5px"></span>
     Fuel <small>(<?php echo round($MasterShipPlayer->getFuel())?> / <?php echo round($MasterShipPlayer->getFuelMax())?>)</small>
-    <a href="#" data-dropdown="dropfuel" class="button tiny">Larguer du fuel</a>
+    <a href="#" data-dropdown="dropfuel" class="button tiny"><span class="icomoon" data-icon="&#xe0a8;" style="margin: 0 5px"></span></a>
     <form id="dropfuel" class="f-dropdown" action="drop/fuel" method="post" data-dropdown-content>
     <input type="number" min="0" max="<?php echo round($MasterShipPlayer->getFuel())?>" name="quantity"/><input type="submit" class="button tiny"/>
     </form>
