@@ -92,8 +92,8 @@ abstract class Fly
     }
 
     /**
-     * Supprime l'objet de la base de données
-     * @see iOwnWeb::delete()
+     * Delete object from DB
+     * @see Fly::delete()
      */
     public function delete()
     {

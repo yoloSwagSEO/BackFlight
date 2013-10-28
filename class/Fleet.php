@@ -12,40 +12,66 @@ class Fleet extends Fly
      */
     protected static $_sqlTable = TABLE_FLEETS;
 
-
+    /**
+     * Get userId
+     * @return int userId
+     */
     public function getUserId()
     {
         return $this->_userId;
     }
 
+    /**
+     * Get fleet's ships
+     * @return array
+     */
     public function getShips()
     {
         return $this->_ships;
     }
 
+    /**
+     * Get fleet's actionId
+     * @return int
+     */
     public function getActionId()
     {
         return $this->_actionId;
     }
 
 
-
+    /**
+     * Set userId
+     * @param int $userId
+     */
     public function setUserId($userId)
     {
         $this->_userId = $userId;
     }
 
-
+    /**
+     * Set acionId
+     * @param int $actionId
+     */
     public function setActionId($actionId)
     {
         $this->_actionId = $actionId;
     }
 
+    /**
+     * Add a ship to the fleet
+     * @param int $shipId
+     */
     public function addShip($shipId)
     {
         $this->_ships[$shipId] = true;
     }
 
+    /**
+     * Make all the fleet takeoff
+     * @param int $energy
+     * @param int $fuel
+     */
     public function takeOff($energy, $fuel)
     {
         foreach ($this->_ships as $shipId => $value)
@@ -58,6 +84,10 @@ class Fleet extends Fly
         }
     }
 
+    /**
+     * Start the whole fleet
+     * @param string $type the ships' states
+     */
     public function start($type)
     {
         foreach ($this->_ships as $shipId => $value)

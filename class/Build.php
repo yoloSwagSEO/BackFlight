@@ -18,84 +18,146 @@ class Build extends Fly
      */
     protected static $_sqlTable = TABLE_BUILDS;
 
-
+    /**
+     * Get build type
+     * @return string
+     */
     public function getType()
     {
         return $this->_type;
     }
 
+    /**
+     * Get build typeId
+     * @return type
+     */
     public function getTypeId()
     {
         return $this->_typeId;
     }
 
+    /**
+     * Get userId
+     * @return int userId
+     */
     public function getUserId()
     {
         return $this->_userId;
     }
 
+    /**
+     * Get build destination (eg. ship)
+     * @return varchar
+     */
     public function getDestination()
     {
         return $this->_destination;
     }
 
+    /**
+     * Get build destination ID
+     * @return int
+     */
     public function getDestinationId()
     {
         return $this->_destinationId;
     }
 
+    /**
+     * Get build start
+     * @return int
+     */
     public function getStart()
     {
         return $this->_start;
     }
 
+    /**
+     * Get build end
+     * @return int
+     */
     public function getEnd()
     {
         return $this->_end;
     }
 
+    /**
+     * Get build state
+     * @return varchar
+     */
     public function getState()
     {
         return $this->_state;
     }
 
 
-
+    /**
+     * Set build type (eg. module, object)
+     * @param varchar $type
+     */
     public function setType($type)
     {
         $this->_type = $type;
     }
 
+    /**
+     * Set type id
+     * @param int $typeId
+     */
     public function setTypeId($typeId)
     {
         $this->_typeId = $typeId;
     }
 
+    /**
+     * Set userId
+     * @param int $userId
+     */
     public function setUserId($userId)
     {
         $this->_userId = $userId;
     }
 
+    /**
+     * Set destination type
+     * @param varchar $destination
+     */
     public function setDestination($destination)
     {
         $this->_destination = $destination;
     }
 
+    /**
+     * Set destination ID
+     * @param int $destinationId
+     */
     public function setDestinationId($destinationId)
     {
         $this->_destinationId = $destinationId;
     }
 
+    /**
+     * Set start timestamp
+     * @param int $start
+     */
     public function setStart($start)
     {
         $this->_start = $start;
     }
 
+    /**
+     * Set end timestamp
+     * @param int $end
+     */
     public function setEnd($end)
     {
         $this->_end = $end;
     }
 
+    /**
+     * Set build type
+     * @param varchar $state
+     */
     public function setState($state)
     {
         $this->_state = $state;

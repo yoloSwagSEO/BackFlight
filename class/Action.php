@@ -25,116 +25,208 @@ class Action extends Fly
     protected static $_sqlTable = TABLE_ACTIONS;
 
 
+    /**
+     * Return userId
+     * @return int userId
+     */
     public function getUser()
     {
         return $this->_user;
     }
 
+    /**
+     * Return action type
+     * @return string (flight / jump / search, etc)
+     */
     public function getType()
     {
         return $this->_type;
     }
 
+    /**
+     * Return from positionId
+     * @return int positionId
+     */
     public function getFrom()
     {
         return $this->_from;
     }
 
+    /**
+     * Return to positionId
+     * @return int positionId
+     */
     public function getTo()
     {
         return $this->_to;
     }
 
+    /**
+     *
+     * @return int positionX
+     */
     public function getFromX()
     {
         return $this->_fromX;
     }
 
+    /**
+     *
+     * @return int positionY
+     */
     public function getFromY()
     {
         return $this->_fromY;
     }
 
+    /**
+     *
+     * @return int positionX
+     */
     public function getToX()
     {
         return $this->_toX;
     }
 
+    /**
+     *
+     * @return int positionY
+     */
     public function getToY()
     {
         return $this->_toY;
     }
 
+    /**
+     * Return action start timestamp
+     * @return int start timestamp
+     */
     public function getStart()
     {
         return $this->_start;
     }
 
+    /**
+     * Return action end timestamp
+     * @return int end timestamp
+     */
     public function getEnd()
     {
         return $this->_end;
     }
 
+    /**
+     * Get action current state
+     * @return varchar
+     */
     public function getState()
     {
         return $this->_state;
     }
 
+    /**
+     * Ships engaged in action
+     * @return array
+     */
     public function getShips()
     {
         return $this->_ships;
     }
 
+    /**
+     * Return action duration
+     * @return int
+     */
     public function getDuration()
     {
         return $this->_duration;
     }
 
+    /**
+     * Get action distance
+     * @return int
+     */
     public function getDistance()
     {
         return $this->_distance;
     }
 
+    /**
+     * Set userId
+     * @param int $user
+     */
     public function setUser($user)
     {
         $this->_user = $user;
     }
 
+    /**
+     * Set action type
+     * @param string $type
+     */
     public function setType($type)
     {
         $this->_type = $type;
     }
 
+    /**
+     * Set from positionId
+     * @param int $from positionId
+     */
     public function setFrom($from)
     {
         $this->_from = $from;
     }
 
+    /**
+     * Set to positionId
+     * @param int $to positionId
+     */
     public function setTo($to)
     {
         $this->_to = $to;
     }
 
+    /**
+     * Set start timestamp
+     * @param int $start
+     */
     public function setStart($start)
     {
         $this->_start = $start;
     }
 
+    /**
+     * Set end timestamp
+     * @param int $end
+     */
     public function setEnd($end)
     {
         $this->_end = $end;
     }
 
+    /**
+     * Set current action state
+     * @param string $state
+     */
     public function setState($state)
     {
         $this->_state = $state;
     }
 
+    /**
+     * Set action duration
+     * @param int $duration
+     */
     public function setDuration($duration)
     {
         $this->_duration = $duration;
     }
 
+    /**
+     * Set action distance
+     * @param int $distance
+     */
     public function setDistance($distance)
     {
         $this->_distance = $distance;
@@ -191,35 +283,6 @@ class Action extends Fly
             var_dump($req->errorInfo());
             trigger_error('Unable to save in '.__FILE__.' on line '.__LINE__.' ! ', E_USER_ERROR);
         }
-    }
-
-    /**
-     * Starting to move
-     */
-    public function start()
-    {
-        $this->setStart(time());
-        $this->setEnd(time() + $this->_duration);
-        $this->setState('current');
-        return $this->save();
-    }
-
-    public function land()
-    {
-        foreach ($this->_ships as $shipId => $null)
-        {
-            $Ship = new Ship($shipId);
-            $Ship->setState('arrived');
-            $Ship->setPosition(new Position($this->_to));
-            $Ship->save();
-        }
-        $this->setState('arrived');
-        $this->save();
-    }
-
-    public function countRemainingTime()
-    {
-        return $this->_end - time();
     }
 
     protected function _update()
@@ -340,6 +403,49 @@ class Action extends Fly
         }
     }
 
+
+    /**
+     * Starting action
+     */
+    public function start()
+    {
+        $this->setStart(time());
+        $this->setEnd(time() + $this->_duration);
+        $this->setState('current');
+        return $this->save();
+    }
+
+    /**
+     * Land all ships engaged in action
+     */
+    public function land()
+    {
+        foreach ($this->_ships as $shipId => $null)
+        {
+            $Ship = new Ship($shipId);
+            $Ship->setState('arrived');
+            $Ship->setPosition(new Position($this->_to));
+            $Ship->save();
+        }
+        $this->setState('arrived');
+        $this->save();
+    }
+
+    /**
+     * Get time before end
+     * @return int
+     */
+    public function countRemainingTime()
+    {
+        return $this->_end - time();
+    }
+
+    /**
+     * Get distances for all users between given times
+     * @param int $fromTime
+     * @param int $toTime
+     * @return int array distance for each users between times
+     */
     public function getAllDistances($fromTime = null, $toTime = null)
     {
         $sql = FlyPDO::get();

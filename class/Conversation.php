@@ -17,34 +17,56 @@ class Conversation extends Fly
      */
     protected static $_sqlTable = TABLE_CONVERSATIONS;
 
-
+    /**
+     * Get conversation date
+     * @return int
+     */
     public function getDate()
     {
         return $this->_date;
     }
 
+    /**
+     * Get conversation tag
+     * @return string
+     */
     public function getTag()
     {
         return $this->_tag;
     }
 
+    /**
+     * Get conversation subject
+     * @return string
+     */
     public function getSubject()
     {
         return $this->_subject;
     }
 
+    /**
+     * Get conversation messages
+     * @return array
+     */
     public function getMessages()
     {
         return $this->_messages;
     }
 
 
-
+    /**
+     * Set conversation timestamp
+     * @param int $date
+     */
     public function setDate($date)
     {
         $this->_date = $date;
     }
 
+    /**
+     * Set conversation subject
+     * @param string $subject
+     */
     public function setSubject($subject)
     {
         $this->_subject = $subject;
@@ -127,6 +149,13 @@ class Conversation extends Fly
         return array_shift($array);
     }
 
+    /**
+     *
+     * @param type $id
+     * @param type $to_array
+     * @param type $userId
+     * @return \class
+     */
     public static function getAll($id = null, $to_array = false, $userId = null)
     {
         $where = '';
@@ -236,6 +265,11 @@ class Conversation extends Fly
         }
     }
 
+    /**
+     * Add an user to this conversation
+     * @param int $userId userId
+     * @return boolean
+     */
     public function addUser($userId)
     {
         if (empty($this->_users[$userId])) {
@@ -254,6 +288,11 @@ class Conversation extends Fly
         }
     }
 
+    /**
+     * Get conversation's users
+     * @param boolean $full si true, récupère les pseudos
+     * @return array
+     */
     public function getUsers($full = false)
     {
         if ($full) {
@@ -262,11 +301,19 @@ class Conversation extends Fly
         return $this->_users;
     }
 
+    /**
+     * Get conversations's user add date
+     * @return array
+     */
     public function getUsersDate()
     {
         return $this->_usersDates;
     }
 
+    /**
+     * Is conversation read for user
+     * @return boolean
+     */
     public function isRead()
     {
         foreach ($this->_messages as $messages)
@@ -282,6 +329,10 @@ class Conversation extends Fly
         return true;
     }
 
+    /**
+     * Get last message date
+     * @return int
+     */
     public function getLastDate()
     {
         end($this->_messages);
