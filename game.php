@@ -104,8 +104,10 @@ if (!empty($_GET['module'])) {
     } else if ($module == 'cargo') {
         if (!empty($_GET['action'])) {
             $action = $_GET['action'];
-            if ($action = 'drop') {
+            if ($action == 'drop') {
                 include_once 'modules/game/cargo/cargo_drop.php';
+            } else {
+                include_once 'modules/game/cargo/cargo_home.php';
             }
         } else {
             include_once 'modules/game/cargo/cargo_home.php';

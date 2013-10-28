@@ -20,7 +20,7 @@
 
     <span class="icomoon" data-icon="&#xe0a1;" style="margin: 0 5px"></span>
     Load <small>(<?php echo round($MasterShipPlayer->getLoad())?> / <?php echo round($MasterShipPlayer->getLoadMax())?>)</small>
-    <div class="progress success radius "><span class="meter" style="width: <?php echo round($MasterShipPlayer->getLoad() / $MasterShipPlayer->getLoadMax() * 100)?>%"></span></div>
+    <a href="cargo"><div class="progress success radius "><span class="meter" style="width: <?php echo round($MasterShipPlayer->getLoad() / $MasterShipPlayer->getLoadMax() * 100)?>%"></span></div></a>
 
 
 
