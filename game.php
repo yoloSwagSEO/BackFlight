@@ -101,6 +101,8 @@ if (!empty($_GET['module'])) {
             }
         }
 
+    } else if ($module == 'drop') {
+        include_once 'modules/game/drop/drop_drop.php';
     } else {
         trigger_error('Unknown module', E_USER_ERROR);
     }
