@@ -4,6 +4,7 @@ $array_modules = Module::getAll('', '', $User->getId());
 $array_objects = Object::getAll('', '', $User->getId());
 
 $array_weapons = $MasterShipPlayer->getObjects('weapons');
+echo '<pre>'; print_r($MasterShipPlayer); echo '</pre>';
 $array_weapons_user = array();
 foreach ($array_weapons as $objectId => $quantity)
 {
@@ -53,7 +54,6 @@ if ($type == 'fuel') {
 } else if ($type == 'module' || $type == 'weapon') {
     for ($i = 0; $i < $quantity ; $i++) {
         $MasterShipPlayer->useObject($type, $id);
-        // Currently not working for Modules ??
     }
     if ($type == 'module') {
         $name = 'module'.($quantity>1?'s':'');
@@ -63,13 +63,14 @@ if ($type == 'fuel') {
     }
 }
 
+// Save name and quantity to display notification
 $_SESSION['infos']['drop']['type'] = $name;
 $_SESSION['infos']['drop']['quantity'] = $quantity;
 
 
 // Drop ressources and save
-// $MasterShipPlayer->save();
+$MasterShipPlayer->save();
 
 // Exit.
-// header('location: '.PATH.'cargo');
-// exit;
+header('location: '.PATH.'cargo');
+exit;
