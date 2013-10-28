@@ -1137,9 +1137,9 @@ class Ship extends Model
         $req = $sql->prepare('DELETE FROM `'.TABLE_SHIPS_OBJECTS.'` WHERE shipId = :shipId AND type = :type AND typeId = :typeId LIMIT 1');
         if ($req->execute(array(
             ':shipId' => $this->_id,
-            ':type' => 'object',
+            ':type' => $type,
             ':typeId' => $typeId,
-        ))) {            
+        ))) {
             return true;
         } else {
             var_dump($req->errorInfo());

@@ -119,7 +119,7 @@ foreach ($array_builds as $Build)
         $type = $Build->getType();
 
         // For modules and weapons
-        if ($type == 'module' || $type == 'object') {
+        if ($type == 'module' || $type == 'weapon') {
             $Build->setState('end');
             $MasterShipPlayer->addObject($Build->getType(), $Build->getTypeId());
             $Build->save();
