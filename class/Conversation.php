@@ -145,7 +145,7 @@ class Conversation extends Fly
         if ($userId) {
             $args[':userId'] = $userId;
             $args[':userId2'] = $userId;
-            $join_add .= 'INNER JOIN `'.TABLE_CONVERSATIONS_USERS.'` cUser ON cUser.userId = :userId
+            $join_add .= 'INNER JOIN `'.TABLE_CONVERSATIONS_USERS.'` cUser ON cUser.userId = :userId AND cUser.conversationId = `'.static::$_sqlTable.'`.id
                     LEFT JOIN `'.TABLE_CONVERSATIONS_READ.'` cRead
                         ON (cRead.messageId = cMessages.id AND cRead.userId = :userId2)';
             $select_add .= ', cRead.messageId messageReadId';
@@ -158,13 +158,13 @@ class Conversation extends Fly
                         users.pseudo userPseudo, users2.pseudo usersPseudos, users2.id usersId, convUsers.date userDate
                     '.$select_add.'
                             FROM `'.static::$_sqlTable.'`
-                    LEFT JOIN `'.TABLE_CONVERSATIONS_USERS.'` convUsers
+                    INNER JOIN `'.TABLE_CONVERSATIONS_USERS.'` convUsers
                         ON convUsers.conversationId = `'.static::$_sqlTable.'`.id
-                    LEFT JOIN `'.TABLE_MESSAGES.'` cMessages
+                    INNER JOIN `'.TABLE_MESSAGES.'` cMessages
                         ON cMessages.conversationId = `'.static::$_sqlTable.'`.id
-                    LEFT JOIN `'.TABLE_USERS.'` users
+                    INNER JOIN `'.TABLE_USERS.'` users
                         ON cMessages.userFrom = users.id
-                    LEFT JOIN `'.TABLE_USERS.'` users2
+                    INNER JOIN `'.TABLE_USERS.'` users2
                         ON convUsers.userId = users2.id
                     '.$join_add.'
                 '.$where.'

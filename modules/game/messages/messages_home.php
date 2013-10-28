@@ -2,7 +2,6 @@
 title('Messages');
 head();
 
-
 $array_conversations_date = array();
 foreach ($array_conversations as $Conversation)
 {
