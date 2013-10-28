@@ -998,7 +998,7 @@ class Ship extends Model
                             $param['modulesEffects'][$row['typeId']]['shieldGain'] = $row['moduleShieldGain'];
                             $param['modulesEffects'][$row['typeId']]['module'] = $row['moduleModule'];
                         }
-                    } else if ($row['shipObjectType'] == 'object') {
+                    } else if ($row['shipObjectType'] == 'weapon') {
                         if (empty($param['shipWeapon'][$row['shipObjectId']])) {
                             if (empty($param['weapons'][$row['typeId']])) {
                                 $param['weapons'][$row['typeId']] = 0;
@@ -1112,7 +1112,7 @@ class Ship extends Model
                     $this->_modules[$typeId] = 0;
                 }
                 $this->_modules[$typeId]++;
-            } else if ($type == 'object') {
+            } else if ($type == 'module') {
                 if (empty($this->_objects['weapons'][$typeId])) {
                     $this->_objects['weapons'][$typeId] = 0;
                 }
