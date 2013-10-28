@@ -409,7 +409,7 @@ class Ship extends Model
     {
         if (!$force) {
             $dif = $techs - $this->_techs;
-            $max_load = $this->_getAvailableLoadFor('techs');
+            $max_load = $this->_getAvailableLoadFor('techs') + $this->_loadMax * SHIP_LOAD_TOLERANCE;
 
             if ($dif > $max_load) {
                 $techs = $this->_techs + $max_load;
@@ -771,6 +771,7 @@ class Ship extends Model
             $this->updatePower();
             if ($this->isOverloaded()) {
                 $this->setSpeed($this->getSpeed() / SHIP_SPEED_OVERLOADED);
+                $this->setTechs($this->_techs);
             }
             
             $this->updateShield();
@@ -815,6 +816,10 @@ class Ship extends Model
     {
         $this->calculateLoad();
 
+        // Auto-drop techs if is over
+        if ($this->isOverloaded()) {
+            $this->setTechs($this->_techs);
+        }
 
         $sql = FlyPDo::get();
         $req = $sql->prepare('UPDATE `'.self::$_sqlTable.'` 
