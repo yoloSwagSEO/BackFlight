@@ -14,17 +14,17 @@ if ($ObjectWeapon->getObjectCostEnergy() > $MasterShipPlayer->getEnergy() || $Ob
 }
 
 // Get current modules build on ship
-$end = Build::getTimeEndBuild('object', $User->getId(), 'ship', $MasterShipPlayer->getId());
+$end = Build::getTimeEndBuild('weapon', $User->getId(), 'ship', $MasterShipPlayer->getId());
 if (!$end) {
     $end = time();
 }
 
-$queue = Build::getQueueFor('object', $ObjectWeapon->getId(), $User->getId(), 'ship', $MasterShipPlayer->getId());
+$queue = Build::getQueueFor('weapon', $ObjectWeapon->getId(), $User->getId(), 'ship', $MasterShipPlayer->getId());
 $queue += 1;
 
 
 $ModuleBuild = new Build();
-$ModuleBuild->setType('object');
+$ModuleBuild->setType('weapon');
 $ModuleBuild->setTypeId($ObjectWeapon->getId());
 $ModuleBuild->setUserId($User->getId());
 $ModuleBuild->setDestination('ship');
