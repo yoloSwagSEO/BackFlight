@@ -1,4 +1,7 @@
 <?php
+require_once 'includes/markdown_extended.php';
+
+
 function isConnected()
 {
     if (!empty($_SESSION['User'])) {

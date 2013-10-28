@@ -72,7 +72,7 @@ head();
                         <small><?php echo date('d/m H:i', $Message->getDate())?></small>
                     </div>
                     <div class="large-10 columns">
-                        <?php echo nl2br($Message->getContent())?>
+                        <?php echo MarkdownExtended($Message->getContent())?>
                     </div>
                     <?php
                     if (!$Message->isRead()) {
@@ -94,10 +94,16 @@ head();
                     <div class="large-12 columns">
                         <label>Ma réponse</label>
                         <?php textarea('message_text', '', '', '', 'Mon message')?>
+                        <p><small>Vous pouvez utiliser la mise en forme <a href="http://michelf.ca/projets/php-markdown/syntaxe/" target="_blank">MarkDown</a></small></p>
                     </div>
                 </div>
-                <input type="hidden" value="<?php echo $Conversation->getId()?>" name="conversation_id" />
-                <input type="submit" value="Envoyer mon message" class="button" />
+                <div class="row">
+                    <div class="large-12 columns">
+                         <input type="hidden" value="<?php echo $Conversation->getId()?>" name="conversation_id" />
+                        <input type="submit" value="Envoyer mon message" class="button" />
+                    </div>
+                </div>
+               
             </fieldset>
         </form>
         <form action='messages/add-player' method='post'>

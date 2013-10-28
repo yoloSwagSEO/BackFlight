@@ -148,6 +148,37 @@
     color: rgba(0,0,0, .6);
 }
 
+.message h1
+{
+    font-size: 1.7em;
+    border-bottom: 1px solid #dddddd;
+}
+
+.message h2
+{
+    font-size: 1.4em;
+}
+
+.message h3
+{
+    font-size: 1.2em;
+}
+
+.message h4, .message h5
+{
+    font-size: 1em;
+}
+
+.message h5
+{
+    font-weight: 400;
+}
+
+.message ul
+{
+    list-style-position: inside;
+}
+
 .strong
 {
     font-weight: bold;
