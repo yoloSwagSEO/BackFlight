@@ -16,11 +16,28 @@ $fuel = $MasterShipPlayer->getFuel();
 $techs = $MasterShipPlayer->getTechs();
 $modules = $MasterShipPlayer->getModules();
 
-function dropForm ($ddid,$type,$id=null,$subtype=null) {
+$weight_fuel = $fuel * FUEL_WEIGHT;
+$ratio_fuel = $weight_fuel / $MasterShipPlayer->getLoadMax() * 100;
+
+$weight_techs = $techs * TECHS_WEIGHT;
+$ratio_techs = $weight_techs / $MasterShipPlayer->getLoadMax() * 100;
+
+$weight_modules = $MasterShipPlayer->getModulesWeight();
+$ratio_modules = $weight_modules / $MasterShipPlayer->getLoadMax() * 100;
+
+$weight_weapons = $MasterShipPlayer->getObjectsWeight('weapons');
+$ratio_weapons = $weight_weapons / $MasterShipPlayer->getLoadMax() * 100;
+
+$weight_remaining = 100 - $ratio_fuel - $ratio_techs - $ratio_modules - $ratio_weapons;
+
+
+function dropForm ($ddid,$type, $max, $id=null,$subtype=null) {
 // Print the link and form to drop ressources/objects/weapons
-    echo '<a href="#" style="margin:5px" data-dropdown="'.$ddid.'" class="button tiny">';
+    echo '<a href="#" style="margin:5px" data-dropdown="'.$ddid.'" class="button tiny" data-tooltip title="Drop '.$type.'">';
     echo '<span class="icomoon" data-icon="&#xe0a8;" style="margin: 0 5px"></span></a>';
-    echo '<form id="'.$ddid.'" class="f-dropdown" action="cargo/drop" method="post" data-dropdown-content>';
+    echo '<div id="'.$ddid.'" class="f-dropdown" data-dropdown-content>
+        <form action="cargo/drop" method="post">
+        <div class="row collapse"><div class="large-8 columns">';
     if ($id != null) {
         echo '<input type="hidden" name="id" value="'.$id.'"/>';
     }
@@ -28,7 +45,12 @@ function dropForm ($ddid,$type,$id=null,$subtype=null) {
         echo '<input type="hidden" name="subtype" value="'.$subtype.'"/>';
     }
     echo '<input type="hidden" name="type" value="'.$type.'"/>';
-    echo '<input type="number" name="quantity" min="0"/><input type="submit" class="button tiny"/></form>';
+    echo '<input type="number" name="quantity" min="0" max="'.$max.'" placeholder="max '.$max.'"/>';
+    echo '</div>';
+    echo '<div class="large-4 columns">';
+    echo '<input type="submit" class="button postfix" value="Drop"/>';
+    echo '</div></div></form>';
+    echo '</div>';
 }
 
 head();
@@ -51,11 +73,25 @@ head();
         
         <h3>Cargaison</h3>
 
-        <div class="panel"><h4>Ressources</h4>
-            <div><?php dropForm('dropfuel','fuel'); ?>Fuel : <?php echo $fuel .' * '. FUEL_WEIGHT .' = '.$fuel * FUEL_WEIGHT ;?>
+        Répartition de la cargaison :
+        <div class="progress">
+            <span class="meter alert" style="width: <?php echo $ratio_fuel?>%" title="Fuel : <?php echo $weight_fuel?>" data-tooltip></span>
+            <span class="meter" style="width: <?php echo $ratio_techs?>%" title="Techs : <?php echo $weight_techs?>" data-tooltip></span>
+            <span class="meter success" style="width: <?php echo $ratio_modules?>%" title="Modules : <?php echo $weight_modules?>" data-tooltip></span>
+            <span class="meter" style="width: <?php echo $ratio_weapons?>%" title="Weapons : <?php echo $weight_weapons?>" data-tooltip></span>
+            <span style="height: 100%; display: inline-block; width: <?php echo $weight_remaining?>%" title="Remaining : <?php echo $weight_remaining?>" data-tooltip></span>
+        </div>
+
+        <div class="panel">
+            <h4>Ressources (<?php echo $weight_fuel + $weight_techs?>)</h4>
+            <div>
+                <?php dropForm('dropfuel','fuel', $fuel); ?>
+                <?php echo $fuel .' fuel : '.$weight_fuel ;?>
             </div>
             
-            <div><?php dropForm('droptechs','techs'); ?>Techs : <?php echo $techs .' * '. TECHS_WEIGHT .' = '.$techs * TECHS_WEIGHT ;?>
+            <div>
+                <?php dropForm('droptechs','techs', $techs); ?>
+                <?php echo $techs .' techs : '. $weight_techs ;?>
             </div>
         </div>
         
@@ -68,8 +104,8 @@ head();
             {
                 if ($quantity != 0) {
                     $Module = $array_modules[$moduleId];
-                    dropForm('dropmodule'.$Module->getId(),'module',$Module->getId());
-                    echo $quantity .' '. $Module->getName();
+                    dropForm('dropmodule'.$Module->getId(),'module',$quantity, $Module->getId());
+                    echo $quantity .' '. $Module->getName() .' ('.$Module->getWeight().')';
                 }
             }
             ?>
@@ -89,7 +125,7 @@ head();
             foreach ($array_weapons_type as $objectId => $quantity)
             {
                 if ($quantity != 0) {
-                    dropForm('dropweapon'.$ObjectWeapon->getId(),'weapon',$ObjectWeapon->getId(),$type);
+                    dropForm('dropweapon'.$ObjectWeapon->getId(),'weapon', $quantity, $ObjectWeapon->getId(),$type);
                     echo $quantity.' '.$ObjectWeapon->getObjectName(); ?>
                 <?php
                 }

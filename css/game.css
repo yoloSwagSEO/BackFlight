@@ -191,3 +191,28 @@
     color: rgba(0,0,0,.8);
     padding-bottom: 20px;   
 }
+
+.progress.font0
+{
+    font-size: 0;
+}
+
+.progress .meter
+{
+    float: left;
+}
+
+.progress .meter.alert
+{
+    background: #c60f13;
+}
+
+.progress .meter.success
+{
+    background: #5da423;
+}
+
+.f-dropdown input
+{
+    margin-bottom: 0;
+}

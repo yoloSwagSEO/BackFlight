@@ -941,7 +941,7 @@ class Ship extends Model
                 ON sobject.shipId = `'.self::$_sqlTable.'`.id
 
             LEFT JOIN `'.TABLE_OBJECTS.'` weapon
-                ON sobject.typeId = weapon.id AND sobject.type="object"
+                ON sobject.typeId = weapon.id AND sobject.type="weapon"
 
             LEFT JOIN `'.TABLE_MODULES.'` modu
                 ON modu.id = sobject.typeId
@@ -1328,5 +1328,40 @@ class Ship extends Model
             return true;
         }
         return false;
+    }
+
+    /**
+     * Get total modules weight
+     * @return int
+     */
+    public function getModulesWeight()
+    {
+        $totalWeight = 0;
+        foreach ($this->_modules as $moduleId => $quantity)
+        {
+            $weight = $this->_modulesEffects[$moduleId]['weight'];
+            $totalWeight += $weight*$quantity;
+        }
+        return $totalWeight;
+    }
+
+    /**
+     * Get total objects weight
+     * @param string $type
+     * @return int
+     */
+    public function getObjectsWeight($type)
+    {
+        if (!empty($this->_objects[$type])) {
+            $totalWeight = 0;
+            $objects = $this->_objects[$type];
+            foreach ($objects as $objectId => $objectQuantity)
+            {
+                $weight = $this->_objectsEffects[$type][$objectId]['weight'];
+                $totalWeight += $weight * $objectQuantity;
+            }
+            return $totalWeight;
+        }
+        return 0;
     }
 }
