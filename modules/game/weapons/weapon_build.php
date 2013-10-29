@@ -13,6 +13,10 @@ if ($ObjectWeapon->getObjectCostEnergy() > $MasterShipPlayer->getEnergy() || $Ob
     exit('Unsuffisant ressources');
 }
 
+if ($MasterShipPlayer->getFreeLoad() < $ObjectWeapon->getObjectWeight()) {
+    exit('To much load !');
+}
+
 // Get current modules build on ship
 $end = Build::getTimeEndBuild('weapon', $User->getId(), 'ship', $MasterShipPlayer->getId());
 if (!$end) {
