@@ -83,21 +83,21 @@ head();
         </div>
 
         <div class="panel">
-            <h4>Ressources (<?php echo $weight_fuel + $weight_techs?>)</h4>
+            <h4>Ressources <small>(<?php echo $weight_fuel + $weight_techs?>)</small></h4>
             <div>
                 <?php dropForm('dropfuel','fuel', $fuel); ?>
-                <?php echo $fuel .' fuel : '.$weight_fuel ;?>
+                <?php echo $fuel .' fuel <small>('.FUEL_WEIGHT.')</small> : '.$weight_fuel ;?>
             </div>
             
             <div>
                 <?php dropForm('droptechs','techs', $techs); ?>
-                <?php echo $techs .' techs : '. $weight_techs ;?>
+                <?php echo $techs .' techs <small>('.TECHS_WEIGHT.')</small> : '. $weight_techs ;?>
             </div>
         </div>
         
         <?php if (!empty($modules)) { ?>
         <div class="panel modules">
-            <h4>Modules</h4>
+            <h4>Modules <small>(<?php echo $weight_modules?>)</small></h4>
             <?php
             foreach ($modules as $moduleId => $quantity)
             {
@@ -108,7 +108,7 @@ head();
                 if ($quantity != 0) {
                     $Module = $array_modules[$moduleId];
                     dropForm('dropmodule'.$Module->getId(),'module',$quantity, $Module->getId());
-                    echo $quantity .' '. $Module->getName() .' ('.$Module->getWeight().')';
+                    echo $quantity .' '. $Module->getName() .' <small>('.$Module->getWeight().')</small> : '.$Module->getWeight()*$quantity;
                 }
                 ?>
                 </div>
@@ -121,12 +121,10 @@ head();
 
         <?php if (!empty($array_weapons_user)) { ?>
         <div class="panel armes">
+            <h4>Armes <small>(<?php echo $weight_weapons?>)</small></h4>
             <?php
         foreach ($array_weapons_user as $type => $array_weapons_type)
         {
-            ?>
-            <h4><?php echo $type ?></h4>
-            <?php
             foreach ($array_weapons_type as $objectId => $quantity)
             {
                 ?>
@@ -135,7 +133,7 @@ head();
                 <?php
                 if ($quantity != 0) {
                     dropForm('dropweapon'.$ObjectWeapon->getId(),'weapon', $quantity, $ObjectWeapon->getId(),$type);
-                    echo $quantity.' '.$ObjectWeapon->getObjectName(); ?>
+                    echo $quantity.' '.$ObjectWeapon->getObjectName(). ' <small>('.$ObjectWeapon->getObjectWeight().')</small> : '.$ObjectWeapon->getObjectWeight()*$quantity; ?>
                 <?php
                 }
                 ?>
