@@ -59,6 +59,7 @@ head();
 <div class="row">
     <div class="column large-3">
         <?php include_once 'includes/menu.php';?>
+        <?php include_once 'modules/game/ship/ship_details.php';?>
         <?php include_once 'modules/game/earth/earth_details.php';?>
     </div>
     <div class="column large-9">

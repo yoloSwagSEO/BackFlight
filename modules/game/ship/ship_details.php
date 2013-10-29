@@ -18,9 +18,9 @@
     Fuel <small>(<?php echo round($MasterShipPlayer->getFuel())?> / <?php echo round($MasterShipPlayer->getFuelMax())?>)</small>
     <div class="progress alert radius "><span class="meter" style="width: <?php echo round($MasterShipPlayer->getFuel() / $MasterShipPlayer->getFuelMax() * 100)?>%"></span></div>
 
-    <span class="icomoon" data-icon="&#xe0a1;" style="margin: 0 5px"></span>
+    <a href="cargo" data-tooltip title="Cliquer pour afficher le détail du chargement" style="color: black;"><span class="icomoon" data-icon="&#xe0a1;" style="margin: 0 5px"></span>
     Load <small>(<?php echo round($MasterShipPlayer->getLoad())?> / <?php echo round($MasterShipPlayer->getLoadMax())?>)</small>
-    <a href="cargo"><div class="progress success radius "><span class="meter" style="width: <?php echo round($MasterShipPlayer->getLoad() / $MasterShipPlayer->getLoadMax() * 100)?>%"></span></div></a>
+    <div class="progress success radius "><span class="meter" style="width: <?php echo round($MasterShipPlayer->getLoad() / $MasterShipPlayer->getLoadMax() * 100)?>%"></span></div></a>
 
 
 
@@ -36,6 +36,6 @@
     ?>
 
     <a class="button tiny <?php echo $class?>" <?php echo $tip ?> href="<?php echo $href?>">Speed <?php echo $MasterShipPlayer->getSpeed()?></a>
-    <a class="button tiny" ><span class="icomoon" data-icon="&#xe08e;" style="margin-right: 5px"></span><?php echo number_format($MasterShipPlayer->getTechs())?> techs </a>
+    <a class="button tiny" href="cargo"><span class="icomoon" data-icon="&#xe08e;" style="margin-right: 5px"></span><?php echo number_format($MasterShipPlayer->getTechs())?> techs </a>
 
 </div>
