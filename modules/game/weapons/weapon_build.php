@@ -14,7 +14,7 @@ if ($ObjectWeapon->getObjectCostEnergy() > $MasterShipPlayer->getEnergy() || $Ob
 }
 
 if ($MasterShipPlayer->getFreeLoad() < $ObjectWeapon->getObjectWeight()) {
-    exit('To much load !');
+    exit('Too much load');
 }
 
 // Get current modules build on ship

@@ -14,7 +14,7 @@ if ($Module->getCostEnergy() > $MasterShipPlayer->getEnergy() || $Module->getCos
 }
 
 if ($MasterShipPlayer->getFreeLoad() < $Module->getObjectWeight()) {
-    exit('To much load !');
+    exit('Too much load');
 }
 
 // Get current modules build on ship
