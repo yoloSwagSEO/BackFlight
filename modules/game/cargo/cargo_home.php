@@ -98,18 +98,24 @@ head();
         <?php if (!empty($modules)) { ?>
         <div class="panel modules">
             <h4>Modules</h4>
-            <div class="row">
             <?php
             foreach ($modules as $moduleId => $quantity)
             {
+                ?>
+            <div class="row">
+                <div class="large-12 columns">
+                    <?php
                 if ($quantity != 0) {
                     $Module = $array_modules[$moduleId];
                     dropForm('dropmodule'.$Module->getId(),'module',$quantity, $Module->getId());
                     echo $quantity .' '. $Module->getName() .' ('.$Module->getWeight().')';
                 }
+                ?>
+                </div>
+            </div>
+                    <?php
             }
             ?>
-            </div>
         </div>
         <?php } ?>
 
@@ -120,15 +126,22 @@ head();
         {
             ?>
             <h4><?php echo $type ?></h4>
-            <div class="row">
             <?php
             foreach ($array_weapons_type as $objectId => $quantity)
             {
+                ?>
+            <div class="row">
+                <div class="large-12 columns">
+                <?php
                 if ($quantity != 0) {
                     dropForm('dropweapon'.$ObjectWeapon->getId(),'weapon', $quantity, $ObjectWeapon->getId(),$type);
                     echo $quantity.' '.$ObjectWeapon->getObjectName(); ?>
                 <?php
                 }
+                ?>
+                </div>
+            </div>
+                <?php
             }
             ?>
             </div>
