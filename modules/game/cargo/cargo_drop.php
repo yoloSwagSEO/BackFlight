@@ -4,7 +4,6 @@ $array_modules = Module::getAll('', '', $User->getId());
 $array_objects = Object::getAll('', '', $User->getId());
 
 $array_weapons = $MasterShipPlayer->getObjects('weapons');
-echo '<pre>'; print_r($MasterShipPlayer); echo '</pre>';
 $array_weapons_user = array();
 foreach ($array_weapons as $objectId => $quantity)
 {
